@@ -57,7 +57,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:backgroundTint="@color/black"
-                android:entries="@android:array/organizationTypes"
                 android:fontFamily="@font/tipo3"
                 android:spinnerMode="dropdown" />
 
