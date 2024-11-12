@@ -1,6 +1,6 @@
 package es.ucm.fdi.pistaypato;
 
-/*import android.os.Bundle;
+import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton = findViewById(R.id.floatingActionButton);
         spinner = findViewById(R.id.spinner);
 
+        badmintonFields = new ArrayList<>();
         getBadmintonFields();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -132,24 +133,38 @@ public class MainActivity extends AppCompatActivity {
     "description": "string",
     "excluded-days": "string"
   }
-]
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+]*/
+        RequestQueue queue = Volley.newRequestQueue(this);
+
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.d("API Response", response);
+                            /*Log.d("API Response", response);
                             JSONArray jsonArray = new JSONArray(response);
-                            Log.d("hola", String.valueOf(jsonArray));
+                            Log.d("hola", String.valueOf(jsonArray));*/
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            // Verificamos y accedemos al array "@graph"
+                            JSONArray graphArray = jsonObject.optJSONArray("@graph");
+                            if (graphArray == null) {
+                                Log.e("JSON Error", "El campo '@graph' no es un array o no existe");
+                                return;
+                            }
                             badmintonFields.clear();
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject field = jsonArray.getJSONObject(i);
+                            for (int i = 0; i < graphArray.length(); i++) {
+                                JSONObject field = graphArray.getJSONObject(i);
 
-                                String nombre = field.getString("title");
-                                Log.d("Añadido", nombre);
-                                badmintonFields.add(nombre);
+                                String services = field.optJSONObject("organization").optString("services", "");
+
+                                if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
+                                    // Si contiene "bádminton", agregamos el título del centro
+                                    String nombre = field.optString("title", "Sin Título");
+                                    Log.d("Centro con Bádminton", nombre);
+                                    badmintonFields.add(nombre);
+                                }
                             }
 
                             // Configura el spinner con los datos obtenidos
@@ -157,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinner.setAdapter(adapter);
                         } catch (JSONException e) {
-                            e.printStackTrace();
+                            Log.e("JSON Error", "Error al parsear los datos JSON", e);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -246,79 +261,3 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 */
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-import androidx.appcompat.app.AppCompatActivity;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
-
-    private Spinner spinner;  // Definimos el Spinner
-    private List<String> badmintonFields;  // Lista que contendrá los datos para el Spinner
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.busqueda);  // Asegúrate de que el layout correcto está cargado
-
-        spinner = findViewById(R.id.spinner);  // Referenciamos el Spinner en el layout busqueda.xml
-        badmintonFields = new ArrayList<>();  // Inicializamos la lista
-
-        // URL de la API
-        String url = "https://datos.madrid.es/egob/catalogo/200186-0-polideportivos.json";  // Reemplaza con la URL correcta de tu API
-
-        // Configuramos la cola de solicitudes de Volley
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        // Creamos la solicitud para obtener los datos
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            // Parseamos la respuesta JSON
-                            JSONArray jsonArray = new JSONArray(response);
-                            badmintonFields.clear();  // Limpiamos la lista antes de llenarla
-
-                            // Iteramos por cada objeto JSON y obtenemos el título
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject field = jsonArray.getJSONObject(i);
-                                String nombre = field.getString("title");  // Suponiendo que 'title' es el campo
-                                badmintonFields.add(nombre);  // Añadimos el nombre a la lista
-                            }
-
-                            // Creamos un ArrayAdapter para el Spinner
-                            ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this,
-                                    android.R.layout.simple_spinner_item, badmintonFields);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner.setAdapter(adapter);  // Asignamos el adapter al Spinner
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();  // Si hay un error al parsear la respuesta, lo imprimimos
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("API Error", "Error al obtener los datos", error);  // Si hay un error de red o API
-            }
-        });
-
-        // Añadimos la solicitud a la cola
-        queue.add(stringRequest);
-    }
-}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">pistaypato</string>
-    <string name="pista">Selecciona el campo y fecha que quieres reservar</string>
+    <string name="pista">Pista</string>
     <string name="fecha">Día</string>
     <string name="buscar">Buscar</string>
 </resources>

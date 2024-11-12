@@ -53,11 +53,13 @@
             <Spinner
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
-                android:layout_height="47dp"
+                android:layout_height="69dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
-                android:backgroundTint="@color/black"
+                android:overlapAnchor="false"
                 android:fontFamily="@font/tipo3"
+                android:background="@color/white"
+                android:popupBackground="@color/white"
                 android:spinnerMode="dropdown" />
 
             <LinearLayout
@@ -74,6 +76,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="50dp"
                     android:fontFamily="@font/tipo1"
+                    android:background="@color/white"
                     android:text="@string/fecha"
                     android:textSize="30dp" />
 
@@ -98,8 +101,8 @@
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
+                android:layout_width="166dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="25dp"
                 android:backgroundTint="#4D4D4D"
