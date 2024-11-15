@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Pistaypato"
         tools:targetApi="31">
         <activity
+            android:name=".ListaActivity"
+            android:exported="false" />
+        <activity
             android:name=".PerfilActivity"
             android:exported="false" />
         <activity
