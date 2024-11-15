@@ -3,4 +3,6 @@
     <string name="pista">Badminton track</string>
     <string name="fecha">Day</string>
     <string name="buscar">Ok</string>
+    <string name="nombre">Name</string>
+    <string name="ubicacion">Location</string>
 </resources>

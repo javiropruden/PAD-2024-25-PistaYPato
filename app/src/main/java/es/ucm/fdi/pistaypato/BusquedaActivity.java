@@ -29,7 +29,7 @@ public class BusquedaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.busqueda);  // Asegúrate de que el layout correcto está cargado
+        setContentView(R.layout.activity_busqueda);  // Asegúrate de que el layout correcto está cargado
 
         spinner = findViewById(R.id.spinner);
         badmintonFields = new ArrayList<>();

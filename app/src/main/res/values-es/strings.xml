@@ -4,4 +4,6 @@
     <string name="pista">Pista</string>
     <string name="fecha">Día</string>
     <string name="buscar">Buscar</string>
+    <string name="nombre">Nombre</string>
+    <string name="ubicacion">Ubicación</string>
 </resources>

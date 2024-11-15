@@ -9,12 +9,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.app.DatePickerDialog;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.*;
 
@@ -22,7 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -45,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.busqueda);
+        setContentView(R.layout.activity_busqueda);
 
         dia = findViewById(R.id.dia);
         floatingActionButton = findViewById(R.id.floatingActionButton);
