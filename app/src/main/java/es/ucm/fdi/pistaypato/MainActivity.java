@@ -1,259 +1,77 @@
 package es.ucm.fdi.pistaypato;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import android.app.DatePickerDialog;
-import android.util.Log;
+import android.widget.Button;
+import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ImageButton;
 
-import com.android.volley.*;
+import androidx.annotation.LayoutRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
-
-import java.util.ArrayList;
-
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
+    private Controller controller;
 
-    private TextView dia;
-    private FloatingActionButton floatingActionButton;
-    private Spinner spinner;
-    private ArrayList<String> badmintonFields = new ArrayList<>();
+    Button chat;
+    Button pistas;
+    Button perfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_busqueda);
+        setContentView(R.layout.activity_main);
 
-        dia = findViewById(R.id.dia);
-        floatingActionButton = findViewById(R.id.floatingActionButton);
-        spinner = findViewById(R.id.spinner);
+        controller = new Controller(this);
 
-        badmintonFields = new ArrayList<>();
-        getBadmintonFields();
+        ImageButton chat = findViewById(R.id.navigation_chat);
+        ImageButton pistas = findViewById(R.id.navigation_home);
+        ImageButton perfil = findViewById(R.id.navigation_profile);
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        //aqui hay q iniciar sesion
+        /*if (savedInstanceState == null) {
+            showFragment(new Vista1Fragment()); // O cualquier vista inicial que desees
+        }*/
+
+        //control de botones
+
+        chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+                showFragment(new BusquedaActivity());
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.middle_section), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-    }
-
-    private void showDatePickerDialog() {
-        // Obtiene la fecha actual
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        // Crea y muestra el DatePickerDialog
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                MainActivity.this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        // Actualiza el TextView con la fecha seleccionada
-                        String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
-                        dia.setText(selectedDate);
-                    }
-                },
-                year, month, day
-        );
-        datePickerDialog.show();
-    }
-    private void getBadmintonFields() {
-        String url = "https://datos.madrid.es/egob/catalogo/200186-0-polideportivos.json";
-        //API de la comunidad de madrid
-        //https://datos.madrid.es/portal/site/egob/menuitem.214413fe61bdd68a53318ba0a8a409a0/?vgnextoid=b07e0f7c5ff9e510VgnVCM1000008a4a900aRCRD&vgnextchannel=b07e0f7c5ff9e510VgnVCM1000008a4a900aRCRD&vgnextfmt=default
-
-        /*[
-  {
-    "uid": "string",
-    "dtend": "string",
-    "location": {
-      "longitude": 0,
-      "latitude": 0
-    },
-    "event-location": "string",
-    "link": "string",
-    "relation": "string",
-    "id": "string",
-    "organization": {
-      "accesibility": "string",
-      "services": "string",
-      "schedule": "string",
-      "organization-name": "string",
-      "organization-desc": "string"
-    },
-    "title": "string",
-    "dtstart": "string",
-    "references": "string",
-    "recurrence": {
-      "interval": 0,
-      "days": "string",
-      "frequency": "string"
-    },
-    "price": 0,
-    "address": {
-      "area": "string",
-      "locality": "string",
-      "district": "string",
-      "street-address": "string",
-      "postal-code": "string"
-    },
-    "description": "string",
-    "excluded-days": "string"
-  }
-]*/
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            /*Log.d("API Response", response);
-                            JSONArray jsonArray = new JSONArray(response);
-                            Log.d("hola", String.valueOf(jsonArray));*/
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            // Verificamos y accedemos al array "@graph"
-                            JSONArray graphArray = jsonObject.optJSONArray("@graph");
-                            if (graphArray == null) {
-                                Log.e("JSON Error", "El campo '@graph' no es un array o no existe");
-                                return;
-                            }
-                            badmintonFields.clear();
-
-                            for (int i = 0; i < graphArray.length(); i++) {
-                                JSONObject field = graphArray.getJSONObject(i);
-
-                                String services = field.optJSONObject("organization").optString("services", "");
-
-                                if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
-                                    // Si contiene "bádminton", agregamos el título del centro
-                                    String nombre = field.optString("title", "Sin Título");
-                                    Log.d("Centro con Bádminton", nombre);
-                                    badmintonFields.add(nombre);
-                                }
-                            }
-
-                            // Configura el spinner con los datos obtenidos
-                            ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, badmintonFields);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner.setAdapter(adapter);
-                        } catch (JSONException e) {
-                            Log.e("JSON Error", "Error al parsear los datos JSON", e);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("API Error", "Error al obtener datos", error);
-                    }
-        });
-
-        queue.add(stringRequest);
-    }
-}
-
-/*
-
-public class MainActivity extends AppCompatActivity {
-
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        spinner = findViewById(R.id.spinner);
-
-        // Llama al método para obtener los datos de los campos
-        getBadmintonFields();
-    }
-
-
-}
-*/
-
-/*import android.app.DatePickerDialog;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.Calendar;
-
-public class MainActivity extends AppCompatActivity {
-
-    private TextView diaHora;
-    private FloatingActionButton floatingActionButton;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        diaHora = findViewById(R.id.diaHora);
-        floatingActionButton = findViewById(R.id.floatingActionButton);
-
-        // Configura el botón para mostrar el DatePickerDialog
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        /*button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+                showFragment(new Vista2Fragment());
             }
         });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragment(new Vista3Fragment());
+            }
+        });*/
     }
 
-    private void showDatePickerDialog() {
-        // Obtiene la fecha actual
-        final Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        // Muestra el DatePickerDialog
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                MainActivity.this,
-                (view, year1, month1, dayOfMonth) -> {
-                    // Actualiza el TextView con la fecha seleccionada
-                    String selectedDate = dayOfMonth + "/" + (month1 + 1) + "/" + year1;
-                    diaHora.setText(selectedDate);
-                },
-                year, month, day);
-        datePickerDialog.show();
+    private void showFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.middle_section, fragment);
+        transaction.addToBackStack(null);  // Si deseas permitir la navegación hacia atrás
+        transaction.commit();
     }
+
+
 }
-*/

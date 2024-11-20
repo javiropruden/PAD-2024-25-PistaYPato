@@ -1,12 +1,12 @@
 package es.ucm.fdi.pistaypato;
 
-public class Reserva {
+public class ReservaActivity {
     private int pistaId;
     private String horaInicio;
     private String horaFin;
     private boolean ocupado;
 
-    public Reserva(int pistaId, String horaInicio, String horaFin, boolean ocupado) {
+    public ReservaActivity(int pistaId, String horaInicio, String horaFin, boolean ocupado) {
         this.pistaId = pistaId;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;

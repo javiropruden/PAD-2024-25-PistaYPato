@@ -5,4 +5,5 @@
     <string name="buscar">Ok</string>
     <string name="nombre">Name</string>
     <string name="ubicacion">Location</string>
+    <string name="selecionar">Select track</string>
 </resources>
