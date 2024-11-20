@@ -30,11 +30,6 @@ public class BusquedaActivity extends Fragment {
     private Spinner spinner;
     private List<String> badmintonFields;
 
-    /*@Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_busqueda);
-    }*/
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_busqueda, container, false);
     }
