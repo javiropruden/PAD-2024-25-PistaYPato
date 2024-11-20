@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         controller = new Controller(this);
 
-        ImageButton chat = findViewById(R.id.navigation_chat);
+        ImageButton listar = findViewById(R.id.navigation_chat);
         ImageButton pistas = findViewById(R.id.navigation_home);
         ImageButton perfil = findViewById(R.id.navigation_profile);
 
@@ -44,10 +44,24 @@ public class MainActivity extends AppCompatActivity {
 
         //control de botones
 
-        chat.setOnClickListener(new View.OnClickListener() {
+        listar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragment(new buscarListarFragment());
+            }
+        });
+
+        pistas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showFragment(new BusquedaActivity());
+            }
+        });
+
+        perfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFragment(new PerfilActivity());
             }
         });
 

@@ -8,26 +8,6 @@
     tools:context=".MainActivity">
 
     <!-- Parte superior - Icono de la app u otros iconos -->
-    <LinearLayout
-        android:id="@+id/top_section"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="16dp"
-        android:background="#B0B0B0">
-
-        <ImageView
-            android:id="@+id/app_icon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="15dp"
-            android:contentDescription="App Icon"
-            android:src="@drawable/ic_busqueda3" />
-
-        <!-- Puedes añadir más iconos aquí si es necesario -->
-
-    </LinearLayout>
 
     <!-- Parte central - Pantalla cambiante -->
     <LinearLayout
@@ -59,54 +39,10 @@
         <!-- RecyclerView ocupa el espacio restante de middle_section -->
         <RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="371dp"
+            android:layout_height="549dp"
             android:layout_weight="1"
             android:scrollbars="vertical" />
-
-    </LinearLayout>
-
-    <!-- Parte inferior - Barra de navegación -->
-    <LinearLayout
-        android:id="@+id/bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="87dp"
-        android:background="#979797"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/navigation_chat"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:src="@drawable/ic_chat"
-            android:contentDescription="Chat"
-            android:background="#B0B0B0"
-            app:tint="#050505" />
-
-        <ImageButton
-            android:id="@+id/navigation_home"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:background="#B0B0B0"
-            android:contentDescription="Home"
-            android:src="@drawable/ic_home"
-            app:tint="#000000" />
-
-        <ImageButton
-            android:id="@+id/navigation_profile"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_margin="8dp"
-            android:background="#B0B0B0"
-            android:contentDescription="Profile"
-            android:src="@drawable/ic_perfil"
-            app:tint="#0B0B0B" />
 
     </LinearLayout>
 
