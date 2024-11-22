@@ -25,7 +25,7 @@
         android:layout_marginEnd="90dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name" />
+        android:text="@string/nombre" />
 
     <EditText
         android:id="@+id/diaListar"
@@ -41,7 +41,7 @@
         android:layout_marginBottom="538dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name" />
+        android:text="@string/nombre" />
 
     <Button
         android:id="@+id/anadir"
@@ -53,7 +53,7 @@
         android:layout_marginStart="76dp"
         android:layout_marginTop="740dp"
         android:layout_marginBottom="30dp"
-        android:text="Anadir" />
+        android:text="@string/selecionar" />
 
     <EditText
         android:id="@+id/horaListar"

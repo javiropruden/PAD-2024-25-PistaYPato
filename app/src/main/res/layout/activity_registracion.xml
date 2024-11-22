@@ -35,34 +35,62 @@
         android:orientation="vertical"
         android:gravity="center">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registracion_username_label"
+            android:padding="8dp"
+            android:textSize="16sp" />
+
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="@string/registracion_username_hint"
             android:padding="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registracion_email_label"
+            android:padding="8dp"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="@string/registracion_email_hint"
             android:padding="16dp"
             android:inputType="textEmailAddress" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registracion_confirm_password_label"
+            android:padding="8dp"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/registracion_password_hint"
             android:padding="16dp"
             android:inputType="textPassword" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/registracion_confirm_password_label"
+            android:padding="8dp"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/confirm_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Confirm Password"
+            android:hint="@string/registracion_confirm_password_hint"
             android:padding="16dp"
             android:inputType="textPassword" />
     </LinearLayout>
@@ -75,7 +103,7 @@
         android:layout_below="@id/center_section"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Registrarse"
+        android:text="@string/registracion_register_button"
         android:padding="16dp" />
 
 </RelativeLayout>

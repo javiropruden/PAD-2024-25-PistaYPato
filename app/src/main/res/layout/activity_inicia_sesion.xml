@@ -5,43 +5,39 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Parte superior - Icono de la app u otros iconos -->
-
-    <!-- Parte central - Pantalla cambiante -->
-
-    <!-- Parte inferior - Barra de navegación -->
-
     <!-- Contenedor central -->
     <LinearLayout
         android:id="@+id/centerContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <!-- Fila de nombre de usuario -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/usernameLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="8dp"
-                android:text="Usuario:" />
+                android:text="@string/username_label"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/username"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Introduce tu usuario"
-                android:padding="48dp" />
+                android:padding="12dp"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Espacio adicional -->
@@ -51,24 +47,28 @@
 
         <!-- Fila de contraseña -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/passwordLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="8dp"
-                android:text="Contraseña: " />
+                android:text="@string/password_label"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/password"
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Introduce tu contraseña"
                 android:inputType="textPassword"
-                android:padding="48dp" />
+                android:padding="12dp"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Espacio adicional -->
@@ -78,16 +78,21 @@
 
         <!-- Fila de botones -->
         <LinearLayout
-            android:layout_width="273dp"
-            android:layout_height="47dp"
-            android:orientation="horizontal">
+            android:layout_width="357dp"
+            android:layout_height="157dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="8dp">
 
             <Button
                 android:id="@+id/loginButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Iniciar sesión"
-                android:padding="48dp" />
+                android:layout_weight="1"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:padding="16dp"
+                android:text="@string/iniciar_sesion_button" />
 
             <View
                 android:layout_width="16dp"
@@ -95,10 +100,13 @@
 
             <Button
                 android:id="@+id/registerButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Registrarse"
-                android:padding="48dp" />
+                android:layout_weight="1"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:padding="16dp"
+                android:text="@string/register_button" />
         </LinearLayout>
     </LinearLayout>
 

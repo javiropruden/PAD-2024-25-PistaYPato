@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/tipo3"
-                android:text="@string/pista"
+                android:text="@string/buscarLista_Buscar_pista"
                 android:textSize="20sp" />
 
             <Spinner
@@ -58,7 +58,7 @@
                     android:layout_marginLeft="50dp"
                     android:background="@color/white"
                     android:fontFamily="@font/tipo1"
-                    android:text="@string/fecha"
+                    android:text="@string/buscarLista_fecha"
                     android:textSize="30dp" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -88,7 +88,7 @@
                 android:layout_marginTop="25dp"
                 android:backgroundTint="#4D4D4D"
                 android:fontFamily="@font/tipo1"
-                android:text="@string/buscar" />
+                android:text="@string/buscarLista_buscar" />
         </LinearLayout>
     </FrameLayout>
 

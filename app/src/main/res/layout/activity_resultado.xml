@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/tipo3"
-            android:text="@string/nombre"
+            android:text="@string/resultado_nombre"
             android:textSize="20sp" />
 
         <TextView
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/tipo3"
-            android:text="@string/ubicacion"
+            android:text="@string/resultado_ubicacion"
             android:textSize="20sp" />
 
         <!-- RecyclerView ocupa el espacio restante de middle_section -->
