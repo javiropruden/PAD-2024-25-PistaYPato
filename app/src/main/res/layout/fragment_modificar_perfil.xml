@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ModificarPerfilActivity">
+    tools:context=".ModificarPerfilFragment">
 
     <!-- Parte superior - Icono de la app -->
 
@@ -27,7 +27,7 @@
 
             <!-- Campo Nombre -->
             <EditText
-                android:id="@+id/et_name"
+                android:id="@+id/modificar_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -37,7 +37,7 @@
 
             <!-- Campo Apellido -->
             <EditText
-                android:id="@+id/et_surname"
+                android:id="@+id/modificar_surname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -47,7 +47,7 @@
 
             <!-- Campo Email -->
             <EditText
-                android:id="@+id/et_email"
+                android:id="@+id/modificar_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -58,7 +58,7 @@
 
             <!-- Campo Contraseña -->
             <EditText
-                android:id="@+id/et_password"
+                android:id="@+id/modificar_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -69,7 +69,7 @@
 
             <!-- Campo Repetir Contraseña -->
             <EditText
-                android:id="@+id/et_repeat_password"
+                android:id="@+id/modificar_repeat_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -80,7 +80,7 @@
 
             <!-- Botón de editar -->
             <Button
-                android:id="@+id/btn_edit"
+                android:id="@+id/modificar_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
