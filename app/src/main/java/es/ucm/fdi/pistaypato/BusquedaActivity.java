@@ -1,5 +1,6 @@
 package es.ucm.fdi.pistaypato;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,20 +25,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class BusquedaActivity extends Fragment {
-
-    private Spinner spinner;
-    private List<String> badmintonFields;
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_busqueda, container, false);
-    }
-}
-/*
-*
-* package es.ucm.fdi.pistaypato;
-
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -67,25 +54,25 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
-
+public class BusquedaActivity extends Fragment {
     private TextView dia;
     private FloatingActionButton floatingActionButton;
     private Spinner spinner;
     private ArrayList<String> badmintonFields = new ArrayList<>();
+    private Context cxt;
+    private View view;
+    Context context = getContext();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_busqueda);
 
-        dia = findViewById(R.id.dia);
-        floatingActionButton = findViewById(R.id.floatingActionButton);
-        spinner = findViewById(R.id.spinner);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.view = inflater.inflate(R.layout.activity_busqueda, container, false);
 
-        badmintonFields = new ArrayList<>();
+        dia = view.findViewById(R.id.dia);
+        floatingActionButton = view.findViewById(R.id.floatingActionButton);
+        spinner = view.findViewById(R.id.spinner);
+
         getBadmintonFields();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -95,11 +82,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.middle_section), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.middle_section), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        return view;
     }
 
     private void showDatePickerDialog() {
@@ -111,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Crea y muestra el DatePickerDialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                MainActivity.this,
+                getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -124,101 +112,104 @@ public class MainActivity extends AppCompatActivity {
         );
         datePickerDialog.show();
     }
+
     private void getBadmintonFields() {
         String url = "https://datos.madrid.es/egob/catalogo/200186-0-polideportivos.json";
         //API de la comunidad de madrid
         //https://datos.madrid.es/portal/site/egob/menuitem.214413fe61bdd68a53318ba0a8a409a0/?vgnextoid=b07e0f7c5ff9e510VgnVCM1000008a4a900aRCRD&vgnextchannel=b07e0f7c5ff9e510VgnVCM1000008a4a900aRCRD&vgnextfmt=default
-
-        /*[
-  {
-    "uid": "string",
-    "dtend": "string",
-    "location": {
-      "longitude": 0,
-      "latitude": 0
-    },
-    "event-location": "string",
-    "link": "string",
-    "relation": "string",
-    "id": "string",
-    "organization": {
-      "accesibility": "string",
-      "services": "string",
-      "schedule": "string",
-      "organization-name": "string",
-      "organization-desc": "string"
-    },
-    "title": "string",
-    "dtstart": "string",
-    "references": "string",
-    "recurrence": {
-      "interval": 0,
-      "days": "string",
-      "frequency": "string"
-    },
-    "price": 0,
-    "address": {
-      "area": "string",
-      "locality": "string",
-      "district": "string",
-      "street-address": "string",
-      "postal-code": "string"
-    },
-    "description": "string",
-    "excluded-days": "string"
-  }
-]
-RequestQueue queue = Volley.newRequestQueue(this);
-
-StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-        new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                            /*Log.d("API Response", response);
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
                             JSONArray jsonArray = new JSONArray(response);
-                            Log.d("hola", String.valueOf(jsonArray));
-                    JSONObject jsonObject = new JSONObject(response);
+                            badmintonFields.clear();
+                            badmintonFields.add(getString(R.string.selecionar));
 
-                    // Verificamos y accedemos al array "@graph"
-                    JSONArray graphArray = jsonObject.optJSONArray("@graph");
-                    if (graphArray == null) {
-                        Log.e("JSON Error", "El campo '@graph' no es un array o no existe");
-                        return;
-                    }
-                    badmintonFields.clear();
-                    badmintonFields.add(getString(R.string.selecionar));
-                    for (int i = 0; i < graphArray.length(); i++) {
-                        JSONObject field = graphArray.getJSONObject(i);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject field = jsonArray.getJSONObject(i);
+                                String services = field.optString("services", "");
 
-                        String services = field.optJSONObject("organization").optString("services", "");
-
-                        if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
-                            // Si contiene "bádminton", agregamos el título del centro
-                            String nombre = field.optString("title", "Sin Título");
-                            Log.d("Centro con Bádminton", nombre);
-                            badmintonFields.add(nombre);
+                                // Si contiene "bádminton", agrega el nombre del centro
+                                if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
+                                    String nombre = field.optString("title", "Sin Título");
+                                    badmintonFields.add(nombre);
+                                }
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, badmintonFields);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinner.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            Log.e("JSON Error", "Error al parsear los datos JSON", e);
                         }
                     }
-
-                    // Configura el spinner con los datos obtenidos
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, badmintonFields);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner.setAdapter(adapter);
-                } catch (JSONException e) {
-                    Log.e("JSON Error", "Error al parsear los datos JSON", e);
-                }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("API Error", "Error al obtener datos", error);
             }
-        }, new Response.ErrorListener() {
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        Log.e("API Error", "Error al obtener datos", error);
-    }
-});
-
+        });
         queue.add(stringRequest);
     }
+}
+
+                                    /*Log.d("API Response", response);
+                                    JSONArray jsonArray = new JSONArray(response);
+                                    Log.d("hola", String.valueOf(jsonArray));
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            // Verificamos y accedemos al array "@graph"
+                            JSONArray graphArray = jsonObject.optJSONArray("@graph");
+                            if (graphArray == null) {
+                                Log.e("JSON Error", "El campo '@graph' no es un array o no existe");
+                                return;
+                            }
+                            badmintonFields.clear();
+                            badmintonFields.add(getString(R.string.selecionar));
+                            for (int i = 0; i < graphArray.length(); i++) {
+                                JSONObject field = graphArray.getJSONObject(i);
+
+                                String services = field.optJSONObject("organization").optString("services", "");
+
+                                if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
+                                    // Si contiene "bádminton", agregamos el título del centro
+                                    String nombre = field.optString("title", "Sin Título");
+                                    Log.d("Centro con Bádminton", nombre);
+                                    badmintonFields.add(nombre);
+                                }
+                            }
+
+                            // Configura el spinner con los datos obtenidos
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, badmintonFields);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinner.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            Log.e("JSON Error", "Error al parsear los datos JSON", e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("API Error", "Error al obtener datos", error);
             }
+        });
+
+                queue.add(stringRequest);
+            }
+                    }
+        }
+        /*public class MainActivity extends AppCompatActivity {
+
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            EdgeToEdge.enable(this);
+            setContentView(R.layout.activity_busq
+        }
+
+
 
 /*
 
