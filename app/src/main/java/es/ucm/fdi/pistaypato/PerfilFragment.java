@@ -76,7 +76,7 @@ public class PerfilFragment extends Fragment {
         this.consultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inflater.inflate(R.layout.activity_cancelar, container, false);
+                inflater.inflate(R.layout.fragment_cancelar, container, false);
             }
         });
         // Inflate the layout for this fragment
