@@ -17,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+// Import Firebase
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private Controller controller;
@@ -25,11 +28,13 @@ public class MainActivity extends AppCompatActivity {
     Button pistas;
     Button perfil;
 
+    // Declarar referencia de Firebase
+    private DatabaseReference databaseReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        //aqui hay q iniciar sesion, no llamar a main
         setContentView(R.layout.activity_main);
 
         controller = new Controller(this);
@@ -38,47 +43,42 @@ public class MainActivity extends AppCompatActivity {
         ImageButton pistas = findViewById(R.id.navigation_home);
         ImageButton perfil = findViewById(R.id.navigation_profile);
 
-        //aqui hay q iniciar sesion
-        /*if (savedInstanceState == null) {
-            showFragment(new Vista1Fragment()); // O cualquier vista inicial que desees
-        }*/
+        // Inicializar Firebase Realtime Database
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
+        databaseReference = database.getReference("messages");
 
-        //control de botones
+        databaseReference.setValue("Hola");
 
+        // Botón para listar (escribir algo en la base de datos al hacer clic)
         listar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Mostrar un fragmento
                 showFragment(new buscarListarFragment());
+
+
             }
         });
 
+        // Botón de pistas (escribir algo en la base de datos al hacer clic)
         pistas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Mostrar un fragmento
                 showFragment(new BusquedaActivity());
+
+
             }
         });
 
+        // Botón de perfil (escribir algo en la base de datos al hacer clic)
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Mostrar un fragmento
                 showFragment(new PerfilActivity());
             }
         });
-
-        /*button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFragment(new Vista2Fragment());
-            }
-        });
-
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFragment(new Vista3Fragment());
-            }
-        });*/
     }
 
     private void showFragment(Fragment fragment) {
@@ -87,6 +87,4 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);  // Si deseas permitir la navegación hacia atrás
         transaction.commit();
     }
-
-
 }
