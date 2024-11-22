@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "183992745022",
+    "project_id": "pistaypato",
+    "storage_bucket": "pistaypato.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183992745022:android:4ddb3d54b3a83dd5aae56f",
+        "android_client_info": {
+          "package_name": "com.Grupo5.PistaYPato"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhp_L2GRWjBkwZeL7mWClVR9Qlf6btu5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183992745022:android:c9b3529347b6eb17aae56f",
+        "android_client_info": {
+          "package_name": "es.ucm.fdi.pistaypato"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhp_L2GRWjBkwZeL7mWClVR9Qlf6btu5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

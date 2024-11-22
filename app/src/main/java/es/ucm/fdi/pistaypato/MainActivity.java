@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        //aqui hay q iniciar sesion, no llamar a main
         setContentView(R.layout.activity_main);
 
         controller = new Controller(this);
