@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".CancelarFragment">
 
     <!-- Parte superior - Icono de la app u otros iconos -->
 
@@ -45,7 +45,7 @@
 
             <!-- Campo de texto del nombre del equipo -->
             <EditText
-                android:id="@+id/et_nombre_equipo"
+                android:id="@+id/cancelar_nombre_equipo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -61,7 +61,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/et_direccion"
+                    android:id="@+id/cancelar_direccion"
                     android:layout_width="355dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -79,7 +79,7 @@
 
             <!-- Fecha de la reserva -->
             <EditText
-                android:id="@+id/et_fecha"
+                android:id="@+id/cancelar_fecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -89,7 +89,7 @@
 
             <!-- Pista de la reserva -->
             <EditText
-                android:id="@+id/et_pista"
+                android:id="@+id/cancelar_pista"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -102,7 +102,7 @@
             <!-- Botón Cancelar -->
 
             <EditText
-                android:id="@+id/et_hora"
+                android:id="@+id/cancelar_hora"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -111,7 +111,7 @@
                 android:inputType="text" />
 
             <Button
-                android:id="@+id/btn_cancelar_reserva"
+                android:id="@+id/cancelar_btn_cancelar_reserva"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -119,10 +119,13 @@
                 android:text="Cancelar" />
 
         </LinearLayout>
-        <!-- Aquí se pueden cargar fragmentos o layouts dinámicamente -->
 
     </FrameLayout>
 
     <!-- Parte inferior - Barra de navegación -->
 
 </RelativeLayout>
+
+
+
+
