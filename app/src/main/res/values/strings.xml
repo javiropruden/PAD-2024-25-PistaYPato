@@ -7,5 +7,7 @@
     <string name="ubicacion">Location</string>
     <string name="selecionar">Select track</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
     <!--<string name="hello_blank_fragment">Hello blank fragment</string>-->
 </resources>

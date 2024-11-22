@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PerfilActivity">
+    tools:context=".PerfilFragment">
 
     <!-- Parte superior - Icono de la app u otros iconos -->
 
@@ -38,7 +38,7 @@
                     android:src="@drawable/perfil" />
 
                 <TextView
-                    android:id="@+id/profile_name"
+                    android:id="@+id/perfil_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -47,7 +47,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/profile_email"
+                    android:id="@+id/perfil_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -56,7 +56,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/edit_button"
+                    android:id="@+id/perfil_edit_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -135,7 +135,7 @@
             </TableLayout>
 
             <Button
-                android:id="@+id/consult_button"
+                android:id="@+id/perfil_consult_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
