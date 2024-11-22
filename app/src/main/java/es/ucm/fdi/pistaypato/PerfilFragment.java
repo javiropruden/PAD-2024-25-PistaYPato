@@ -3,6 +3,7 @@ package es.ucm.fdi.pistaypato;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,16 +71,25 @@ public class PerfilFragment extends Fragment {
         this.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inflater.inflate(R.layout.fragment_password, container, false);
+                //NO FUNCIONA ARREGLAR
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.middle_section, new PasswordFragment()); // R.id.fragment_container es el id del contenedor en tu Activity
+                transaction.addToBackStack(null); // Para poder volver atrás
+                transaction.commit();
             }
         });
         this.consultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inflater.inflate(R.layout.fragment_cancelar, container, false);
+                //NO FUNCIONA ARREGLAR
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.middle_section, new ModificarPerfilFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_perfil, container, false);
     }
+
 }
