@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Mostrar un fragmento
-                showFragment(new PerfilActivity());
+                showFragment(new PerfilFragment());
             }
         });
     }
