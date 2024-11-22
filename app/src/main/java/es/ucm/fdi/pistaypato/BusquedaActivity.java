@@ -54,6 +54,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class BusquedaActivity extends Fragment {
     private TextView dia;
@@ -62,6 +63,7 @@ public class BusquedaActivity extends Fragment {
     private ArrayList<String> badmintonFields = new ArrayList<>();
     private Context cxt;
     private View view;
+    Context context = getContext();
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +73,6 @@ public class BusquedaActivity extends Fragment {
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         spinner = view.findViewById(R.id.spinner);
 
-        badmintonFields = new ArrayList<>();
         getBadmintonFields();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -81,11 +82,11 @@ public class BusquedaActivity extends Fragment {
             }
         });
 
-        /*ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.middle_section), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.middle_section), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-        });*/
+        });
         return view;
     }
 
@@ -98,7 +99,7 @@ public class BusquedaActivity extends Fragment {
 
         // Crea y muestra el DatePickerDialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(
-                MainActivity.this,
+                getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -111,6 +112,7 @@ public class BusquedaActivity extends Fragment {
         );
         datePickerDialog.show();
     }
+
     private void getBadmintonFields() {
         String url = "https://datos.madrid.es/egob/catalogo/200186-0-polideportivos.json";
         //API de la comunidad de madrid
@@ -121,6 +123,37 @@ public class BusquedaActivity extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            badmintonFields.clear();
+                            badmintonFields.add(getString(R.string.selecionar));
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject field = jsonArray.getJSONObject(i);
+                                String services = field.optString("services", "");
+
+                                // Si contiene "bádminton", agrega el nombre del centro
+                                if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
+                                    String nombre = field.optString("title", "Sin Título");
+                                    badmintonFields.add(nombre);
+                                }
+                            }
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, badmintonFields);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinner.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            Log.e("JSON Error", "Error al parsear los datos JSON", e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("API Error", "Error al obtener datos", error);
+            }
+        });
+        queue.add(stringRequest);
+    }
+}
+
                                     /*Log.d("API Response", response);
                                     JSONArray jsonArray = new JSONArray(response);
                                     Log.d("hola", String.valueOf(jsonArray));
