@@ -19,6 +19,9 @@
             android:name=".PPActivity"
             android:exported="false" />
         <activity
+            android:name=".Registracion"
+            android:exported="false" />
+        <activity
             android:name=".ListarActivity"
             android:exported="false" />
         <activity
