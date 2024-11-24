@@ -2,7 +2,7 @@
     <string name="app_name">pistaypato</string>
     <string name="pista">Badminton track</string>
     <string name="fecha">Day</string>
-    <string name="buscar">Ok</string>
+    <string name="buscar">Search</string>
     <string name="nombre">Name</string>
     <string name="ubicacion">Location</string>
     <string name="selecionar">Select track</string>
@@ -11,29 +11,28 @@
     <string name="email_label">Email</string>
     <string name="password_label">Password</string>
     <string name="confirm_password_label">Confirm Password</string>
-    <string name="register_button">Registrarse</string>
-    <string name="usuario_label">Usuario:</string>
-    <string name="contraseña_label">Contraseña:</string>
-    <string name="iniciar_sesion_button">Iniciar sesión</string>
-    <string name="informacion_reserva">Información de la reserva</string>
-    <string name="cancelar_button">Cancelar</string>
-    <string name="editar">Editar</string>
-
+    <string name="register_button">Register</string>
+    <string name="usuario_label">User:</string>
+    <string name="contraseña_label">Password:</string>
+    <string name="iniciar_sesion_button">Log in</string>
+    <string name="informacion_reserva">Reservation information</string>
+    <string name="cancelar_button">Cancel</string>
+    <string name="editar">Edit</string>
 
     <!--sectionprofile-->
-    <string name="profile_name">Nombre y Apellido</string>
-    <string name="profile_email">Correo Electrónico</string>
-    <string name="profile_edit_button">Editar Información</string>
-    <string name="profile_reservas_section">RESERVAS</string>
-    <string name="profile_hora_dia">Hora / Día</string>
-    <string name="profile_lunes">L</string>
-    <string name="profile_martes">M</string>
-    <string name="profile_miercoles">X</string>
-    <string name="profile_jueves">J</string>
-    <string name="profile_viernes">V</string>
+    <string name="profile_name">Name and Surname</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_edit_button">Edit Information</string>
+    <string name="profile_reservas_section">RESERVATIONS</string>
+    <string name="profile_hora_dia">Time / Day</string>
+    <string name="profile_lunes">M</string>
+    <string name="profile_martes">T</string>
+    <string name="profile_miercoles">W</string>
+    <string name="profile_jueves">T</string>
+    <string name="profile_viernes">F</string>
     <string name="profile_sabado">S</string>
-    <string name="profile_domingo">D</string>
-    <string name="profile_consult_button">Consultar</string>
+    <string name="profile_domingo">S</string>
+    <string name="profile_consult_button">Consult</string>
 
     <!--registracion-->
     <string name="registracion_username_label">Username</string>
@@ -44,15 +43,15 @@
     <string name="registracion_password_hint">Password</string>
     <string name="registracion_confirm_password_label">Confirm Password</string>
     <string name="registracion_confirm_password_hint">Confirm Password</string>
-    <string name="registracion_register_button">Registrarse</string>
+    <string name="registracion_register_button">Register</string>
 
     <!--activity_resultado.xml-->
-    <string name="resultado_nombre">Nombre</string>
-    <string name="resultado_ubicacion">Ubicacion</string>
+    <string name="resultado_nombre">Name</string>
+    <string name="resultado_ubicacion">Location</string>
 
     <!--fragment_bsucar_listar.xml-->
-    <string name="buscarLista_Buscar_pista">Pista</string>
-    <string name="buscarLista_fecha">Día</string>
-    <string name="buscarLista_buscar">Buscar</string>
+    <string name="buscarLista_Buscar_pista">Track</string>
+    <string name="buscarLista_fecha">Day</string>
+    <string name="buscarLista_buscar">Search</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
