@@ -22,7 +22,7 @@
             android:name=".Registracion"
             android:exported="false" />
         <activity
-            android:name=".ListarActivity"
+            android:name=".ListarFragment"
             android:exported="false" />
         <activity
             android:name=".PerfilActivity"

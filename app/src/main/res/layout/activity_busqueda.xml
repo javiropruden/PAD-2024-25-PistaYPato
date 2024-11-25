@@ -81,7 +81,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buscar"
                 android:layout_width="166dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

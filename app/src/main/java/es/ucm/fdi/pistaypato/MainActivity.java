@@ -70,7 +70,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Mostrar un fragmento
-                showFragment(new buscarListarFragment());
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.middle_section, new buscarListarFragment());
+                transaction.addToBackStack(null);  // Permitir navegar hacia atrás al presionar el botón de "atrás"
+                transaction.commit();
             }
         });
 
