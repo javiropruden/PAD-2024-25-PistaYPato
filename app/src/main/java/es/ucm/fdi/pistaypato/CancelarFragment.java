@@ -1,48 +1,38 @@
 package es.ucm.fdi.pistaypato;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
-import java.util.List;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CancelarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CancelarFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // Fragment initialization parameters
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    // Parameters
     private String mParam1;
     private String mParam2;
 
-    private Spinner spinner;
-    private List<String> badmintonFields;
+    private EditText nombreEquipo;
+    private EditText direccion;
+    private EditText fecha;
+    private EditText pista;
+    private EditText hora;
+    private Button cancelarButton;
 
     public CancelarFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CancelarFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CancelarFragment newInstance(String param1, String param2) {
         CancelarFragment fragment = new CancelarFragment();
         Bundle args = new Bundle();
@@ -61,10 +51,56 @@ public class CancelarFragment extends Fragment {
         }
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cancelar, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_cancelar, container, false);
+
+        // Referenciar elementos del layout
+        nombreEquipo = view.findViewById(R.id.cancelar_nombre_equipo);
+        direccion = view.findViewById(R.id.cancelar_direccion);
+        fecha = view.findViewById(R.id.cancelar_fecha);
+        pista = view.findViewById(R.id.cancelar_pista);
+        hora = view.findViewById(R.id.cancelar_hora);
+        cancelarButton = view.findViewById(R.id.cancelar_btn_cancelar_reserva);
+
+        // Acción del botón "Cancelar Reserva"
+        cancelarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelarReserva();
+            }
+        });
+
+        return view;
+    }
+
+    private void cancelarReserva() {
+        String equipo = nombreEquipo.getText().toString();
+        String direccionReserva = direccion.getText().toString();
+        String fechaReserva = fecha.getText().toString();
+        String pistaReserva = pista.getText().toString();
+        String horaReserva = hora.getText().toString();
+
+        // Validar campos llenos antes de continuar
+        if (equipo.isEmpty() || direccionReserva.isEmpty() || fechaReserva.isEmpty() || pistaReserva.isEmpty() || horaReserva.isEmpty()) {
+            Log.e("CancelarReserva", "Todos los campos deben estar llenos");
+            return;
+        }
+
+        Log.d("CancelarReserva", "Reserva cancelada para el equipo: " + equipo + " en la dirección: " + direccionReserva +
+                " en la fecha: " + fechaReserva + " en la pista: " + pistaReserva + " a las: " + horaReserva);
+
+        //Logica para cancelar hacer
+
+        limpiarCampos();
+    }
+
+    private void limpiarCampos() {
+        nombreEquipo.setText("");
+        direccion.setText("");
+        fecha.setText("");
+        pista.setText("");
+        hora.setText("");
     }
 }
