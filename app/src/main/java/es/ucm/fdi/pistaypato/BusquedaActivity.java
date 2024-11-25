@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.DatePickerDialog;
 import android.util.Log;
@@ -60,18 +63,21 @@ public class BusquedaActivity extends Fragment {
     private TextView dia;
     private FloatingActionButton floatingActionButton;
     private Spinner spinner;
-    private ArrayList<String> badmintonFields = new ArrayList<>();
-    private Context cxt;
     private View view;
-    Context context = getContext();
+    PPAplication app;
+    private Button buscar;
+
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.activity_busqueda, container, false);
 
+        app = (PPAplication) requireActivity().getApplication();
+
         dia = view.findViewById(R.id.dia);
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         spinner = view.findViewById(R.id.spinner);
+        buscar = view.findViewById(R.id.button);
 
         getBadmintonFields();
 
@@ -82,12 +88,54 @@ public class BusquedaActivity extends Fragment {
             }
         });
 
+        buscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+
+
+
+                // Reemplazar el fragmento en el FrameLayout
+                transaction.replace(R.id.middle_section, new ReservaActivity());
+
+                // Añadir la transacción al back stack para que se pueda volver atrás
+                transaction.addToBackStack(null);
+
+                // Confirmar la transacción
+                transaction.commit();
+
+                FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
+
+// Crear una nFragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+// Reemplazar el contenido del FrameLayout con un nuevo fragmento
+                transaction.replace(R.id.middle_section, new NuevoFragmento());
+
+// Añadir la transacción al backstack para que puedas navegar hacia atrás
+                transaction.addToBackStack(null);
+
+// Cometer la transacción
+                transaction.commit();
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.middle_section), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
         return view;
+    }
+
+    private void getBadmintonFields() {
+        if (app != null && app.badmintonFields != null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, app.badmintonFields);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+        } else {
+            Log.e("Badminton Fields", "No se han cargado los campos de bádminton.");
+        }
     }
 
     private void showDatePickerDialog() {
@@ -111,46 +159,6 @@ public class BusquedaActivity extends Fragment {
                 year, month, day
         );
         datePickerDialog.show();
-    }
-
-    private void getBadmintonFields() {
-        String url = "https://datos.madrid.es/egob/catalogo/200186-0-polideportivos.json";
-        //API de la comunidad de madrid
-        //https://datos.madrid.es/portal/site/egob/menuitem.214413fe61bdd68a53318ba0a8a409a0/?vgnextoid=b07e0f7c5ff9e510VgnVCM1000008a4a900aRCRD&vgnextchannel=b07e0f7c5ff9e510VgnVCM1000008a4a900aRCRD&vgnextfmt=default
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            badmintonFields.clear();
-                            badmintonFields.add(getString(R.string.selecionar));
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject field = jsonArray.getJSONObject(i);
-                                String services = field.optString("services", "");
-
-                                // Si contiene "bádminton", agrega el nombre del centro
-                                if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
-                                    String nombre = field.optString("title", "Sin Título");
-                                    badmintonFields.add(nombre);
-                                }
-                            }
-                            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, badmintonFields);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner.setAdapter(adapter);
-                        } catch (JSONException e) {
-                            Log.e("JSON Error", "Error al parsear los datos JSON", e);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("API Error", "Error al obtener datos", error);
-            }
-        });
-        queue.add(stringRequest);
     }
 }
 

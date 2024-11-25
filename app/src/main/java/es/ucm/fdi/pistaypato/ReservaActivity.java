@@ -1,16 +1,28 @@
 package es.ucm.fdi.pistaypato;
 
-public class ReservaActivity {
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+
+public class ReservaActivity extends Fragment {
     private int pistaId;
     private String horaInicio;
     private String horaFin;
     private boolean ocupado;
+    private View view;
 
-    public ReservaActivity(int pistaId, String horaInicio, String horaFin, boolean ocupado) {
-        this.pistaId = pistaId;
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-        this.ocupado = ocupado;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.view = inflater.inflate(R.layout.activity_resultado, container, false);
+
+
+        return view;
     }
 
     //meter getters y setters

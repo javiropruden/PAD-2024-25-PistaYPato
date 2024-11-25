@@ -37,8 +37,15 @@
         android:layout_above="@id/bottom_navigation"
         android:background="#B0B0B0">
 
+        <!-- RecyclerView que ocupa todo el espacio dentro del FrameLayout -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </FrameLayout>
+
+
 
     <LinearLayout
         android:id="@+id/bottom_navigation"

@@ -32,7 +32,6 @@ android {
     }
 }
 dependencies {
-
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -43,6 +42,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("com.google.firebase:firebase-database-ktx:20.0.5")
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+    //he cambiado esto a la ultima version
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
 
 }
