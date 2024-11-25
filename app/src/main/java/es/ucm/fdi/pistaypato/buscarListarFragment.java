@@ -70,6 +70,7 @@ public class buscarListarFragment extends Fragment {
         }
     }
 
+    private String tiempo = "";
     private TextView dia;
     private FloatingActionButton floatingActionButton;
     private Spinner spinner;
@@ -101,7 +102,9 @@ public class buscarListarFragment extends Fragment {
             public void onClick(View v) {
                 FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new ListarFragment());
+
+                ListarFragment panelListar = ListarFragment.newInstance(tiempo, spinner.getSelectedItem().toString());
+                transaction.replace(R.id.middle_section, panelListar);
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -131,6 +134,7 @@ public class buscarListarFragment extends Fragment {
                         // Actualiza el TextView con la fecha seleccionada
                         String selectedDate = dayOfMonth + "/" + (monthOfYear + 1) + "/" + year;
                         dia.setText(selectedDate);
+                        tiempo = selectedDate;
                     }
                 },
                 year, month, day
