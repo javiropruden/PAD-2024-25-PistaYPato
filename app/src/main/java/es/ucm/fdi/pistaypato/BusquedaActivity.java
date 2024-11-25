@@ -57,6 +57,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
+import androidx.recyclerview.widget.RecyclerView;
 import java.util.Objects;
 
 public class BusquedaActivity extends Fragment {
@@ -91,31 +92,10 @@ public class BusquedaActivity extends Fragment {
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-
-
-
-
-                // Reemplazar el fragmento en el FrameLayout
-                transaction.replace(R.id.middle_section, new ReservaActivity());
-
-                // Añadir la transacción al back stack para que se pueda volver atrás
-                transaction.addToBackStack(null);
-
-                // Confirmar la transacción
-                transaction.commit();
-
                 FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
-
-// Crear una nFragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-// Reemplazar el contenido del FrameLayout con un nuevo fragmento
-                transaction.replace(R.id.middle_section, new NuevoFragmento());
-
-// Añadir la transacción al backstack para que puedas navegar hacia atrás
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.middle_section, new ReservaActivity());
                 transaction.addToBackStack(null);
-
-// Cometer la transacción
                 transaction.commit();
             }
         });

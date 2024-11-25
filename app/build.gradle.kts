@@ -42,8 +42,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+    implementation (libs.recyclerview.v121)
     //he cambiado esto a la ultima version
-    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
+    implementation(libs.firebase.database.ktx)
 
 }
