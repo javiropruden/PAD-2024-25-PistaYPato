@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:padding="16dp"
-        android:background="#B0B0B0">
+        android:background="@android:color/transparent">
 
         <ImageView
             android:id="@+id/app_icon"
