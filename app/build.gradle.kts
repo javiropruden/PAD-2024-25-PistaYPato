@@ -45,5 +45,6 @@ dependencies {
     implementation (libs.recyclerview.v121)
     //he cambiado esto a la ultima version
     implementation(libs.firebase.database.ktx)
+    implementation("com.google.firebase:firebase-auth:21.1.0")
 
 }
