@@ -36,8 +36,17 @@
             android:text="@string/resultado_ubicacion"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/fecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/tipo3"
+            android:text="@string/resultado_ubicacion"
+            android:textSize="20sp" />
+
         <!-- RecyclerView ocupa el espacio restante de middle_section -->
-        <RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="371dp"
             android:layout_height="549dp"

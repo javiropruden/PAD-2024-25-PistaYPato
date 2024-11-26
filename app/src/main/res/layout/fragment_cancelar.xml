@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CancelarFragment">
+    tools:context=".MainActivity">
 
     <!-- Parte superior - Icono de la app u otros iconos -->
 
@@ -17,7 +17,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        android:layout_weight="1"
         android:background="#B0B0B0">
 
         <LinearLayout
