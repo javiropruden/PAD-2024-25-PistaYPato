@@ -1,17 +1,22 @@
 package es.ucm.fdi.pistaypato;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,13 +39,33 @@ public class ReservaActivity extends Fragment {
     private TextView nombre;
     private TextView ubicación;
     private TextView fech_a;
+    //private ImageButton volver;
 
 
+    @SuppressLint("WrongViewCast")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.activity_resultado, container, false);
 
+        ImageButton volver = getActivity().findViewById(R.id.volver);
+        volver.setVisibility(View.VISIBLE);
+
+        volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.middle_section, new BusquedaActivity());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         app = (PPAplication) requireActivity().getApplication();
-        ponerdatos();
+        try {
+            ponerdatos();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
         return view;
     }
@@ -49,6 +74,7 @@ public class ReservaActivity extends Fragment {
         nombre = view.findViewById(R.id.nombre);
         ubicación = view.findViewById(R.id.direccion);
         fech_a = view.findViewById(R.id.fecha);
+        String ubi = "";
 
         nombre.setText(pista);
         fech_a.setText(fecha);
@@ -56,21 +82,17 @@ public class ReservaActivity extends Fragment {
         for (int i = 0; i < app.jsonArray.length(); i++) {
             JSONObject field = app.jsonArray.getJSONObject(i);
 
-            JSONObject organization = field.optJSONObject("organization");
-            if (organization != null) {
-                String services = organization.optString("services", ""); // Obtiene los servicios
-
-                // Si contiene "bádminton" o "badminton", agrega el nombre del centro
-                if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
-                    String nombre = field.optString("title", "Sin Título"); // Obtiene el nombre del centro
-                    app.badmintonFields.add(nombre); // Agrega el nombre del centro a la lista
-                }
+            String nombre = field.optString("title"); // Obtiene el nombre del centro
+            if(nombre.equals(pista)){
+                JSONObject address = field.optJSONObject("address");
+                String locality = address.optString("locality", ""); // Obtiene los servicios
+                String postal_code = address.optString("postal-code", ""); // Obtiene los servicios
+                String street = address.optString("street-address", ""); // Obtiene los servicios
+                ubi = street + ", " + locality + ", " + postal_code;
             }
         }
 
-        //String ubi =
-
-        //ubicación.setText(app.jsonArray);
+        ubicación.setText(ubi);
 
     }
 

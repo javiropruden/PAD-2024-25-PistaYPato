@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class BusquedaActivity extends Fragment {
@@ -42,6 +43,10 @@ public class BusquedaActivity extends Fragment {
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         spinner = view.findViewById(R.id.spinner);
         buscar = view.findViewById(R.id.buscar);
+
+        getActivity().findViewById(R.id.volver).setVisibility(View.GONE);
+
+        ponerfecha();
 
         getBadmintonFields();
 
@@ -71,6 +76,14 @@ public class BusquedaActivity extends Fragment {
             return insets;
         });
         return view;
+    }
+
+    private void ponerfecha() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaActual = dateFormat.format(calendar.getTime());
+
+        dia.setText(fechaActual);
     }
 
     private void getBadmintonFields() {
@@ -104,6 +117,13 @@ public class BusquedaActivity extends Fragment {
                 },
                 year, month, day
         );
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.show();
     }
 }
