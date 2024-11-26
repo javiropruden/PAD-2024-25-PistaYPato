@@ -117,14 +117,14 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             Log.d("API Response", response);
                             JSONObject jsonResponse = new JSONObject(response);
-                            JSONArray jsonArray = jsonResponse.optJSONArray("@graph");
+                            app.jsonArray = jsonResponse.optJSONArray("@graph");
 
-                            if (jsonArray != null) {
+                            if (app.jsonArray != null) {
                                 app.badmintonFields.clear();
                                 app.badmintonFields.add(getString(R.string.selecionar)); // Añadir una opción de selección
 
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject field = jsonArray.getJSONObject(i);
+                                for (int i = 0; i < app.jsonArray.length(); i++) {
+                                    JSONObject field = app.jsonArray.getJSONObject(i);
 
                                     JSONObject organization = field.optJSONObject("organization");
                                     if (organization != null) {
