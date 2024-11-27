@@ -34,6 +34,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     private Controller controller;
     PPAplication app;
@@ -41,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
     Button chat;
     Button pistas;
     Button perfil;
+
+    Registracion usuario;
 
     // Declarar referencia de Firebase
     private DatabaseReference databaseReference;
@@ -61,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Inicializar Firebase Realtime Database
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
-        databaseReference = database.getReference("messages");
-
-        databaseReference.setValue("JAVI PRUEBA");
 
         // Botón para listar (escribir algo en la base de datos al hacer clic)
         listar.setOnClickListener(new View.OnClickListener() {
