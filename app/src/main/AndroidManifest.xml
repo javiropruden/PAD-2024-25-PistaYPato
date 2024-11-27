@@ -16,19 +16,10 @@
         android:theme="@style/Theme.Pistaypato"
         tools:targetApi="31" >
         <activity
-            android:name=".PPActivity"
-            android:exported="false" />
-        <activity
             android:name=".Registracion"
             android:exported="false" />
         <activity
             android:name=".ListarFragment"
-            android:exported="false" />
-        <activity
-            android:name=".PerfilActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ModificarPerfilActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

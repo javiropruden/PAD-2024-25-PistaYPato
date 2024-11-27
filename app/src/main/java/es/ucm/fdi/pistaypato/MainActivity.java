@@ -112,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://datos.madrid.es/egob/catalogo/200186-0-polideportivos.json";
         //API de la comunidad de madrid
         RequestQueue queue = Volley.newRequestQueue(this);
+        app.badmintonFields.clear();
+        app.badmintonFields.add(getString(R.string.selecionar));
+        //aqui hay q añadir las pistas privadas desde la base de datos
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

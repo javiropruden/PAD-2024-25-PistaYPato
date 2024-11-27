@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Parte superior - Icono de la app u otros iconos -->
-
-    <!-- Parte central - Pantalla cambiante -->
     <FrameLayout
         android:id="@+id/middle_section"
         android:layout_width="match_parent"
