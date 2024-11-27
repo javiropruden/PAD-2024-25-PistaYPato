@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
                                 app.badmintonFields.clear();
                                 app.badmintonFields.add(getString(R.string.selecionar)); // Añadir una opción de selección
 
+                                //aqui hay q añadir las pistas privadas desde la base de datos
                                 for (int i = 0; i < app.jsonArray.length(); i++) {
                                     JSONObject field = app.jsonArray.getJSONObject(i);
 

@@ -19,6 +19,9 @@
     <string name="informacion_reserva">Información de la reserva</string>
     <string name="cancelar_button">Cancelar</string>
     <string name="editar">Editar</string>
+    <string name="reservar">Book</string>
+    <string name="ya_reservado">Esta pista ya está reservada</string>
+    <string name="reservado">¡Reservado!</string>
 
     <!--activity_perfil.xml-->
     <string name="profile_name">Nombre y Apellido</string>

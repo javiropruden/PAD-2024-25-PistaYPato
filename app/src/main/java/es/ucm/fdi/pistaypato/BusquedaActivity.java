@@ -1,5 +1,6 @@
 package es.ucm.fdi.pistaypato;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -80,7 +81,7 @@ public class BusquedaActivity extends Fragment {
 
     private void ponerfecha() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String fechaActual = dateFormat.format(calendar.getTime());
 
         dia.setText(fechaActual);
