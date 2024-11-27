@@ -75,7 +75,7 @@ public class Registracion extends AppCompatActivity {
 
             }
 
-            if (valid && password.equals(confirmPassword)) {
+            if (valid && !password.equals(confirmPassword)) {
                 //mostar mensaje de error por no completar el campo contraseña
                 new AlertDialog.Builder(this)
                         .setTitle("Error")

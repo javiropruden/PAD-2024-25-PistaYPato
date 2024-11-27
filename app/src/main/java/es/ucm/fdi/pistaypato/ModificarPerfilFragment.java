@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 
 public class ModificarPerfilFragment extends Fragment {
@@ -28,9 +30,16 @@ public class ModificarPerfilFragment extends Fragment {
     private EditText email;
     private EditText password;
     private EditText repeatPassword;
+    private ImageButton volver;
+
+    private User usuario;
 
     public ModificarPerfilFragment() {
         // Required empty public constructor
+    }
+
+    public ModificarPerfilFragment(User usuario) {
+        this.usuario = usuario;
     }
 
     public static ModificarPerfilFragment newInstance(String param1, String param2) {
@@ -55,32 +64,62 @@ public class ModificarPerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_modificar_perfil, container, false);
+
         this.editar = view.findViewById(R.id.modificar_edit);
         this.nombre = view.findViewById(R.id.modificar_name);
         this.apellido = view.findViewById(R.id.modificar_surname);
         this.email = view.findViewById(R.id.modificar_email);
         this.password = view.findViewById(R.id.modificar_password);
         this.repeatPassword = view.findViewById(R.id.modificar_repeat_password);
+        this.volver = getActivity().findViewById(R.id.volver);
 
-        editar.setOnClickListener(new View.OnClickListener(){
+        this.volver.setVisibility(View.VISIBLE);
+        this.volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.middle_section, new PerfilFragment(usuario));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+        this.editar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 if(!password.getText().toString().isEmpty() &&
                         password.getText().toString().equals(repeatPassword.getText().toString())){
-                    new AlertDialog.Builder(view.getContext())
-                            .setTitle("Error")
-                            .setMessage("Passwords doesn't coincide")
-                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                            .show();
+                    showErrorMessage("Error", "Passwords don't match");
                 }
+                else{
+                    if(!nombre.getText().toString().isEmpty()){
+                        //cambiar nombre en base de datos
+                    }
+                    if(!apellido.getText().toString().isEmpty()){
+                        //cambiar apellido en base de datos
+                    }
+                    if(!email.getText().toString().isEmpty()){
+                        //cambiar email en base de datos
+                    }
+                    if(!password.getText().toString().isEmpty() && !repeatPassword.getText().toString().isEmpty() &&
+                    password.getText().toString().equals(repeatPassword.getText().toString())){
+                        //cambiar contraseña en base de datos
+                    }
 
-                //CAMBIAR DATOS EN BASE DE DATOS
-
-                openFragment(new PerfilFragment());
+                    openFragment(new PerfilFragment(usuario));
+                }
             }
         });
 
         return view;
+    }
+
+    private void showErrorMessage(String title, String message){
+        new AlertDialog.Builder(view.getContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void openFragment(Fragment fragment) {

@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
 public class PasswordFragment extends Fragment {
 
@@ -23,10 +25,16 @@ public class PasswordFragment extends Fragment {
     private View view;
     private Button continuar;
     private EditText password;
-    private EditText repeatPassword;
+    private ImageButton volver;
+
+    private User usuario;
 
     public PasswordFragment() {
         // Required empty public constructor
+    }
+
+    public PasswordFragment(User usuario) {
+        this.usuario = usuario;
     }
 
     public static PasswordFragment newInstance(String param1, String param2) {
@@ -51,36 +59,46 @@ public class PasswordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_password, container, false);
-        this.continuar = view.findViewById(R.id.password_continuar);
-        this.password = view.findViewById(R.id.password_password);
-        this.repeatPassword = view.findViewById(R.id.password_repeat_password);
 
+        this.continuar = view.findViewById(R.id.password_continue);
+        this.password = view.findViewById(R.id.password_password);
+        this.volver = getActivity().findViewById(R.id.volver);
+
+        this.volver.setVisibility(View.VISIBLE);
+        this.volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.middle_section, new PerfilFragment(usuario));
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
         this.continuar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-               if(password.getText().toString().isEmpty() || repeatPassword.getText().toString().isEmpty()){
-                   new AlertDialog.Builder(view.getContext())
-                           .setTitle("Error")
-                           .setMessage("Empty field")
-                           .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                           .show();
-               }
-               else if(!password.getText().toString().equals(repeatPassword.getText().toString())){
-                   //CONTRASEÑAS NO COINCIDEN
-                   new AlertDialog.Builder(view.getContext())
-                           .setTitle("Error")
-                           .setMessage("Passwords doesn't coincide")
-                           .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                           .show();
-               }
-               else{
-                   //CONTRASEÑAS INTRODUCIDAS CORRECTAMENTE, COMPROBAR EN BASE DE DATOS SI ES CORRECTA
-                   openFragment(new ModificarPerfilFragment());
+                if(password.getText().toString().isEmpty()){
+                    showErrorMessage("Error", "Introduce your password");
+                }
+                else if(!password.getText().toString().equals(usuario.getPassword().toString())){
+                    showErrorMessage("Error", "Incorrect password");
+                }
+                else{
+                   openFragment(new ModificarPerfilFragment(usuario));
                }
             }
         });
 
         return view;
+    }
+
+    private void showErrorMessage(String title, String message){
+        new AlertDialog.Builder(view.getContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 
     private void openFragment(Fragment fragment) {

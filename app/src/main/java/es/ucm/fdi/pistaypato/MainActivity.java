@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     Button perfil;
 
     Registracion usuario;
+    User user; //PARA PASARLE LOS DATOS DEL USER A PERFIL
 
     // Declarar referencia de Firebase
     private DatabaseReference databaseReference;
@@ -95,8 +96,9 @@ public class MainActivity extends AppCompatActivity {
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Mostrar un fragmento
-                showFragment(new PerfilFragment());
+                //PARA PRUEBAS HE CREADO ESE USUARIO
+                User usuario = new User("1", "Javi", "Rodriguez", "javirod@gmail.com", "hola123");
+                showFragment(new PerfilFragment(usuario));
             }
         });
     }
