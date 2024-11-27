@@ -9,40 +9,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PerfilFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PerfilFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private View view;
     private Button editar;
     private Button consultar;
+   // private ImageButton volver;
 
     public PerfilFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PerfilFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static PerfilFragment newInstance(String param1, String param2) {
         PerfilFragment fragment = new PerfilFragment();
         Bundle args = new Bundle();
@@ -67,29 +53,35 @@ public class PerfilFragment extends Fragment {
         this.view = inflater.inflate(R.layout.fragment_perfil, container, false);
         this.editar = view.findViewById(R.id.perfil_edit_button);
         this.consultar = view.findViewById(R.id.perfil_consult_button);
+        //this.volver = view.findViewById(R.id.volver);
 
         this.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //NO FUNCIONA ARREGLAR
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new PasswordFragment()); // R.id.fragment_container es el id del contenedor en tu Activity
-                transaction.addToBackStack(null); // Para poder volver atrás
-                transaction.commit();
+                openFragment(new PasswordFragment());
             }
         });
         this.consultar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //NO FUNCIONA ARREGLAR
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new ModificarPerfilFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                openFragment(new CancelarFragment());
             }
         });
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false);
+        /*this.volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });*/
+
+        return view;
+    }
+
+    private void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.middle_section, fragment);
+        transaction.addToBackStack(null); // Permitir regresar al fragmento previo
+        transaction.commit();
     }
 
 }

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference = database.getReference("messages");
 
-        databaseReference.setValue("Hola");
+        databaseReference.setValue("JAVI PRUEBA");
 
         // Botón para listar (escribir algo en la base de datos al hacer clic)
         listar.setOnClickListener(new View.OnClickListener() {

@@ -1,8 +1,10 @@
 package es.ucm.fdi.pistaypato;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,19 +12,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ModificarPerfilFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class ModificarPerfilFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -38,15 +33,6 @@ public class ModificarPerfilFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ModificarPerfilFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ModificarPerfilFragment newInstance(String param1, String param2) {
         ModificarPerfilFragment fragment = new ModificarPerfilFragment();
         Bundle args = new Bundle();
@@ -68,7 +54,7 @@ public class ModificarPerfilFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.fragment_perfil, container, false);
+        this.view = inflater.inflate(R.layout.fragment_modificar_perfil, container, false);
         this.editar = view.findViewById(R.id.modificar_edit);
         this.nombre = view.findViewById(R.id.modificar_name);
         this.apellido = view.findViewById(R.id.modificar_surname);
@@ -81,15 +67,26 @@ public class ModificarPerfilFragment extends Fragment {
             public void onClick(View view) {
                 if(!password.getText().toString().isEmpty() &&
                         password.getText().toString().equals(repeatPassword.getText().toString())){
-                    //mostrar error de incorrecto
+                    new AlertDialog.Builder(view.getContext())
+                            .setTitle("Error")
+                            .setMessage("Passwords doesn't coincide")
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                            .show();
                 }
 
                 //CAMBIAR DATOS EN BASE DE DATOS
 
-                inflater.inflate(R.layout.fragment_perfil, container, false);
+                openFragment(new PerfilFragment());
             }
         });
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_modificar_perfil, container, false);
+
+        return view;
+    }
+
+    private void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.middle_section, fragment);
+        transaction.addToBackStack(null); // Permitir regresar al fragmento previo
+        transaction.commit();
     }
 }
