@@ -1,28 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
+        android:id="@+id/lugar_solitario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:text="Lugar: "
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:paddingBottom="2dp" />
+    <TextView
+        android:id="@+id/dia_sol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Día: "
+        android:textSize="12sp"
+        android:paddingBottom="2dp" />
 
-        <TextView
-            android:id="@+id/lugar_solitario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lugar: "
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/numPerfiles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Jugadores apuntados: "
-            android:textSize="14sp" />
-    </LinearLayout>
+    <!-- Nuevo TextView para el String "Día" -->
+
+    <!-- Divider line for better UI -->
+    <TextView
+        android:id="@+id/numPerfiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dp"
+        android:text="Jugadores apuntados: "
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        android:layout_marginTop="4dp" />
+
 </LinearLayout>

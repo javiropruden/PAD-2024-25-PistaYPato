@@ -18,10 +18,12 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,13 +72,13 @@ public class buscarListarFragment extends Fragment {
         }
     }
 
-    private String tiempo = "";
+    private String tiempo = "TODOS";
     private TextView dia;
     private FloatingActionButton floatingActionButton;
     private Spinner spinner;
     private View view;
     PPAplication app;
-    private Button buscar;
+    private Button buscar, crear;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_buscar_listar, container, false);
@@ -87,6 +89,22 @@ public class buscarListarFragment extends Fragment {
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         spinner = view.findViewById(R.id.spinner);
         buscar = view.findViewById(R.id.buscarListar);
+        crear = view.findViewById(R.id.crearListar);
+
+        crear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String selectedItem = spinner.getSelectedItem().toString();
+
+                if (selectedItem.isEmpty() || selectedItem.equals(getString(R.string.selecionar)) || Objects.equals(tiempo, "TODOS")) {
+                    Toast.makeText(getContext(), "Por favor, selecciona una pista y fecha", Toast.LENGTH_SHORT).show();
+                }
+                else{
+
+
+                }
+            }
+        });
 
         getBadmintonFields();
 
@@ -102,8 +120,10 @@ public class buscarListarFragment extends Fragment {
             public void onClick(View v) {
                 FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                String lugar = spinner.getSelectedItem().toString();
+                if(spinner.getSelectedItemPosition() == 0){lugar = "TODOS";}
 
-                ListarFragment panelListar = ListarFragment.newInstance(tiempo, spinner.getSelectedItem().toString());
+                ListarFragment panelListar = ListarFragment.newInstance(tiempo, lugar);
                 transaction.replace(R.id.middle_section, panelListar);
                 transaction.addToBackStack(null);
                 transaction.commit();

@@ -57,5 +57,6 @@
     <string name="buscarLista_Buscar_pista">Pista</string>
     <string name="buscarLista_fecha">Día</string>
     <string name="buscarLista_buscar">Buscar</string>
+    <string name="crear_lista">Crear</string>
 
 </resources>

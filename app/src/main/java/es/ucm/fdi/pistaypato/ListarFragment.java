@@ -21,9 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,10 +43,8 @@ public class ListarFragment extends Fragment {
 
     Button anadir;
     EditText lugarText, diaText;
+    Solitario selecionado;
 
-    public ListarFragment() {
-
-    }
 
     private RecyclerView recyclerView;
     private SolitarioAdapter adapter;
@@ -77,65 +74,74 @@ public class ListarFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam2 = getArguments().getString(ARG_PARAM2); // Recuperamos "lugar"
         }
     }
+
+    public ListarFragment() {}
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_listar, container, false);
 
-        this.anadir = view.findViewById(R.id.anadir);
-
-        this.lugarText = view.findViewById(R.id.lugarListar);
-        this.diaText = view.findViewById(R.id.diaListar);
-
-        lugarText.setEnabled(false);
+        lugarText = view.findViewById(R.id.lugarListar);
+        diaText = view.findViewById(R.id.dia_sol);
         lugarText.setText(this.mParam2);
+        lugarText.setEnabled(false);
 
-        diaText.setEnabled(false);
         diaText.setText(this.mParam1);
+        diaText.setEnabled(false);
 
-        recyclerView = view.findViewById(R.id.listarSol); // Asegúrate de usar el ID correcto
+        recyclerView = view.findViewById(R.id.listarSol);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         solitarioList = new ArrayList<>();
-        adapter = new SolitarioAdapter(solitarioList);
+        adapter = new SolitarioAdapter(solitarioList, new SolitarioAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Solitario solitario) {
+                selecionado = solitario;
+
+            }
+        });
+
         recyclerView.setAdapter(adapter);
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
         databaseReference = database.getReference("Solitario");
 
-        this.cargarDatos();
+        this.anadir = view.findViewById(R.id.anadir);
+
+        anadir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(selecionado != null){
+                    DatabaseReference solitarioRef = databaseReference.child(selecionado.getId()).child("perfiles");
+                    String nomb = "ESTAAA";
+                    solitarioRef.push().setValue(nomb)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Log.d("Firebase", "Perfil añadido exitosamente.");
+
+                                } else {
+                                    Log.e("Firebase", "Error al añadir el perfil: " + task.getException().getMessage());
+                                }
+                            });
+
+                }
+
+            }
+        });
+
+
+
+
+        cargarDatos();
+
         return view;
     }
-
-
-    private void agregarPerfil(String idSolitario, String nombre, int puntuacion) {
-        // Referencia al nodo "perfiles" dentro de un "Solitario" específico
-        DatabaseReference perfilesRef = FirebaseDatabase.getInstance()
-                .getReference("Solitario")
-                .child(idSolitario) // Nodo específico, como "solitario1"
-                .child("perfiles");
-
-        // Crear un nuevo perfil
-        Map<String, Object> nuevoPerfil = new HashMap<>();
-        nuevoPerfil.put("nombre", nombre);
-        nuevoPerfil.put("puntuacion", puntuacion);
-
-        // Agregar el perfil con un ID único
-        perfilesRef.push().setValue(nuevoPerfil)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("Firebase", "Perfil agregado correctamente");
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Firebase", "Error al agregar el perfil", e);
-                });
-    }
-
 
     private void cargarDatos() {
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -145,11 +151,26 @@ public class ListarFragment extends Fragment {
                 for (DataSnapshot solitarioSnapshot : snapshot.getChildren()) {
                     String nombre = solitarioSnapshot.child("lugar").getValue(String.class);
                     long cantidadPerfiles = solitarioSnapshot.child("perfiles").getChildrenCount();
+                    String fecha = solitarioSnapshot.child("fecha").getValue(String.class);
+                    String id = solitarioSnapshot.getKey();
 
-                    solitarioList.add(new Solitario(nombre, (int) cantidadPerfiles));
+                    if(Objects.equals(nombre, mParam2) && !Objects.equals(mParam2, "TODOS")
+                        && Objects.equals(fecha, mParam1) && !Objects.equals(mParam1, "TODOS" )) {
+
+                        solitarioList.add(new Solitario(id,nombre, (int) cantidadPerfiles, fecha));
+                    }
+                    else if(Objects.equals(mParam2, "TODOS") && Objects.equals(mParam1, "TODOS") ){
+                        solitarioList.add(new Solitario(id,nombre, (int) cantidadPerfiles, fecha));
+                    }
+                    else if(Objects.equals(mParam2, "TODOS")  && !Objects.equals(mParam1, "TODOS")
+                    && Objects.equals(fecha, mParam1)){
+                        solitarioList.add(new Solitario(id,nombre, (int) cantidadPerfiles, fecha));
+                    }
+                    else if(!Objects.equals(mParam2, "TODOS")  && Objects.equals(mParam1, "TODOS")
+                    && Objects.equals(nombre, mParam2)){
+                        solitarioList.add(new Solitario(id,nombre, (int) cantidadPerfiles, fecha));
+                    }
                 }
-
-                Log.d("Firebase", String.valueOf(solitarioList.size() ));
                 adapter.updateData(solitarioList);
             }
 
@@ -159,5 +180,6 @@ public class ListarFragment extends Fragment {
             }
         });
     }
+
 
 }

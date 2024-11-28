@@ -80,15 +80,37 @@
                     app:srcCompat="@drawable/calendar" />
             </LinearLayout>
 
-            <Button
-                android:id="@+id/buscarListar"
-                android:layout_width="166dp"
+            <!-- LinearLayout para los botones en la misma fila -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:orientation="horizontal"
                 android:layout_marginTop="25dp"
+                android:weightSum="2">
+
+                <!-- Botón Buscar -->
+                <Button
+                    android:id="@+id/buscarListar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                android:layout_marginEnd="10dp"
                 android:backgroundTint="#4D4D4D"
                 android:fontFamily="@font/tipo1"
                 android:text="@string/buscarLista_buscar" />
+
+                <!-- Botón Crear -->
+                <Button
+                    android:id="@+id/crearListar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                android:backgroundTint="#4D4D4D"
+                android:fontFamily="@font/tipo1"
+                    android:text="@string/crear_lista" />/>
+            </LinearLayout>
+
         </LinearLayout>
     </FrameLayout>
 
