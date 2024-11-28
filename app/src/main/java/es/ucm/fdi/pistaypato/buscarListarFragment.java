@@ -21,9 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,8 +106,40 @@ public class buscarListarFragment extends Fragment {
                     Toast.makeText(getContext(), "Por favor, selecciona una pista y fecha", Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
+                    DatabaseReference databaseReference = database.getReference("Solitarios");
+
+                    String id = databaseReference.push().getKey();
+                    List<String> usuarios = new ArrayList<>();
+                    usuarios.add("YO");
+                    Solitario s = new Solitario(id,selectedItem,usuarios, tiempo);
+                    AtomicBoolean ok = new AtomicBoolean(false);
+
+                    databaseReference.child(id).setValue(s)
+                            .addOnSuccessListener(aVoid -> {
+                                ok.set(true);
+                                Log.d("Firebase", "Solitario agregado correctamente");
+
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("Firebase", "Error al agregar el Solitario", e);
+                            });
 
 
+                    //SALTAR MENSAJE CORRECTO CREACION
+                    FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    MensagesFragment panelMensaje;
+                    if(ok.get()){
+                       panelMensaje = MensagesFragment.newInstance("TRUE", "CREAR");
+                    }
+                    else{
+                        panelMensaje = MensagesFragment.newInstance("FALSE", "CREAR");
+                    }
+
+                    transaction.replace(R.id.middle_section, panelMensaje);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
                 }
             }
         });
@@ -121,7 +159,7 @@ public class buscarListarFragment extends Fragment {
                 FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 String lugar = spinner.getSelectedItem().toString();
-                if(spinner.getSelectedItemPosition() == 0){lugar = "TODOS";}
+                if(spinner.getSelectedItemPosition() == 0){ lugar = "TODOS";}
 
                 ListarFragment panelListar = ListarFragment.newInstance(tiempo, lugar);
                 transaction.replace(R.id.middle_section, panelListar);
@@ -171,4 +209,5 @@ public class buscarListarFragment extends Fragment {
             Log.e("Badminton Fields", "No se han cargado los campos de bádminton.");
         }
     }
+
 }

@@ -102,7 +102,6 @@ public class ListarFragment extends Fragment {
             @Override
             public void onItemClick(Solitario solitario) {
                 selecionado = solitario;
-
             }
         });
 
@@ -110,25 +109,38 @@ public class ListarFragment extends Fragment {
 
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
-        databaseReference = database.getReference("Solitario");
 
+        databaseReference = database.getReference("Solitarios");
         this.anadir = view.findViewById(R.id.anadir);
 
         anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(selecionado != null){
-                    DatabaseReference solitarioRef = databaseReference.child(selecionado.getId()).child("perfiles");
-                    String nomb = "ESTAAA";
-                    solitarioRef.push().setValue(nomb)
-                            .addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    Log.d("Firebase", "Perfil añadido exitosamente.");
+                    DatabaseReference sol = databaseReference.child(selecionado.getId());
+                    sol.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            List<String> perfiles = (List<String>) snapshot.getValue();
 
-                                } else {
-                                    Log.e("Firebase", "Error al añadir el perfil: " + task.getException().getMessage());
-                                }
-                            });
+                            if (perfiles == null) {
+                                perfiles = new ArrayList<>();
+                            }
+                            perfiles.add("Jugador 4");
+
+                            // Guardar la lista actualizada
+                            sol.child("usuarios").setValue(perfiles)
+                                    .addOnSuccessListener(aVoid -> Log.d("Firebase", "Perfil agregado correctamente"))
+                                    .addOnFailureListener(e -> Log.e("Firebase", "Error al agregar perfil", e));
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Log.e("Firebase", "Error al leer perfiles", error.toException());
+                        }
+                    });
+
+
 
                 }
 
@@ -150,7 +162,7 @@ public class ListarFragment extends Fragment {
                 solitarioList.clear();
                 for (DataSnapshot solitarioSnapshot : snapshot.getChildren()) {
                     String nombre = solitarioSnapshot.child("lugar").getValue(String.class);
-                    long cantidadPerfiles = solitarioSnapshot.child("perfiles").getChildrenCount();
+                    long cantidadPerfiles = solitarioSnapshot.child("usuarios").getChildrenCount();
                     String fecha = solitarioSnapshot.child("fecha").getValue(String.class);
                     String id = solitarioSnapshot.getKey();
 

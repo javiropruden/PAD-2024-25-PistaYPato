@@ -14,6 +14,9 @@ public class Solitario {
         return id;
     }
 
+    public void addUsuario(String idOtro){
+        this.usuarios.add(idOtro);
+    }
     public void setId(String id) {
         this.id = id;
     }
@@ -39,8 +42,8 @@ public class Solitario {
     }
 
     public Solitario(String id, String lugar, int cantidadPerfiles, String fecha) {
-        this.id = id;
         this.lugar = lugar;
+        this.id = id;
         this.numPersonas = cantidadPerfiles;
         this.fecha = fecha;
     }
