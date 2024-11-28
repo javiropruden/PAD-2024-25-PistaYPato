@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -130,8 +131,24 @@ public class ListarFragment extends Fragment {
 
                             // Guardar la lista actualizada
                             sol.child("usuarios").setValue(perfiles)
-                                    .addOnSuccessListener(aVoid -> Log.d("Firebase", "Perfil agregado correctamente"))
-                                    .addOnFailureListener(e -> Log.e("Firebase", "Error al agregar perfil", e));
+                                    .addOnSuccessListener(aVoid ->{
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                        MensagesFragment panelMensaje;
+                                        panelMensaje = MensagesFragment.newInstance("TRUE", "ANADIR");
+                                        transaction.replace(R.id.middle_section, panelMensaje);
+                                        transaction.addToBackStack(null);
+                                        transaction.commit();
+                                        Log.d("Firebase", "Perfil agregado correctamente");
+                                    } )
+                                    .addOnFailureListener(e -> {
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                        MensagesFragment panelMensaje;
+                                        panelMensaje = MensagesFragment.newInstance("FALSE", "ANADIR");
+                                        transaction.replace(R.id.middle_section, panelMensaje);
+                                        transaction.addToBackStack(null);
+                                        transaction.commit();
+                                        Log.e("Firebase", "Error al agregar perfil", e);
+                                    });
                         }
 
                         @Override

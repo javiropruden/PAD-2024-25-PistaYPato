@@ -117,29 +117,30 @@ public class buscarListarFragment extends Fragment {
 
                     databaseReference.child(id).setValue(s)
                             .addOnSuccessListener(aVoid -> {
-                                ok.set(true);
+
+                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                MensagesFragment panelMensaje;
+                                panelMensaje = MensagesFragment.newInstance("TRUE", "CREAR");
+                                transaction.replace(R.id.middle_section, panelMensaje);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+
                                 Log.d("Firebase", "Solitario agregado correctamente");
 
                             })
                             .addOnFailureListener(e -> {
+
+                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                                MensagesFragment panelMensaje;
+                                panelMensaje = MensagesFragment.newInstance("FALSE", "CREAR");
+                                transaction.replace(R.id.middle_section, panelMensaje);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+
                                 Log.e("Firebase", "Error al agregar el Solitario", e);
                             });
 
 
-                    //SALTAR MENSAJE CORRECTO CREACION
-                    FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    MensagesFragment panelMensaje;
-                    if(ok.get()){
-                       panelMensaje = MensagesFragment.newInstance("TRUE", "CREAR");
-                    }
-                    else{
-                        panelMensaje = MensagesFragment.newInstance("FALSE", "CREAR");
-                    }
-
-                    transaction.replace(R.id.middle_section, panelMensaje);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
                 }
             }
         });
