@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.StrictMode;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.os.Bundle;
@@ -72,11 +73,30 @@ public class MainActivity extends AppCompatActivity {
         listar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Mostrar un fragmento
+
+
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+
+                String correoRemitente = "jiayun.zhan.0515@gmail.com";
+                String contraseñaRemitente = "pgyeeplgqdejxmny"; // Usa un token de app para mayor seguridad
+                String destinatario = "jiayun.zhan.0515@gmail.com";
+                String asunto = "Prueba desde JavaMail";
+                String mensaje = "¡Hola! Este correo fue enviado desde mi app Android usando JavaMail.";
+                // Crear instancia de JavaMailAPI
+                JavaMailAPI mailAPI = new JavaMailAPI(correoRemitente, contraseñaRemitente);
+
+                // Enviar el correo
+                mailAPI.enviarCorreo(destinatario, asunto, mensaje);
+
+
+
+
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.middle_section, new buscarListarFragment());
                 transaction.addToBackStack(null);  // Permitir navegar hacia atrás al presionar el botón de "atrás"
                 transaction.commit();
+
             }
         });
 
@@ -99,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 //PARA PRUEBAS HE CREADO ESE USUARIO
                 User usuario = new User( "Javi", "Rodriguez", "javirod@gmail.com", "hola123");
                 showFragment(new PerfilFragment(usuario));
+
             }
         });
     }

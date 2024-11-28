@@ -80,7 +80,6 @@
                     app:srcCompat="@drawable/calendar" />
             </LinearLayout>
 
-            <!-- LinearLayout para los botones en la misma fila -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                 android:layout_marginEnd="10dp"
-                android:backgroundTint="#4D4D4D"
+                    android:backgroundTint="?attr/colorSecondary"
                 android:fontFamily="@font/tipo1"
                 android:text="@string/buscarLista_buscar" />
 
@@ -106,12 +105,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                android:backgroundTint="#4D4D4D"
+                    android:backgroundTint="?attr/colorSecondary"
                 android:fontFamily="@font/tipo1"
-                    android:text="@string/crear_lista" />/>
+                    android:text="@string/crear_lista" />
             </LinearLayout>
 
         </LinearLayout>
+
     </FrameLayout>
 
     <!-- Parte inferior - Barra de navegación -->

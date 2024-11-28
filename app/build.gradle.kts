@@ -52,5 +52,8 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation ("com.google.android.material:material:1.9.0")
     implementation("com.google.firebase:firebase-auth:21.1.0")
-
+    //Para email
+    implementation("com.sun.mail:android-mail:1.6.2")
+    implementation("com.sun.mail:android-activation:1.6.2")
 }
+

@@ -60,6 +60,7 @@
         android:layout_marginStart="147dp"
         android:layout_marginTop="462dp"
         android:layout_marginEnd="150dp"
+        android:backgroundTint="?attr/colorSecondary"
         android:text="@string/selecionar" />
 
 </RelativeLayout>
