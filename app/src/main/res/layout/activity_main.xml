@@ -11,16 +11,16 @@
         android:id="@+id/top_section"
         android:layout_width="match_parent"
         android:layout_height="122dp"
-        android:background="#B0B0B0"
+        android:background="?attr/colorSecondary"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="16dp">
 
         <ImageView
             android:id="@+id/app_icon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="1dp"
+            android:layout_width="249dp"
+            android:layout_height="85dp"
+            android:layout_marginTop="3dp"
             android:contentDescription="App Icon"
             android:src="@drawable/ic_logo" />
 
@@ -34,7 +34,7 @@
         android:layout_height="60dp"
         android:layout_below="@id/top_section"
         android:layout_marginTop="0dp"
-        android:background="#B0B0B0"
+        android:background="?attr/colorPrimary"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="16dp">
@@ -43,7 +43,8 @@
             android:id="@+id/volver"
             android:layout_width="47dp"
             android:layout_height="36dp"
-            android:layout_marginRight="340dp"
+            android:layout_marginRight="330dp"
+            android:backgroundTint="@android:color/transparent"
             android:src="@drawable/volver" />
 
         <!-- Puedes añadir más iconos aquí si es necesario -->
@@ -58,7 +59,7 @@
         android:layout_below="@id/return_section"
         android:layout_marginTop="0dp"
         android:layout_weight="1"
-        android:background="#B0B0B0"></FrameLayout>
+        android:background="?attr/colorPrimary"></FrameLayout>
 
 
 
@@ -71,7 +72,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
-        android:background="#979797"
+        android:background="?attr/colorSecondary"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -86,7 +87,7 @@
             android:layout_marginBottom="8dp"
             android:src="@drawable/ic_chat"
             android:contentDescription="Chat"
-            android:background="#B0B0B0"
+            android:background="@android:color/transparent"
             app:tint="#050505" />
 
         <ImageButton
@@ -94,13 +95,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#B0B0B0"
             android:contentDescription="Home"
             android:src="@drawable/ic_home"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:background="@android:color/transparent"
             app:tint="#000000" />
 
         <ImageButton
@@ -108,7 +109,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="#B0B0B0"
+            android:background="@android:color/transparent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"

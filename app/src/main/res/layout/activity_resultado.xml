@@ -69,7 +69,7 @@
             android:id="@+id/reservar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:backgroundTint="#979797"
+            android:backgroundTint="?attr/colorSecondary"
             android:layout_marginTop="15dp"
             android:text="@string/reservar"
             android:textColor="@color/black">

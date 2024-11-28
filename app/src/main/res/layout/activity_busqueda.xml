@@ -14,7 +14,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        android:background="#B0B0B0">
+        android:background="?attr/colorPrimary">
 
         <LinearLayout
             android:layout_width="293dp"
@@ -52,16 +52,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:backgroundTint="@android:color/transparent"
                     android:clickable="true"
-                    android:contentDescription="calendario"
-                    android:tint="#00000000"
-                    app:backgroundTintMode="@android:color/transparent"
+                    android:contentDescription="@string/calendario"
+                    android:focusable="true"
                     app:elevation="0dp"
                     app:fabCustomSize="85dp"
                     app:fabSize="normal"
                     app:maxImageSize="80dp"
-                    app:rippleColor="#00000000"
+                    app:backgroundTint="@android:color/transparent"
                     app:srcCompat="@drawable/calendar" />
 
                 <TextView
@@ -81,12 +79,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="25dp"
-                android:backgroundTint="#4D4D4D"
+                android:backgroundTint="?attr/colorSecondary"
                 android:fontFamily="@font/tipo1"
                 android:text="@string/buscar" />
         </LinearLayout>
     </FrameLayout>
 
-    <!-- Parte inferior - Barra de navegación -->
 
 </RelativeLayout>
