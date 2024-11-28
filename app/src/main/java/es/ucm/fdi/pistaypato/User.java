@@ -1,7 +1,6 @@
 package es.ucm.fdi.pistaypato;
 
 public class User {
-    private String userId;
     private String firstName;
     private String lastName;
     private String email;
@@ -10,8 +9,7 @@ public class User {
     public User() {
     }
 
-    public User(String userId, String firstName, String lastName, String email, String password) {
-        this.userId = userId;
+    public User( String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -19,13 +17,6 @@ public class User {
     }
 
     // Getters y setters
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getFirstName() { return firstName; }
 

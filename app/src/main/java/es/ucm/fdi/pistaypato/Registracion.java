@@ -61,7 +61,6 @@ public class Registracion extends AppCompatActivity {
                         .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                         .show();
                 valid = false;
-
             }
 
             if (valid && confirmPassword.isEmpty()) {
@@ -72,7 +71,6 @@ public class Registracion extends AppCompatActivity {
                         .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                         .show();
                 valid = false;
-
             }
 
             if (valid && !password.equals(confirmPassword)) {
@@ -85,9 +83,12 @@ public class Registracion extends AppCompatActivity {
                 valid = false;
             }
 
+
+
             if(valid) {
                 //aqui se registra el usuario realiza el registro en firebase
 
+                finish();
             }
 
 

@@ -37,9 +37,9 @@ public class PPAplication extends Application {
     }
 
     // Método para agregar un nuevo usuario a Firebase Realtime Database
-    public void addUser(String userId, String firstName, String lastName, String email, String password) {
-        User newUser = new User(userId, firstName, lastName, email, password);
-        usersReference.child(userId).setValue(newUser)
+    public void addUser( String firstName, String lastName, String email, String password) {
+        User newUser = new User(firstName, lastName, email, password);
+        usersReference.child(email).setValue(newUser)
                 .addOnSuccessListener(aVoid -> {
                     System.out.println("Usuario añadido correctamente");
                 })
@@ -51,6 +51,13 @@ public class PPAplication extends Application {
     // Método para obtener la lista de campos de bádminton
     public ArrayList<String> getFields() {
         return badmintonFields;
+    }
+
+    //metodo para consultas la contraseña de un usuario es correcta o no
+    public String returnPassword(String email) {
+        String password = "";
+        return password;
+
     }
 
 }

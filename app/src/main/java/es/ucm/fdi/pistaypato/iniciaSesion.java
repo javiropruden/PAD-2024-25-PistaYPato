@@ -7,14 +7,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class iniciaSesion extends AppCompatActivity {
-    Button iniciarSesion;
-    Button registrarse;
-    EditText contrasenia;
-    EditText correo;
+
+    private Button iniciarSesion;
+    private Button registrarse;
+    private EditText contrasenia;
+    private EditText correo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,6 @@ public class iniciaSesion extends AppCompatActivity {
         registrarse = findViewById(R.id.registerButton);
         contrasenia = findViewById(R.id.password);
         correo = findViewById(R.id.useremail);
-
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         iniciarSesion.setOnClickListener(v -> {
             String email = correo.getText().toString().trim();
@@ -55,21 +56,7 @@ public class iniciaSesion extends AppCompatActivity {
             }
 
             if(valid) {
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, task -> {
-                            if (task.isSuccessful()) {
-                                //inicia sesion correctamente
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                //se dirige a la pantalla principal
-                            } else {
-                                //si falla el inicio de sesion
-                                new AlertDialog.Builder(this)
-                                        .setTitle("Error")
-                                        .setMessage("Error al iniciar sesión")
-                                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                                        .show();
-                            }
-                        });
+
             }
         });
 
