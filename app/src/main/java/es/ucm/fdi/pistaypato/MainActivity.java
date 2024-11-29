@@ -29,7 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -87,10 +89,42 @@ public class MainActivity extends AppCompatActivity {
         pistas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
+
+                // Obtenemos la referencia a la base de datos en "Instalaciones"
+                DatabaseReference db = firebaseDatabase.getReference("Instalaciones");
+
+                // Crear una lista de pistas (puedes inicializarla con objetos si necesitas)
+                List<Pista> pista = new ArrayList<>();
+                pista.add(new Pista());
+                pista.add(new Pista());
+
+                // Crear una instalación con la lista de pistas
+                Instalacion ins = new Instalacion("pru", pista);
+
+                // Generar un ID único para esta instalación
+                String id = db.push().getKey();
+
+                // Asegurarnos de que el ID no sea nulo
+                if (id != null) {
+                    ins.setId(id);
+
+                    // Guardar el objeto en Firebase usando el ID generado
+                    db.child(id).setValue(ins)
+                            .addOnSuccessListener(aVoid -> {
+                                Log.d("Firebase", "Instalación agregada correctamente");
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("Firebase", "Error al agregar la instalación", e);
+                            });
+                } else {
+                    Log.e("Firebase", "Error: ID generado es nulo");
+                }
+
                 // Mostrar un fragmento
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.middle_section, new BusquedaActivity());
-                transaction.addToBackStack(null);  // Permitir navegar hacia atrás al presionar el botón de "atrás"
+                transaction.addToBackStack(null); // Permitir navegar hacia atrás al presionar el botón de "atrás"
                 transaction.commit();
             }
         });
@@ -159,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("API Error", "Error al obtener datos", error);
             }
         });
+
         queue.add(stringRequest);
     }
 }
