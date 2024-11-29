@@ -46,7 +46,7 @@ public class ListarFragment extends Fragment {
     EditText lugarText, diaText;
     Solitario selecionado;
 
-
+    PPAplication app;
     private RecyclerView recyclerView;
     private SolitarioAdapter adapter;
     private List<Solitario> solitarioList;
@@ -86,7 +86,7 @@ public class ListarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_listar, container, false);
-
+        app = (PPAplication) requireActivity().getApplication();
         lugarText = view.findViewById(R.id.lugarListar);
         diaText = view.findViewById(R.id.dia_sol);
         lugarText.setText(this.mParam2);
@@ -109,9 +109,7 @@ public class ListarFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
-
-        databaseReference = database.getReference("Solitarios");
+        databaseReference = app.getSolitariosReference();
         this.anadir = view.findViewById(R.id.anadir);
 
         anadir.setOnClickListener(new View.OnClickListener() {
@@ -122,12 +120,12 @@ public class ListarFragment extends Fragment {
                     sol.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            List<String> perfiles = (List<String>) snapshot.getValue();
+                            List<User> perfiles = (List<User>) snapshot.getValue();
 
                             if (perfiles == null) {
                                 perfiles = new ArrayList<>();
                             }
-                            perfiles.add("Jugador 4");
+                            perfiles.add(app.getPropietario());
 
                             // Guardar la lista actualizada
                             sol.child("usuarios").setValue(perfiles)

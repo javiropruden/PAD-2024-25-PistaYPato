@@ -74,22 +74,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-                String correoRemitente = "jiayun.zhan.0515@gmail.com";
-                String contraseñaRemitente = "pgyeeplgqdejxmny"; // Usa un token de app para mayor seguridad
-                String destinatario = "jiayun.zhan.0515@gmail.com";
+                String destinatario = "yun.zhan.0515@gmail.com";
                 String asunto = "Prueba desde JavaMail";
                 String mensaje = "¡Hola! Este correo fue enviado desde mi app Android usando JavaMail.";
-                // Crear instancia de JavaMailAPI
-                JavaMailAPI mailAPI = new JavaMailAPI(correoRemitente, contraseñaRemitente);
 
-                // Enviar el correo
-                mailAPI.enviarCorreo(destinatario, asunto, mensaje);
-
-
+                app.escribirEmail(destinatario, asunto, mensaje);
 
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

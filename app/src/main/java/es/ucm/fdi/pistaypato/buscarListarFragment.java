@@ -106,14 +106,12 @@ public class buscarListarFragment extends Fragment {
                     Toast.makeText(getContext(), "Por favor, selecciona una pista y fecha", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
-                    DatabaseReference databaseReference = database.getReference("Solitarios");
 
+                    DatabaseReference databaseReference = app.getSolitariosReference();
                     String id = databaseReference.push().getKey();
-                    List<String> usuarios = new ArrayList<>();
-                    usuarios.add("YO");
+                    List<User> usuarios = new ArrayList<>();
+                    usuarios.add(app.getPropietario());
                     Solitario s = new Solitario(id,selectedItem,usuarios, tiempo);
-                    AtomicBoolean ok = new AtomicBoolean(false);
 
                     databaseReference.child(id).setValue(s)
                             .addOnSuccessListener(aVoid -> {
@@ -139,8 +137,6 @@ public class buscarListarFragment extends Fragment {
 
                                 Log.e("Firebase", "Error al agregar el Solitario", e);
                             });
-
-
                 }
             }
         });
@@ -210,5 +206,4 @@ public class buscarListarFragment extends Fragment {
             Log.e("Badminton Fields", "No se han cargado los campos de bádminton.");
         }
     }
-
 }

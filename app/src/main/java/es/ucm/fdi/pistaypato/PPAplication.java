@@ -1,6 +1,7 @@
 package es.ucm.fdi.pistaypato;
 
 import android.app.Application;
+import android.os.StrictMode;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +20,10 @@ public class PPAplication extends Application {
     // Referencias para Firebase
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference usersReference;
+    private String emailRemitente ;
+    private String contrasenaEmailRemitente;
+    private User propietario;
+    private DatabaseReference solitariosReference;
 
     @Override
     public void onCreate() {
@@ -27,13 +32,16 @@ public class PPAplication extends Application {
         // Inicializa la lista
         badmintonFields = new ArrayList<>();
         jsonArray = new JSONArray();
-
+        this.emailRemitente = "jiayun.zhan.0515@gmail.com";
+        this.contrasenaEmailRemitente = "pgyeeplgqdejxmny";
         FirebaseApp.initializeApp(this);
-        firebaseDatabase = FirebaseDatabase.getInstance();
-
+        firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
         usersReference = firebaseDatabase.getReference("users");
+        this.solitariosReference = firebaseDatabase.getReference("Solitarios");
+    }
 
-
+    public DatabaseReference getSolitariosReference() {
+        return solitariosReference;
     }
 
     // Método para agregar un nuevo usuario a Firebase Realtime Database
@@ -48,6 +56,14 @@ public class PPAplication extends Application {
                 });
     }
 
+    public User getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(User propietario) {
+        this.propietario = propietario;
+    }
+
     // Método para obtener la lista de campos de bádminton
     public ArrayList<String> getFields() {
         return badmintonFields;
@@ -57,7 +73,17 @@ public class PPAplication extends Application {
     public String returnPassword(String email) {
         String password = "";
         return password;
+    }
 
+    public void escribirEmail(String destinatario, String asunto, String mensaje){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        // Crear instancia de JavaMailAPI
+        JavaMailAPI mailAPI = new JavaMailAPI(this.emailRemitente, this.contrasenaEmailRemitente);
+
+        // Enviar el correo
+        mailAPI.enviarCorreo(destinatario, asunto, mensaje);
     }
 
 }

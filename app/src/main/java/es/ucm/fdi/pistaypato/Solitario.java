@@ -7,15 +7,15 @@ public class Solitario {
     String lugar;
     int numPersonas;
     String fecha;
-    List<String> usuarios;
+    List<User> usuarios;
     String id;
 
     public String getId() {
         return id;
     }
 
-    public void addUsuario(String idOtro){
-        this.usuarios.add(idOtro);
+    public void addUsuario(User Otro){
+        this.usuarios.add(Otro);
     }
     public void setId(String id) {
         this.id = id;
@@ -33,7 +33,7 @@ public class Solitario {
         this.fecha = fecha;
     }
 
-    public Solitario(String id, String lugar, List<String> nombres, String fecha) {
+    public Solitario(String id, String lugar, List<User> nombres, String fecha) {
         this.id = id;
         this.lugar = lugar;
         this.numPersonas = nombres.size();
@@ -52,11 +52,11 @@ public class Solitario {
         return numPersonas;
     }
 
-    public List<String> getUsuarios() {
+    public List<User> getUsuarios() {
         return usuarios;
     }
 
-    public void setUsuarios(List<String> usuarios) {
+    public void setUsuarios(List<User> usuarios) {
         this.usuarios = usuarios;
     }
 
