@@ -34,6 +34,7 @@
                     android:layout_height="wrap_content"
                     android:text="Nombre:"
                     android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/tipo1"
                     android:textAppearance="?attr/textAppearanceBody1" />
                 <EditText
                     android:id="@+id/modificar_name"
@@ -50,6 +51,7 @@
                     android:layout_height="wrap_content"
                     android:text="Apellido:"
                     android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/tipo1"
                     android:textAppearance="?attr/textAppearanceBody1" />
                 <EditText
                     android:id="@+id/modificar_surname"
@@ -66,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:text="Correo Electrónico:"
                     android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/tipo1"
                     android:textAppearance="?attr/textAppearanceBody1" />
                 <EditText
                     android:id="@+id/modificar_email"
@@ -83,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:text="Contraseña:"
                     android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/tipo1"
                     android:textAppearance="?attr/textAppearanceBody1" />
                 <EditText
                     android:id="@+id/modificar_password"
@@ -100,6 +104,7 @@
                     android:layout_height="wrap_content"
                     android:text="Repite Contraseña:"
                     android:layout_marginBottom="4dp"
+                    android:fontFamily="@font/tipo1"
                     android:textAppearance="?attr/textAppearanceBody1" />
                 <EditText
                     android:id="@+id/modificar_repeat_password"
