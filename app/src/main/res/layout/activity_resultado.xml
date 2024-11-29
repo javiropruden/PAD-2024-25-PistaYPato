@@ -7,16 +7,14 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!-- Parte superior - Icono de la app u otros iconos -->
-    <!-- Parte central - Pantalla cambiante -->
     <LinearLayout
         android:id="@+id/middle_section"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
         android:background="#B0B0B0"
-        android:padding="16dp">
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/nombre"
@@ -30,7 +28,7 @@
             android:id="@+id/direccion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/tipo3"
             android:text="@string/resultado_ubicacion"
             android:textSize="20sp" />
@@ -39,7 +37,7 @@
             android:id="@+id/fecha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/tipo3"
             android:text="@string/resultado_ubicacion"
             android:textSize="20sp" />
@@ -51,7 +49,7 @@
                 android:id="@+id/tabla"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:padding="10dp"
                 android:stretchColumns="*" >
                 <!-- Encabezado con pistas -->
                 <TableRow>
@@ -69,7 +67,7 @@
             android:id="@+id/reservar"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:backgroundTint="?attr/colorSecondary"
+            android:backgroundTint="?attr/colorSecondaryVariant"
             android:layout_marginTop="15dp"
             android:text="@string/reservar"
             android:textColor="@color/black">

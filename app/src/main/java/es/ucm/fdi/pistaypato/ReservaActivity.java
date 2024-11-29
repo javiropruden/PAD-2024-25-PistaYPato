@@ -1,5 +1,7 @@
 package es.ucm.fdi.pistaypato;
 
+import static es.ucm.fdi.pistaypato.R.color.white;
+
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -150,7 +152,7 @@ public class ReservaActivity extends Fragment {
         if (celdasReservadas[i][j]) {
             estado.setBackgroundColor(Color.RED); // Reservada
         } else {
-            estado.setBackgroundColor(Color.GREEN); // Libre
+            estado.setBackgroundColor(Color.rgb(2, 101, 57)); // Libre
         }
         estado.setPadding(32, 32, 32, 32);
         estado.setGravity(Gravity.CENTER);
