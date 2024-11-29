@@ -21,6 +21,7 @@ public class PerfilFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private PPAplication app;
     private View view;
     private Button editar;
     private Button consultar;
@@ -32,9 +33,6 @@ public class PerfilFragment extends Fragment {
 
     public PerfilFragment() {
         // Required empty public constructor
-    }
-    public PerfilFragment(User usuario) {
-        this.user = usuario;
     }
 
     public static PerfilFragment newInstance(String param1, String param2) {
@@ -59,7 +57,8 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_perfil, container, false);
-
+        this.app = (PPAplication) requireActivity().getApplication();
+        this.user = this.app.getPropietario();
         this.nombre = view.findViewById(R.id.perfil_name);
         this.email = view.findViewById(R.id.perfil_email);
         String sfirstName = user.getFirstName() != null ? user.getFirstName() : "";
@@ -86,7 +85,7 @@ public class PerfilFragment extends Fragment {
         this.editar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openFragment(new PasswordFragment(user));
+                openFragment(new PasswordFragment());
             }
         });
         this.consultar.setOnClickListener(new View.OnClickListener() {

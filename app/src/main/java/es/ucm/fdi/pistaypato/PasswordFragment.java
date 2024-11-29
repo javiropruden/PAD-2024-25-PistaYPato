@@ -22,6 +22,7 @@ public class PasswordFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private PPAplication app;
     private View view;
     private Button continuar;
     private EditText password;
@@ -33,9 +34,6 @@ public class PasswordFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public PasswordFragment(User usuario) {
-        this.usuario = usuario;
-    }
 
     public static PasswordFragment newInstance(String param1, String param2) {
         PasswordFragment fragment = new PasswordFragment();
@@ -59,7 +57,8 @@ public class PasswordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_password, container, false);
-
+        this.app = (PPAplication) requireActivity().getApplication();
+        this.usuario = this.app.getPropietario();
         this.continuar = view.findViewById(R.id.password_continue);
         this.password = view.findViewById(R.id.password_password);
         this.volver = getActivity().findViewById(R.id.volver);
@@ -70,7 +69,7 @@ public class PasswordFragment extends Fragment {
             public void onClick(View v) {
                 FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new PerfilFragment(usuario));
+                transaction.replace(R.id.middle_section, new PerfilFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -85,7 +84,7 @@ public class PasswordFragment extends Fragment {
                     showErrorMessage("Error", "Incorrect password");
                 }
                 else{
-                   openFragment(new ModificarPerfilFragment(usuario));
+                   openFragment(new ModificarPerfilFragment());
                }
             }
         });

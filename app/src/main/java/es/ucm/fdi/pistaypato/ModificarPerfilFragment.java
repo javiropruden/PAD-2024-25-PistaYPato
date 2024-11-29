@@ -23,6 +23,7 @@ public class ModificarPerfilFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private PPAplication app;
     private View view;
     private Button editar;
     private EditText nombre;
@@ -36,10 +37,6 @@ public class ModificarPerfilFragment extends Fragment {
 
     public ModificarPerfilFragment() {
         // Required empty public constructor
-    }
-
-    public ModificarPerfilFragment(User usuario) {
-        this.usuario = usuario;
     }
 
     public static ModificarPerfilFragment newInstance(String param1, String param2) {
@@ -64,7 +61,8 @@ public class ModificarPerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_modificar_perfil, container, false);
-
+        this.app = (PPAplication) requireActivity().getApplication();
+        this.usuario = this.app.getPropietario();
         this.editar = view.findViewById(R.id.modificar_edit);
         this.nombre = view.findViewById(R.id.modificar_name);
         this.apellido = view.findViewById(R.id.modificar_surname);
@@ -79,7 +77,7 @@ public class ModificarPerfilFragment extends Fragment {
             public void onClick(View v) {
                 FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new PerfilFragment(usuario));
+                transaction.replace(R.id.middle_section, new PerfilFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -106,7 +104,7 @@ public class ModificarPerfilFragment extends Fragment {
                         //cambiar contraseña en base de datos
                     }
 
-                    openFragment(new PerfilFragment(usuario));
+                    openFragment(new PerfilFragment());
                 }
             }
         });

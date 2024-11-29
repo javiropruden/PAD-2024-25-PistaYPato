@@ -1,21 +1,15 @@
 package es.ucm.fdi.pistaypato;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.StrictMode;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
-import androidx.annotation.LayoutRes;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -105,11 +99,7 @@ public class MainActivity extends AppCompatActivity {
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //PARA PRUEBAS HE CREADO ESE USUARIO
-                User usuario = new User( "Javi", "Rodriguez", "javirod@gmail.com", "hola123");
-
-                showFragment(new PerfilFragment(usuario));
-
+                showFragment(new PerfilFragment());
             }
         });
     }
