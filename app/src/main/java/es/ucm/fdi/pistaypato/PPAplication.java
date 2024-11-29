@@ -4,8 +4,11 @@ import android.app.Application;
 import android.os.StrictMode;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 
@@ -98,6 +101,18 @@ public class PPAplication extends Application {
     }
 
     public User returnUser(String email) {
-        return new User("Jiayun", "Zhan");
+        final User[] user = new User[1];
+        usersReference.child(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user[0] = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.err.println("Error al obtener usuario: " + databaseError.getMessage());
+            }
+        });
+        return user[0];
     }
 }
