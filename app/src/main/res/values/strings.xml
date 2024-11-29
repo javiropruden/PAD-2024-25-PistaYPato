@@ -38,6 +38,8 @@
     <!--registracion-->
     <string name="registracion_username_label">Username</string>
     <string name="registracion_username_hint">Username</string>
+    <string name="registracion_lastname_label">Apellido</string>
+    <string name="registracion_lastname_hint">Apellido</string>
     <string name="registracion_email_label">Email</string>
     <string name="registracion_email_hint">Email</string>
     <string name="registracion_password_label">Password</string>

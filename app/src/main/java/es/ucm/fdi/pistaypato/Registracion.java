@@ -21,6 +21,8 @@ public class Registracion extends AppCompatActivity {
     private EditText contrasenia;
     private EditText confirmarContrasenia;
     private EditText nombre;
+    private EditText apellido;
+    private PPAplication ppa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +35,16 @@ public class Registracion extends AppCompatActivity {
         contrasenia = findViewById(R.id.password);
         confirmarContrasenia = findViewById(R.id.confirm_password);
         nombre = findViewById(R.id.username);
+        apellido = findViewById(R.id.lastname);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        ppa = (PPAplication) getApplication();
 
         registrarse.setOnClickListener(v -> {
             String email = correo.getText().toString().trim();
             String password = contrasenia.getText().toString().trim();
             String confirmPassword = confirmarContrasenia.getText().toString().trim();
             String name = nombre.getText().toString().trim();
+            String lastName = apellido.getText().toString().trim();
             boolean valid = true;
 
             if (name.isEmpty()) {
@@ -54,6 +58,16 @@ public class Registracion extends AppCompatActivity {
             }
 
             if (valid && email.isEmpty()) {
+                //mostar mensaje de error por no completar el campo contraseña
+                new AlertDialog.Builder(this)
+                        .setTitle("Error")
+                        .setMessage("completa correo")
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                        .show();
+                valid = false;
+            }
+
+            if (valid && lastName.isEmpty()) {
                 //mostar mensaje de error por no completar el campo contraseña
                 new AlertDialog.Builder(this)
                         .setTitle("Error")
@@ -87,7 +101,8 @@ public class Registracion extends AppCompatActivity {
 
             if(valid) {
                 //aqui se registra el usuario realiza el registro en firebase
-
+                User usuario = new User(name, lastName, email, password);
+                ppa.addUser(usuario);
                 finish();
             }
 

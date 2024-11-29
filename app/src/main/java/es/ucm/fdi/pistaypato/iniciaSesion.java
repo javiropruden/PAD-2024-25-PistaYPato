@@ -18,6 +18,7 @@ public class iniciaSesion extends AppCompatActivity {
     private Button registrarse;
     private EditText contrasenia;
     private EditText correo;
+    private PPAplication ppa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,8 @@ public class iniciaSesion extends AppCompatActivity {
         registrarse = findViewById(R.id.registerButton);
         contrasenia = findViewById(R.id.password);
         correo = findViewById(R.id.useremail);
+
+        ppa = (PPAplication) getApplication();
 
         iniciarSesion.setOnClickListener(v -> {
             String email = correo.getText().toString().trim();
@@ -56,7 +59,17 @@ public class iniciaSesion extends AppCompatActivity {
             }
 
             if(valid) {
-
+                if(ppa.returnPassword(email, password)) {
+                    ppa.setPropietario(ppa.returnUser(email));
+                    Intent intent = new Intent(iniciaSesion.this, MainActivity.class);
+                    startActivity(intent);
+                } else {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Error")
+                            .setMessage("Usuario o contraseña incorrectos")
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                            .show();
+                }
             }
         });
 

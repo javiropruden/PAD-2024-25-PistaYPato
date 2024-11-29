@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 showFragment(new PerfilFragment());
             }
         });
+
     }
 
     private void showFragment(Fragment fragment) {

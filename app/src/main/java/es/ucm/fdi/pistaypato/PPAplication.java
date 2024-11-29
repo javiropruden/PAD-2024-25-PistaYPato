@@ -30,6 +30,7 @@ public class PPAplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+
         // Inicializa la lista
         badmintonFields = new ArrayList<>();
         jsonArray = new JSONArray();
@@ -71,9 +72,9 @@ public class PPAplication extends Application {
     }
 
     //metodo para consultas la contraseña de un usuario es correcta o no
-    public String returnPassword(String email) {
-        String password = "";
-        return password;
+    public boolean returnPassword(String email, String password){
+
+        return true;
     }
 
     public void escribirEmail(String destinatario, String asunto, String mensaje){
@@ -87,4 +88,7 @@ public class PPAplication extends Application {
         mailAPI.enviarCorreo(destinatario, asunto, mensaje);
     }
 
+    public User returnUser(String email) {
+        return new User("Jiayun", "Zhan");
+    }
 }
