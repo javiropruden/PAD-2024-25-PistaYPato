@@ -7,11 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class CancelarFragment extends Fragment {
 
@@ -29,6 +30,7 @@ public class CancelarFragment extends Fragment {
     private EditText pista;
     private EditText hora;
     private Button cancelarButton;
+    private ImageButton volver;
 
     public CancelarFragment() {
     }
@@ -64,12 +66,14 @@ public class CancelarFragment extends Fragment {
         hora = view.findViewById(R.id.cancelar_hora);
         cancelarButton = view.findViewById(R.id.cancelar_btn_cancelar_reserva);
 
+        this.volver = getActivity().findViewById(R.id.volver);
+        this.volver.setVisibility(View.VISIBLE);
+        this.volver.setOnClickListener(v -> openFragment(new PerfilFragment()));
+
         // Acción del botón "Cancelar Reserva"
-        cancelarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelarReserva();
-            }
+        cancelarButton.setOnClickListener(v -> {
+            cancelarReserva();
+            openFragment(new PerfilFragment()); //Para volver a perfil
         });
 
         return view;
@@ -102,5 +106,12 @@ public class CancelarFragment extends Fragment {
         fecha.setText("");
         pista.setText("");
         hora.setText("");
+    }
+
+    private void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.middle_section, fragment);
+        transaction.addToBackStack(null); // Permitir regresar al fragmento previo
+        transaction.commit();
     }
 }

@@ -17,7 +17,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        android:background="#B0B0B0">
+        android:background="?attr/colorPrimary">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/informacion_reserva"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/tipo1" />
 
             <!-- Campo de texto del nombre del equipo -->
             <EditText
@@ -115,6 +115,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="24dp"
+                android:backgroundTint="?attr/colorSecondaryVariant"
+                android:fontFamily="@font/tipo1"
                 android:text="@string/cancelar_button" />
 
         </LinearLayout>

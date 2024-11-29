@@ -7,11 +7,11 @@
     <string name="nombre">Nombre</string>
     <string name="ubicacion">Ubicación</string>
     <string name="selecionar">Seleccionar pista</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="username_label">Username</string>
+    <string name="hello_blank_fragment">Hola blank fragment</string>
+    <string name="username_label">Usuario</string>
     <string name="email_label">Email</string>
-    <string name="password_label">Password</string>
-    <string name="confirm_password_label">Confirm Password</string>
+    <string name="password_label">Contraseña</string>
+    <string name="confirm_password_label">Confirmar Contraseña</string>
     <string name="register_button">Registrarse</string>
     <string name="usuario_label">Usuario:</string>
     <string name="contraseña_label">Contraseña:</string>
@@ -19,7 +19,7 @@
     <string name="informacion_reserva">Información de la reserva</string>
     <string name="cancelar_button">Cancelar</string>
     <string name="editar">Editar</string>
-    <string name="reservar">Book</string>
+    <string name="reservar">Reservar</string>
     <string name="ya_reservado">Esta pista ya está reservada</string>
     <string name="reservado">¡Reservado!</string>
 
@@ -39,26 +39,34 @@
     <string name="profile_consult_button">Consultar</string>
 
     <!--activity_registracion.xml-->
-    <string name="registracion_username_label">Username</string>
-    <string name="registracion_username_hint">Username</string>
+    <string name="registracion_name_label">Usuario</string>
+    <string name="registracion_name_hint">Usuario</string>
     <string name="registracion_lastname_label">Apellido</string>
     <string name="registracion_lastname_hint">Apellido</string>
     <string name="registracion_email_label">Email</string>
     <string name="registracion_email_hint">Email</string>
-    <string name="registracion_password_label">Password</string>
-    <string name="registracion_password_hint">Password</string>
-    <string name="registracion_confirm_password_label">Confirm Password</string>
-    <string name="registracion_confirm_password_hint">Confirm Password</string>
+    <string name="registracion_password_label">Contraseña</string>
+    <string name="registracion_password_hint">Contraseña</string>
+    <string name="registracion_confirm_password_label">Confirmar Contraseña</string>
+    <string name="registracion_confirm_password_hint">Confirmar Contraseña</string>
     <string name="registracion_register_button">Registrarse</string>
 
     <!--activity_resultado.xml-->
     <string name="resultado_nombre">Nombre</string>
-    <string name="resultado_ubicacion">Ubicacion</string>
+    <string name="resultado_ubicacion">Ubicación</string>
 
     <!--fragment_bsucar_listar.xml-->
     <string name="buscarLista_Buscar_pista">Pista</string>
     <string name="buscarLista_fecha">Día</string>
     <string name="buscarLista_buscar">Buscar</string>
     <string name="crear_lista">Crear</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">Primer Fragmento</string>
+    <string name="second_fragment_label">Segundo Fragmento</string>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
+
+    <string name="calendario">calendario</string>
 
 </resources>

@@ -86,11 +86,12 @@ public class PerfilFragment extends Fragment {
         this.volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
+                openFragment(new BusquedaActivity());
+                /*FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.middle_section, new BusquedaActivity());
                 transaction.addToBackStack(null);
-                transaction.commit();
+                transaction.commit();*/
             }
         });
         this.editar.setOnClickListener(new View.OnClickListener() {

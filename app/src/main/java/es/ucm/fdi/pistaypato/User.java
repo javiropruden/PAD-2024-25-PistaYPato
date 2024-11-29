@@ -1,10 +1,13 @@
 package es.ucm.fdi.pistaypato;
 
+import java.util.ArrayList;
+
 public class User {
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    private ArrayList<Reserva> reservas;
 
     public User() {
     }
@@ -14,10 +17,15 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.reservas = new ArrayList<Reserva>();
     }
 
     // Getters y setters
     public String getFirstName() { return firstName; }
+
+    public void aniadirReserva(Reserva reserva){
+        this.reservas.add(reserva);
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

@@ -38,7 +38,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/registracion_username_label"
+            android:text="@string/registracion_name_label"
             android:padding="8dp"
             android:textSize="16sp" />
 
@@ -46,7 +46,7 @@
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/registracion_username_hint"
+            android:hint="@string/registracion_name_hint"
             android:padding="16dp" />
 
         <TextView
