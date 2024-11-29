@@ -150,9 +150,9 @@ public class ReservaActivity extends Fragment {
     private @NonNull TextView getTextView(boolean[][] celdasReservadas, int i, int j) {
         TextView estado = new TextView(getContext());
         if (celdasReservadas[i][j]) {
-            estado.setBackgroundColor(Color.RED); // Reservada
+            estado.setBackgroundColor(Color.rgb(150, 0, 0)); // Reservada
         } else {
-            estado.setBackgroundColor(Color.rgb(2, 101, 57)); // Libre
+            estado.setBackgroundColor(Color.rgb(28, 151, 96)); // Libre
         }
         estado.setPadding(32, 32, 32, 32);
         estado.setGravity(Gravity.CENTER);
@@ -160,10 +160,10 @@ public class ReservaActivity extends Fragment {
         estado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((ColorDrawable) estado.getBackground()).getColor() == Color.RED) {
+                if (((ColorDrawable) estado.getBackground()).getColor() == Color.rgb(150, 0, 0)) {
                     Toast.makeText(getContext(), R.string.ya_reservado, Toast.LENGTH_SHORT).show();
                 } else {
-                    estado.setBackgroundColor(Color.RED);
+                    estado.setBackgroundColor(Color.rgb(150, 0, 0));
                     celdaSeleccionada = true;
                 }
             }

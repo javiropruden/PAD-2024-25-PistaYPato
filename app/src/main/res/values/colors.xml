@@ -6,6 +6,7 @@
     <color name="primaryColor">#B0B0B0</color>
     <color name="primaryDarkColor">#7E7E7E</color>
 
+    <color name="secondaryLightColor">#1C9760</color>
     <color name="secondaryColor">#026539</color>
     <color name="secondaryDarkColor">#014024</color>
 </resources>
