@@ -58,18 +58,19 @@ public class iniciaSesion extends AppCompatActivity {
 
             }
 
-            if(valid) {
-                if(ppa.returnPassword(email, password)) {
-                    ppa.setPropietario(ppa.returnUser(email));
-                    Intent intent = new Intent(iniciaSesion.this, MainActivity.class);
-                    startActivity(intent);
-                } else {
-                    new AlertDialog.Builder(this)
-                            .setTitle("Error")
-                            .setMessage("Usuario o contraseña incorrectos")
-                            .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                            .show();
-                }
+            if (valid) {
+                ppa.checkPassword(email, ppa.hashPassword(password), isValid -> {
+                    if (isValid) {
+                        Intent intent = new Intent(iniciaSesion.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        new AlertDialog.Builder(this)
+                                .setTitle("Error")
+                                .setMessage("Usuario o contraseña incorrectos")
+                                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                                .show();
+                    }
+                });
             }
         });
 

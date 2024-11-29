@@ -16,24 +16,22 @@
         android:theme="@style/Theme.Pistaypato"
         tools:targetApi="31">
         <activity
-            android:name=".ExitoActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Pistaypato" />
-        <activity
             android:name=".Registracion"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".iniciaSesion"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ListarFragment"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>

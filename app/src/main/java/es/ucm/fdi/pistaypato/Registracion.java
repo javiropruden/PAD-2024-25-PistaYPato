@@ -97,17 +97,12 @@ public class Registracion extends AppCompatActivity {
                 valid = false;
             }
 
-
-
             if(valid) {
                 //aqui se registra el usuario realiza el registro en firebase
-                User usuario = new User(name, lastName, email, password);
+                User usuario = new User(name, lastName, email, ppa.hashPassword(password));
                 ppa.addUser(usuario);
                 finish();
             }
-
-
-
         });
 
 
