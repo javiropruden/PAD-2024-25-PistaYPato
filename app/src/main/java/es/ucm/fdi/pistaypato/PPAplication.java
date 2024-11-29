@@ -17,6 +17,7 @@ public class PPAplication extends Application {
     public ArrayList<String> badmintonFields;
     public JSONArray jsonArray;
 
+
     // Referencias para Firebase
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference usersReference;
