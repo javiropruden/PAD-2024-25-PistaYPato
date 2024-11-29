@@ -3,6 +3,7 @@ package es.ucm.fdi.pistaypato;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -20,8 +21,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import android.os.Bundle;
 import android.util.Log;
 
@@ -89,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
         pistas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
 
                 // Obtenemos la referencia a la base de datos en "Instalaciones"
                 DatabaseReference db = firebaseDatabase.getReference("Instalaciones");
-
                 // Crear una lista de pistas (puedes inicializarla con objetos si necesitas)
                 List<Pista> pista = new ArrayList<>();
                 pista.add(new Pista());
@@ -119,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
                             });
                 } else {
                     Log.e("Firebase", "Error: ID generado es nulo");
-                }
+                }*/
+                createInstallationsFromPolideportivos();
 
                 // Mostrar un fragmento
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -138,13 +144,123 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    private void createInstallationsFromPolideportivos() {
+        // Referencia a Firebase
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference polideportivosRef = firebaseDatabase.getReference("Polideportivos");
+        DatabaseReference instalacionesRef = firebaseDatabase.getReference("Instalaciones");
 
+        // Leer los polideportivos desde Firebase
+        polideportivosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    // Obtener los datos del polideportivo
+                    Map<String, Object> polideportivo = (Map<String, Object>) snapshot.getValue();
+                    if (polideportivo != null) {
+                        String nombre = (String) polideportivo.get("nombre");
+
+                        if (nombre != null) {
+                            List<Pista> pistas = new ArrayList<>();
+                            pistas.add(new Pista()); // Primera pista
+                            pistas.add(new Pista()); // Segunda pista
+
+                            Instalacion instalacion = new Instalacion(nombre, pistas);
+
+                            // Guardar la instalación en Firebase
+                            String id = instalacionesRef.push().getKey();
+                            if (id != null) {
+                                instalacion.setId(id);
+                                instalacionesRef.child(id).setValue(instalacion)
+                                        .addOnSuccessListener(aVoid -> Log.d("Firebase", "Instalación creada correctamente para: " + nombre))
+                                        .addOnFailureListener(e -> Log.e("Firebase", "Error al crear instalación para: " + nombre, e));
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase Error", "Error al leer los polideportivos", databaseError.toException());
+            }
+        });
+    }
     private void showFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.middle_section, fragment);
         transaction.addToBackStack(null);  // Si deseas permitir la navegación hacia atrás
         transaction.commit();
     }
+
+
+    /*private void getBadmintonFieldsEnLaBD() {
+        String url = "https://datos.madrid.es/egob/catalogo/200186-0-polideportivos.json";
+        // API de la Comunidad de Madrid
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Referencia a Firebase
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
+        DatabaseReference db = firebaseDatabase.getReference("Polideportivos");
+
+        // Limpia la lista local
+        app.badmintonFields.clear();
+        app.badmintonFields.add(getString(R.string.selecionar)); // Añadir opción inicial
+
+        // Realizar solicitud a la API
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("API Response", response);
+                            JSONObject jsonResponse = new JSONObject(response);
+                            app.jsonArray = jsonResponse.optJSONArray("@graph");
+
+                            if (app.jsonArray != null) {
+                                for (int i = 0; i < app.jsonArray.length(); i++) {
+                                    JSONObject field = app.jsonArray.getJSONObject(i);
+
+                                    JSONObject organization = field.optJSONObject("organization");
+                                    if (organization != null) {
+                                        String services = organization.optString("services", ""); // Obtiene los servicios
+
+                                        // Si contiene "bádminton" o "badminton", agrega el nombre del centro
+                                        if (services.toLowerCase().contains("bádminton") || services.toLowerCase().contains("badminton")) {
+                                            String nombre = field.optString("title", "Sin Título"); // Obtiene el nombre del centro
+                                            app.badmintonFields.add(nombre); // Agrega el nombre del centro a la lista
+
+                                            // Crear un objeto Instalacion para subirlo a Firebase
+                                            Map<String, Object> polideportivo = new HashMap<>();
+                                            polideportivo.put("nombre", nombre);
+                                            polideportivo.put("servicios", services);
+
+                                            // Generar un ID único en Firebase
+                                            String id = db.push().getKey();
+                                            if (id != null) {
+                                                db.child(id).setValue(polideportivo)
+                                                        .addOnSuccessListener(aVoid -> Log.d("Firebase", "Polideportivo agregado correctamente"))
+                                                        .addOnFailureListener(e -> Log.e("Firebase", "Error al agregar el polideportivo", e));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            Log.e("JSON Error", "Error al parsear los datos JSON", e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("API Error", "Error al obtener datos", error);
+            }
+        });
+
+        queue.add(stringRequest);
+    }*/
+
 
     private void getBadmintonFields() {
         String url = "https://datos.madrid.es/egob/catalogo/200186-0-polideportivos.json";
