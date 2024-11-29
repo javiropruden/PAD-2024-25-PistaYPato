@@ -3,9 +3,11 @@ package es.ucm.fdi.pistaypato;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ModificarPerfilFragment extends Fragment {
@@ -34,6 +44,12 @@ public class ModificarPerfilFragment extends Fragment {
     private ImageButton volver;
 
     private User usuario;
+    private DatabaseReference db;
+    private SolitarioAdapter adapter;
+    private List<Solitario> solitarioList;
+    private Solitario seleccionado;
+
+    private String emailOriginal;
 
     public ModificarPerfilFragment() {
         // Required empty public constructor
@@ -61,8 +77,14 @@ public class ModificarPerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_modificar_perfil, container, false);
-        this.app = (PPAplication) requireActivity().getApplication();
-        this.usuario = this.app.getPropietario();
+        try{
+            this.app = (PPAplication) requireActivity().getApplication();
+            this.usuario = this.app.getPropietario();
+        }
+        catch(Exception e){
+            showErrorMessage("Error", "Error en la carga del usuario");
+        }
+        if(this.usuario == null) this.usuario = new User("a", "a", "a", "a");
         this.editar = view.findViewById(R.id.modificar_edit);
         this.nombre = view.findViewById(R.id.modificar_name);
         this.apellido = view.findViewById(R.id.modificar_surname);
@@ -70,6 +92,17 @@ public class ModificarPerfilFragment extends Fragment {
         this.password = view.findViewById(R.id.modificar_password);
         this.repeatPassword = view.findViewById(R.id.modificar_repeat_password);
         this.volver = getActivity().findViewById(R.id.volver);
+
+        this.emailOriginal = this.usuario.getEmail(); //Para guardarlo por si se cambia
+
+        this.solitarioList = new ArrayList<>();
+        this.adapter = new SolitarioAdapter(solitarioList, new SolitarioAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Solitario solitario) {
+                seleccionado = solitario;
+            }
+        });
+        this.db = app.getSolitariosReference();
 
         this.volver.setVisibility(View.VISIBLE);
         this.volver.setOnClickListener(new View.OnClickListener() {
@@ -91,19 +124,21 @@ public class ModificarPerfilFragment extends Fragment {
                 }
                 else{
                     if(!nombre.getText().toString().isEmpty()){
-                        //cambiar nombre en base de datos
+                        usuario.setFirstName(nombre.getText().toString());
                     }
                     if(!apellido.getText().toString().isEmpty()){
-                        //cambiar apellido en base de datos
+                        usuario.setLastName(apellido.getText().toString());
                     }
                     if(!email.getText().toString().isEmpty()){
-                        //cambiar email en base de datos
+                        usuario.setEmail(email.getText().toString());
                     }
                     if(!password.getText().toString().isEmpty() && !repeatPassword.getText().toString().isEmpty() &&
                     password.getText().toString().equals(repeatPassword.getText().toString())){
-                        //cambiar contraseña en base de datos
+                        usuario.setPassword(password.getText().toString());
                     }
 
+                    app.removeUser(emailOriginal);
+                    app.addUser(usuario);
                     openFragment(new PerfilFragment());
                 }
             }

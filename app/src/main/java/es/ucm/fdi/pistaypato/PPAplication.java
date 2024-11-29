@@ -47,14 +47,23 @@ public class PPAplication extends Application {
     }
 
     // Método para agregar un nuevo usuario a Firebase Realtime Database
-    public void addUser( String firstName, String lastName, String email, String password) {
-        User newUser = new User(firstName, lastName, email, password);
-        usersReference.child(email).setValue(newUser)
+    public void addUser( User newUser ) {
+        usersReference.child(newUser.getEmail()).setValue(newUser)
                 .addOnSuccessListener(aVoid -> {
                     System.out.println("Usuario añadido correctamente");
                 })
                 .addOnFailureListener(e -> {
                     System.err.println("Error al añadir usuario: " + e.getMessage());
+                });
+    }
+
+    public void removeUser(String email){
+        usersReference.child(email).removeValue()
+                .addOnSuccessListener(aVoid -> {
+                    System.out.println("Usuario eliminado correctamente");
+                })
+                .addOnFailureListener(e -> {
+                    System.err.println("Error al eliminar usuario: " + e.getMessage());
                 });
     }
 
