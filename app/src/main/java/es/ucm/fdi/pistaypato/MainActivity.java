@@ -107,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //PARA PRUEBAS HE CREADO ESE USUARIO
                 User usuario = new User( "Javi", "Rodriguez", "javirod@gmail.com", "hola123");
+
                 showFragment(new PerfilFragment(usuario));
 
             }

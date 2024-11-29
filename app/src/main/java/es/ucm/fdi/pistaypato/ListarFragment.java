@@ -128,8 +128,17 @@ public class ListarFragment extends Fragment {
                             perfiles.add(app.getPropietario());
 
                             // Guardar la lista actualizada
+                            List<User> finalPerfiles = perfiles;
+
                             sol.child("usuarios").setValue(perfiles)
                                     .addOnSuccessListener(aVoid ->{
+                                        String mensaje = "";
+                                        String asunto = "";
+
+                                        for(User u : finalPerfiles){
+                                            app.escribirEmail(u.getEmail(), asunto, mensaje);
+                                        }
+
                                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                                         MensagesFragment panelMensaje;
                                         panelMensaje = MensagesFragment.newInstance("TRUE", "ANADIR");
