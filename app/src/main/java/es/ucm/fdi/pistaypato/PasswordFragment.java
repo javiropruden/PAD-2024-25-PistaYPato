@@ -64,9 +64,7 @@ public class PasswordFragment extends Fragment {
         catch(NullPointerException e){
             showErrorMessage("Error", "Error en la carga del usuario");
         }
-
         if(this.usuario == null) this.usuario = new User("a", "a", "a", "a");
-
         this.continuar = view.findViewById(R.id.password_continue);
         this.password = view.findViewById(R.id.password_password);
         this.volver = getActivity().findViewById(R.id.volver);

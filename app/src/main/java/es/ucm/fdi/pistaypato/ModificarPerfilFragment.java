@@ -84,9 +84,7 @@ public class ModificarPerfilFragment extends Fragment {
         catch(Exception e){
             showErrorMessage("Error", "Error en la carga del usuario");
         }
-
         if(this.usuario == null) this.usuario = new User("a", "a", "a", "a");
-
         this.editar = view.findViewById(R.id.modificar_edit);
         this.nombre = view.findViewById(R.id.modificar_name);
         this.apellido = view.findViewById(R.id.modificar_surname);

@@ -69,9 +69,7 @@ public class PerfilFragment extends Fragment {
                     .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                     .show();
         }
-
         if(this.user == null) this.user = new User("a","a","a","a");
-
         this.nombre = view.findViewById(R.id.perfil_name);
         this.email = view.findViewById(R.id.perfil_email);
         String sfirstName = user.getFirstName() != null ? user.getFirstName() : "";
