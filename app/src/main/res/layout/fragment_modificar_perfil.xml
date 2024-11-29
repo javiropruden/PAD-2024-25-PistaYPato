@@ -7,89 +7,120 @@
     tools:context=".ModificarPerfilFragment">
 
     <!-- Parte central - Contenedor principal -->
-<FrameLayout
-android:id="@+id/modificar_section"
-android:layout_width="match_parent"
-android:layout_height="0dp"
-android:layout_alignParentTop="true"
-android:layout_alignParentBottom="true"
-android:layout_marginTop="0dp"
-android:layout_marginBottom="0dp"
-android:background="#B0B0B0"> <!-- Fondo blanco para el contenido interno -->
-
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
-
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/modificar_section"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:background="?attr/colorPrimary">
 
-        <!-- Campo Nombre -->
-        <EditText
-            android:id="@+id/modificar_name"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@android:drawable/editbox_background"
-            android:hint="Nombre"
-            android:padding="12dp" />
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
-        <!-- Campo Apellido -->
-        <EditText
-            android:id="@+id/modificar_surname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@android:drawable/editbox_background"
-            android:hint="Apellido"
-            android:padding="12dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <!-- Campo Email -->
-        <EditText
-            android:id="@+id/modificar_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@android:drawable/editbox_background"
-            android:hint="Correo"
-            android:inputType="textEmailAddress"
-            android:padding="12dp" />
+                <!-- Campo Nombre -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre:"
+                    android:layout_marginBottom="4dp"
+                    android:textAppearance="?attr/textAppearanceBody1" />
+                <EditText
+                    android:id="@+id/modificar_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="Nombre"
+                    android:padding="12dp" />
 
-        <!-- Campo Contraseña -->
-        <EditText
-            android:id="@+id/modificar_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@android:drawable/editbox_background"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            android:padding="12dp" />
+                <!-- Campo Apellido -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apellido:"
+                    android:layout_marginBottom="4dp"
+                    android:textAppearance="?attr/textAppearanceBody1" />
+                <EditText
+                    android:id="@+id/modificar_surname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="Apellido"
+                    android:padding="12dp" />
 
-        <!-- Campo Repetir Contraseña -->
-        <EditText
-            android:id="@+id/modificar_repeat_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@android:drawable/editbox_background"
-            android:hint="Repite contraseña"
-            android:inputType="textPassword"
-            android:padding="12dp" />
+                <!-- Campo Email -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Correo Electrónico:"
+                    android:layout_marginBottom="4dp"
+                    android:textAppearance="?attr/textAppearanceBody1" />
+                <EditText
+                    android:id="@+id/modificar_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="Correo"
+                    android:inputType="textEmailAddress"
+                    android:padding="12dp" />
 
-        <!-- Botón de editar -->
-        <Button
-            android:id="@+id/modificar_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/editar" />
-    </LinearLayout>
-</ScrollView>
-</FrameLayout>
+                <!-- Campo Contraseña -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contraseña:"
+                    android:layout_marginBottom="4dp"
+                    android:textAppearance="?attr/textAppearanceBody1" />
+                <EditText
+                    android:id="@+id/modificar_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword"
+                    android:padding="12dp" />
 
-    </RelativeLayout>
+                <!-- Campo Repetir Contraseña -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Repite Contraseña:"
+                    android:layout_marginBottom="4dp"
+                    android:textAppearance="?attr/textAppearanceBody1" />
+                <EditText
+                    android:id="@+id/modificar_repeat_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="Repite contraseña"
+                    android:inputType="textPassword"
+                    android:padding="12dp" />
+
+                <!-- Botón de editar -->
+                <Button
+                    android:id="@+id/modificar_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="?attr/colorSecondaryVariant"
+                    android:fontFamily="@font/tipo1"
+                    android:text="@string/editar" />
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+</RelativeLayout>

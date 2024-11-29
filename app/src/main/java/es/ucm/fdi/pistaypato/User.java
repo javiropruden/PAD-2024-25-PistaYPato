@@ -9,7 +9,7 @@ public class User {
     public User() {
     }
 
-    public User( String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -17,7 +17,6 @@ public class User {
     }
 
     // Getters y setters
-
     public String getFirstName() { return firstName; }
 
     public void setFirstName(String firstName) {

@@ -57,8 +57,14 @@ public class PasswordFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_password, container, false);
-        this.app = (PPAplication) requireActivity().getApplication();
-        this.usuario = this.app.getPropietario();
+        try{
+            this.app = (PPAplication) requireActivity().getApplication();
+            this.usuario = this.app.getPropietario();
+        }
+        catch(NullPointerException e){
+            showErrorMessage("Error", "Error en la carga del usuario");
+        }
+        if(this.usuario == null) this.usuario = new User("a", "a", "a", "a");
         this.continuar = view.findViewById(R.id.password_continue);
         this.password = view.findViewById(R.id.password_password);
         this.volver = getActivity().findViewById(R.id.volver);

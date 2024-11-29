@@ -1,5 +1,6 @@
 package es.ucm.fdi.pistaypato;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -57,8 +58,18 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_perfil, container, false);
-        this.app = (PPAplication) requireActivity().getApplication();
-        this.user = this.app.getPropietario();
+        try{
+            this.app = (PPAplication) requireActivity().getApplication();
+            this.user = this.app.getPropietario();
+        }
+        catch(Exception e){
+            new AlertDialog.Builder(view.getContext())
+                    .setTitle("Error")
+                    .setMessage("Error en la carga del usuario")
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                    .show();
+        }
+        if(this.user == null) this.user = new User("a","a","a","a");
         this.nombre = view.findViewById(R.id.perfil_name);
         this.email = view.findViewById(R.id.perfil_email);
         String sfirstName = user.getFirstName() != null ? user.getFirstName() : "";
