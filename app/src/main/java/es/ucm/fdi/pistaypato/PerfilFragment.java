@@ -62,14 +62,16 @@ public class PerfilFragment extends Fragment {
             this.app = (PPAplication) requireActivity().getApplication();
             this.user = this.app.getPropietario();
         }
-        catch(Exception e){
+        catch(Exception e) {
             new AlertDialog.Builder(view.getContext())
                     .setTitle("Error")
                     .setMessage("Error en la carga del usuario")
                     .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                     .show();
         }
+
         if(this.user == null) this.user = new User("a","a","a","a");
+
         this.nombre = view.findViewById(R.id.perfil_name);
         this.email = view.findViewById(R.id.perfil_email);
         String sfirstName = user.getFirstName() != null ? user.getFirstName() : "";
