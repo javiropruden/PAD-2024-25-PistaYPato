@@ -135,9 +135,8 @@ public class ModificarPerfilFragment extends Fragment {
                     }
                     if(!password.getText().toString().isEmpty() && !repeatPassword.getText().toString().isEmpty() &&
                     password.getText().toString().equals(repeatPassword.getText().toString())){
-                        usuario.setPassword(password.getText().toString());
+                        usuario.setPassword(app.hashPassword(password.getText().toString()));
                     }
-
                     app.removeUser(emailOriginal);
                     app.addUser(usuario);
                     openFragment(new PerfilFragment());

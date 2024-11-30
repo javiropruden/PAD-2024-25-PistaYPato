@@ -35,33 +35,20 @@ public class IniciaSesion extends AppCompatActivity {
 
             if (email.isEmpty()) {
                 //mostar mensaje de error por no completar el campo correo
-                new AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage("completa correo")
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .show();
+                showErrorMessage("Error", "Correo no introducido");
                 valid = false;
             }
 
-
             if (password.isEmpty()) {
                 //mostar mensaje de error por no completar el campo contraseña
-                new AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage("completa contraseña")
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .show();
+                showErrorMessage("Error", "Contraseña no introducida");
                 valid = false;
 
             }
 
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 //mostar mensaje de error por correo no valido
-                new AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage("correo no valido")
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .show();
+                showErrorMessage("Error", "Correo no válido");
                 valid = false;
             }
 
@@ -71,11 +58,7 @@ public class IniciaSesion extends AppCompatActivity {
                         Intent intent = new Intent(IniciaSesion.this, MainActivity.class);
                         startActivity(intent);
                     } else {
-                        new AlertDialog.Builder(this)
-                                .setTitle("Error")
-                                .setMessage("Usuario o contraseña incorrectos")
-                                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                                .show();
+                        showErrorMessage("Error", "Usuario o contraseña incorrectos");
                     }
                 });
             }
@@ -85,5 +68,13 @@ public class IniciaSesion extends AppCompatActivity {
             Intent intent = new Intent(IniciaSesion.this, Registracion.class);
             startActivity(intent);
         });
+    }
+
+    private void showErrorMessage(String title, String message){
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

@@ -29,7 +29,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/tipo3"
+                android:fontFamily="@font/tipo1"
                 android:text="@string/buscarLista_Buscar_pista"
                 android:textSize="20sp" />
 
@@ -94,10 +94,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                android:layout_marginEnd="10dp"
-                    android:backgroundTint="?attr/colorSecondary"
-                android:fontFamily="@font/tipo1"
-                android:text="@string/buscarLista_buscar" />
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="?attr/colorSecondaryVariant"
+                    android:fontFamily="@font/tipo1"
+                    android:text="@string/buscarLista_buscar" />
 
                 <!-- Botón Crear -->
                 <Button
@@ -105,8 +105,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:backgroundTint="?attr/colorSecondary"
-                android:fontFamily="@font/tipo1"
+                    android:backgroundTint="?attr/colorSecondaryVariant"
+                    android:fontFamily="@font/tipo1"
                     android:text="@string/crear_lista" />
             </LinearLayout>
 
