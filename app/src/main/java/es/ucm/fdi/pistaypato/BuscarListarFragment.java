@@ -23,22 +23,20 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link buscarListarFragment#newInstance} factory method to
+ * Use the {@link BuscarListarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class buscarListarFragment extends Fragment {
+public class BuscarListarFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,7 +47,7 @@ public class buscarListarFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public buscarListarFragment() {
+    public BuscarListarFragment() {
         // Required empty public constructor
     }
 
@@ -62,8 +60,8 @@ public class buscarListarFragment extends Fragment {
      * @return A new instance of fragment buscarListarFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static buscarListarFragment newInstance(String param1, String param2) {
-        buscarListarFragment fragment = new buscarListarFragment();
+    public static BuscarListarFragment newInstance(String param1, String param2) {
+        BuscarListarFragment fragment = new BuscarListarFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

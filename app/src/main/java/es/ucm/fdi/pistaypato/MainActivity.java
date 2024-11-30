@@ -22,17 +22,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import android.os.Bundle;
+
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private Controller controller;
@@ -71,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new buscarListarFragment());
+                transaction.replace(R.id.middle_section, new BuscarListarFragment());
                 transaction.addToBackStack(null);  // Permitir navegar hacia atrás al presionar el botón de "atrás"
                 transaction.commit();
 
@@ -86,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Mostrar un fragmento
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new BusquedaActivity());
+                transaction.replace(R.id.middle_section, new BusquedaFragment());
                 transaction.addToBackStack(null); // Permitir navegar hacia atrás al presionar el botón de "atrás"
                 transaction.commit();
             }
@@ -163,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     public void inicial(){
         // Mostrar un fragmento
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.middle_section, new BusquedaActivity());
+        transaction.replace(R.id.middle_section, new BusquedaFragment());
         transaction.addToBackStack(null); // Permitir navegar hacia atrás al presionar el botón de "atrás"
         transaction.commit();
     }

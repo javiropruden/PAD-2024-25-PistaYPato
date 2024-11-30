@@ -56,5 +56,17 @@ dependencies {
     //Para email
     implementation("com.sun.mail:android-mail:1.6.2")
     implementation("com.sun.mail:android-activation:1.6.2")
+    //para los test
+    // Dependencias para pruebas
+    testImplementation("junit:junit:4.13.2")
+
+    // Dependencia para Mockk (recomendado para Kotlin)
+    testImplementation("io.mockk:mockk:1.13.4")
+
+    // Dependencia para coroutines en pruebas
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+
+    // Dependencias para Firebase Firestore en pruebas
+    testImplementation("com.google.firebase:firebase-firestore-ktx:24.7.1")
 }
 

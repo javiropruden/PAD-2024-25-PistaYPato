@@ -164,7 +164,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class BusquedaActivity extends Fragment {
+public class BusquedaFragment extends Fragment {
     private TextView dia;
     private FloatingActionButton floatingActionButton;
     private Spinner spinner;
@@ -175,7 +175,7 @@ public class BusquedaActivity extends Fragment {
     DatabaseReference db ;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.activity_busqueda, container, false);
+        this.view = inflater.inflate(R.layout.fragment_busqueda, container, false);
 
         app = (PPAplication) requireActivity().getApplication();
 
@@ -255,7 +255,7 @@ public class BusquedaActivity extends Fragment {
                     FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                    ReservaActivity reservar = ReservaActivity.newInstance(fecha, sp.getSelectedItem().toString());
+                    ReservaFragment reservar = ReservaFragment.newInstance(fecha, sp.getSelectedItem().toString());
                     transaction.replace(R.id.middle_section, reservar);
                     transaction.addToBackStack(null);
                     transaction.commit();

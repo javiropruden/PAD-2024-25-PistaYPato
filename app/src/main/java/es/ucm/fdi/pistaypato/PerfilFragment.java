@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 public class PerfilFragment extends Fragment {
@@ -86,7 +85,7 @@ public class PerfilFragment extends Fragment {
         this.volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new BusquedaActivity());
+                openFragment(new BusquedaFragment());
                 /*FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.middle_section, new BusquedaActivity());

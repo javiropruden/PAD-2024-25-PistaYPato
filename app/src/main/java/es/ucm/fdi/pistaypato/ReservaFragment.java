@@ -1,7 +1,5 @@
 package es.ucm.fdi.pistaypato;
 
-import static es.ucm.fdi.pistaypato.R.color.white;
-
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -25,7 +23,7 @@ import androidx.fragment.app.FragmentTransaction;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ReservaActivity extends Fragment {
+public class ReservaFragment extends Fragment {
     private View view;
 
     PPAplication app;
@@ -47,7 +45,7 @@ public class ReservaActivity extends Fragment {
 
     @SuppressLint("WrongViewCast")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.view = inflater.inflate(R.layout.activity_resultado, container, false);
+        this.view = inflater.inflate(R.layout.fragment_resultado, container, false);
 
         ImageButton volver = getActivity().findViewById(R.id.volver);
         volver.setVisibility(View.VISIBLE);
@@ -57,7 +55,7 @@ public class ReservaActivity extends Fragment {
             public void onClick(View v) {
                 FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new BusquedaActivity());
+                transaction.replace(R.id.middle_section, new BusquedaFragment());
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
@@ -207,8 +205,8 @@ public class ReservaActivity extends Fragment {
         }
     }
 
-    public static ReservaActivity newInstance(String param1, String param2) {
-        ReservaActivity fragment = new ReservaActivity();
+    public static ReservaFragment newInstance(String param1, String param2) {
+        ReservaFragment fragment = new ReservaFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

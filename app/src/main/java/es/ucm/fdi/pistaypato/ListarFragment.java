@@ -19,7 +19,6 @@ import android.widget.ImageButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -114,7 +113,7 @@ public class ListarFragment extends Fragment {
         this.volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFragment(new BusquedaActivity());
+                openFragment(new BusquedaFragment());
                 /*FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.middle_section, new BusquedaActivity());

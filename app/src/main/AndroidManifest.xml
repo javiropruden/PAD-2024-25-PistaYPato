@@ -19,7 +19,7 @@
             android:name=".Registracion"
             android:exported="true" />
         <activity
-            android:name=".iniciaSesion"
+            android:name=".IniciaSesion"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

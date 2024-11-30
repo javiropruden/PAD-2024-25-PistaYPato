@@ -5,14 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class iniciaSesion extends AppCompatActivity {
+public class IniciaSesion extends AppCompatActivity {
 
     private Button iniciarSesion;
     private Button registrarse;
@@ -23,7 +19,7 @@ public class iniciaSesion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inicia_sesion);
+        setContentView(R.layout.fragment_inicia_sesion);
 
         iniciarSesion = findViewById(R.id.loginButton);
         registrarse = findViewById(R.id.registerButton);
@@ -61,7 +57,7 @@ public class iniciaSesion extends AppCompatActivity {
             if (valid) {
                 ppa.checkPassword(email, ppa.hashPassword(password), isValid -> {
                     if (isValid) {
-                        Intent intent = new Intent(iniciaSesion.this, MainActivity.class);
+                        Intent intent = new Intent(IniciaSesion.this, MainActivity.class);
                         startActivity(intent);
                     } else {
                         new AlertDialog.Builder(this)
@@ -75,7 +71,7 @@ public class iniciaSesion extends AppCompatActivity {
         });
 
         registrarse.setOnClickListener(v -> {
-            Intent intent = new Intent(iniciaSesion.this, Registracion.class);
+            Intent intent = new Intent(IniciaSesion.this, Registracion.class);
             startActivity(intent);
         });
     }
