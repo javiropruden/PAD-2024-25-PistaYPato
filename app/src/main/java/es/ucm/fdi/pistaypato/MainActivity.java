@@ -29,7 +29,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    private Controller controller;
     PPAplication app;
 
     Button chat;
