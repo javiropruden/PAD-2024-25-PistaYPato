@@ -130,34 +130,57 @@ public class PerfilFragment extends Fragment {
                 if (dataSnapshot.exists()) {
                     tablaReservas.removeAllViews(); // Limpia la tabla antes de rellenarla
 
-                    for (DataSnapshot solitarioSnapshot : dataSnapshot.getChildren()) {
-                        if (solitarioSnapshot.hasChild("usuarios")) {
-                            for (DataSnapshot usuarioSnapshot : solitarioSnapshot.child("usuarios").getChildren()) {
-                                User usuario = usuarioSnapshot.getValue(User.class);
+                    // Iterar sobre los elementos de la colección "Solitarios"
+                    for (DataSnapshot reservaSnapshot : dataSnapshot.getChildren()) {
+                        // Obtener los detalles de la reserva (lugar y fecha)
+                        String lugar = reservaSnapshot.child("lugar").getValue(String.class);
+                        String fecha = reservaSnapshot.child("fecha").getValue(String.class);
 
-                                if (usuario != null && usuario.getEmail().equals(user.getEmail())) {
-                                    String lugar = solitarioSnapshot.child("lugar").getValue(String.class);
-                                    String fecha = solitarioSnapshot.child("fecha").getValue(String.class);
+                        // Verificar si el usuario está asociado con esta reserva
+                        if (reservaSnapshot.hasChild("usuarios")) {
+                            // Iterar sobre los usuarios en la colección "Users"
+                            for (DataSnapshot userSnapshot : reservaSnapshot.child("usuarios").getChildren()) {
+                                String emailUsuario = userSnapshot.child("email").getValue(String.class);
 
+                                // Sanitizar el email del usuario actual (reemplazar los puntos por comas)
+                                String sanitizedCurrentUserEmail = user.getEmail().replace(".", ",");
+
+                                // Si el email del usuario coincide con el email del usuario actual
+                                if (emailUsuario != null && emailUsuario.equals(sanitizedCurrentUserEmail)) {
+                                    // Crear una nueva fila para la tabla
                                     TableRow fila = new TableRow(getContext());
                                     fila.setPadding(8, 8, 8, 8);
 
+                                    // Asegurarse de que la fila no sea interactiva
+                                    fila.setClickable(false);
+                                    fila.setFocusable(false);
+                                    fila.setEnabled(false);
+
+                                    // Crear las vistas de texto para cada campo
                                     TextView lugarView = new TextView(getContext());
                                     lugarView.setText(lugar != null ? lugar : "Desconocido");
                                     lugarView.setPadding(8, 8, 8, 8);
+                                    lugarView.setFocusable(false); // No editable
+                                    lugarView.setClickable(false); // No clickeable
 
                                     TextView fechaView = new TextView(getContext());
                                     fechaView.setText(fecha != null ? fecha : "Sin fecha");
                                     fechaView.setPadding(8, 8, 8, 8);
+                                    fechaView.setFocusable(false); // No editable
+                                    fechaView.setClickable(false); // No clickeable
 
+                                    // Agregar las vistas a la fila
                                     fila.addView(lugarView);
                                     fila.addView(fechaView);
 
+                                    // Agregar la fila a la tabla
                                     tablaReservas.addView(fila);
                                 }
                             }
                         }
                     }
+                } else {
+                    Log.d("PerfilFragment", "No hay reservas disponibles.");
                 }
             }
 
@@ -167,6 +190,4 @@ public class PerfilFragment extends Fragment {
             }
         });
     }
-
-
 }
