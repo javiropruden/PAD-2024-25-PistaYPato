@@ -32,6 +32,8 @@ public class PPAplication extends Application {
     private String contrasenaEmailRemitente;
     private User propietario;
     private DatabaseReference solitariosReference;
+    private DatabaseReference instalacionesReference;
+
 
     @Override
     public void onCreate() {
@@ -46,6 +48,7 @@ public class PPAplication extends Application {
         FirebaseApp.initializeApp(this);
         firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
         usersReference = firebaseDatabase.getReference("Users");
+
         //si no existe la referencia de usuarios la crea
         usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -60,6 +63,9 @@ public class PPAplication extends Application {
                 System.err.println("Error checking users reference: " + databaseError.getMessage());
             }
         });
+
+        this.instalacionesReference = firebaseDatabase.getReference("Instalaciones");
+
         // Inicializa la referencia de solitarios
         this.solitariosReference = firebaseDatabase.getReference("Solitarios");
     }
@@ -166,4 +172,9 @@ public class PPAplication extends Application {
         }
         return hashedPassword;
     }
+
+    public DatabaseReference getInstalacionesReference() {
+        return instalacionesReference;
+    }
+
 }

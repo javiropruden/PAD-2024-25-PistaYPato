@@ -154,9 +154,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class BusquedaActivity extends Fragment {
     private TextView dia;
@@ -165,7 +171,8 @@ public class BusquedaActivity extends Fragment {
     private View view;
     PPAplication app;
     private Button buscar;
-    private String fecha = "";
+    private String fecha;
+    DatabaseReference db ;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.activity_busqueda, container, false);
@@ -176,6 +183,7 @@ public class BusquedaActivity extends Fragment {
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         spinner = view.findViewById(R.id.spinner);
         buscar = view.findViewById(R.id.buscar);
+        db = app.getInstalacionesReference();
 
         getActivity().findViewById(R.id.volver).setVisibility(View.GONE);
 
@@ -193,13 +201,60 @@ public class BusquedaActivity extends Fragment {
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String selectedItem = spinner.getSelectedItem().toString();
                 if (selectedItem.isEmpty() || selectedItem.equals(getString(R.string.selecionar))) {
                     Toast.makeText(getContext(), "Por favor, selecciona una opción", Toast.LENGTH_SHORT).show();
                 } else {
+
+                    Spinner sp = view.findViewById(R.id.spinner);
+
+                    db.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            boolean encontrado = false;
+
+                            // Recorremos todas las instalaciones
+                            for (DataSnapshot instalacionSnapshot : dataSnapshot.getChildren()) {
+                                Instalacion instalacion = instalacionSnapshot.getValue(Instalacion.class);
+
+                                // Comprobamos si el nombre y la fecha coinciden
+                                if (instalacion != null && instalacion.getNombre().equals(sp.getSelectedItem().toString()) && instalacion.getFecha().equals(fecha)) {
+                                    // Si encontramos una coincidencia, hacemos algo con la instalación
+                                    Log.d("Firebase", "Instalación encontrada: " + instalacion.getNombre());
+                                    encontrado = true;
+                                    break; // Detenemos la búsqueda
+                                }
+                            }
+
+                            if (!encontrado) {
+
+                                // Crear una lista de pistas (puedes inicializarla con objetos si necesitas)
+                                List<Pista> pista = new ArrayList<>();
+                                pista.add(new Pista());
+                                pista.add(new Pista());
+
+                                //Crear uno nuevo
+                                Instalacion nuevaIns = new Instalacion(sp.getSelectedItem().toString(), pista, fecha);
+
+                                crearBBDDinstalacion(nuevaIns);
+
+                                Log.d("Firebase", "Instalación no encontrada");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            // Manejar el error
+                            Log.e("Firebase", "Error al leer datos: " + databaseError.getMessage());
+                        }
+                    });
+
+
+
                     FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    Spinner sp = view.findViewById(R.id.spinner);
+
                     ReservaActivity reservar = ReservaActivity.newInstance(fecha, sp.getSelectedItem().toString());
                     transaction.replace(R.id.middle_section, reservar);
                     transaction.addToBackStack(null);
@@ -220,7 +275,7 @@ public class BusquedaActivity extends Fragment {
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         String fechaActual = dateFormat.format(calendar.getTime());
-
+        fecha = fechaActual;
         dia.setText(fechaActual);
     }
 
@@ -261,5 +316,21 @@ public class BusquedaActivity extends Fragment {
 
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.show();
+    }
+
+
+
+    public void crearBBDDinstalacion(Instalacion ins){
+        String id = db.push().getKey();
+        ins.setId(id);
+
+        db.child(id).setValue(ins)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d("Firebase", "Instalación agregada correctamente");
+                    } else {
+                        Log.e("Firebase", "Error al agregar instalación", task.getException());
+                    }
+                });
     }
 }
