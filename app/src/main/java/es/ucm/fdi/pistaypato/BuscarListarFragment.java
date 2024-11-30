@@ -1,5 +1,6 @@
 package es.ucm.fdi.pistaypato;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
@@ -22,21 +23,20 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link buscarListarFragment#newInstance} factory method to
+ * Use the {@link BuscarListarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class buscarListarFragment extends Fragment {
+public class BuscarListarFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,7 +47,7 @@ public class buscarListarFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public buscarListarFragment() {
+    public BuscarListarFragment() {
         // Required empty public constructor
     }
 
@@ -60,8 +60,8 @@ public class buscarListarFragment extends Fragment {
      * @return A new instance of fragment buscarListarFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static buscarListarFragment newInstance(String param1, String param2) {
-        buscarListarFragment fragment = new buscarListarFragment();
+    public static BuscarListarFragment newInstance(String param1, String param2) {
+        BuscarListarFragment fragment = new BuscarListarFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -107,36 +107,32 @@ public class buscarListarFragment extends Fragment {
                 }
                 else{
 
-                    DatabaseReference databaseReference = app.getSolitariosReference();
-                    String id = databaseReference.push().getKey();
                     List<User> usuarios = new ArrayList<>();
                     usuarios.add(app.getPropietario());
-                    Solitario s = new Solitario(id,selectedItem,usuarios, tiempo);
+                    Solitario s = new Solitario("",selectedItem ,usuarios, tiempo);
+                    String id = app.crearSolitario(s);
+                    s.setId(id);
 
-                    databaseReference.child(id).setValue(s)
-                            .addOnSuccessListener(aVoid -> {
+                    if(id != null && !id.isEmpty()){
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        MensagesFragment panelMensaje;
+                        panelMensaje = MensagesFragment.newInstance("TRUE", "CREAR");
+                        transaction.replace(R.id.middle_section, panelMensaje);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
 
-                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                MensagesFragment panelMensaje;
-                                panelMensaje = MensagesFragment.newInstance("TRUE", "CREAR");
-                                transaction.replace(R.id.middle_section, panelMensaje);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
+                    }
+                    else{
 
-                                Log.d("Firebase", "Solitario agregado correctamente");
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        MensagesFragment panelMensaje;
+                        panelMensaje = MensagesFragment.newInstance("FALSE", "CREAR");
+                        transaction.replace(R.id.middle_section, panelMensaje);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
 
-                            })
-                            .addOnFailureListener(e -> {
+                    }
 
-                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                MensagesFragment panelMensaje;
-                                panelMensaje = MensagesFragment.newInstance("FALSE", "CREAR");
-                                transaction.replace(R.id.middle_section, panelMensaje);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-
-                                Log.e("Firebase", "Error al agregar el Solitario", e);
-                            });
                 }
             }
         });
@@ -149,6 +145,8 @@ public class buscarListarFragment extends Fragment {
                 showDatePickerDialog();
             }
         });
+
+        ponerfecha();
 
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +192,13 @@ public class buscarListarFragment extends Fragment {
                 },
                 year, month, day
         );
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.show();
     }
 
@@ -205,5 +210,14 @@ public class buscarListarFragment extends Fragment {
         } else {
             Log.e("Badminton Fields", "No se han cargado los campos de bádminton.");
         }
+    }
+
+    private void ponerfecha() {
+        Calendar calendar = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaActual = dateFormat.format(calendar.getTime());
+
+        dia.setText(fechaActual);
+        tiempo = fechaActual;
     }
 }

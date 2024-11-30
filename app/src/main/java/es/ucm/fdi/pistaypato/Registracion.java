@@ -49,68 +49,54 @@ public class Registracion extends AppCompatActivity {
 
             if (name.isEmpty()) {
                 //mostar mensaje de error por no completar el campo correo
-                new AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage("completa nombre usuario")
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .show();
+                showErrorMessage("Error", "Nombre no introducido");
                 valid = false;
             }
 
             if (valid && email.isEmpty()) {
-                //mostar mensaje de error por no completar el campo contraseña
-                new AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage("completa correo")
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .show();
+                //mostar mensaje de error por no completar el campo email
+                showErrorMessage("Error", "Email no introducido");
+                valid = false;
+            }
+
+            if (valid && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                //mostar mensaje de error por correo no valido
+                showErrorMessage("Error", "Correo no válido");
                 valid = false;
             }
 
             if (valid && lastName.isEmpty()) {
-                //mostar mensaje de error por no completar el campo contraseña
-                new AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage("completa correo")
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .show();
+                //mostar mensaje de error por no completar el campo nombre
+                showErrorMessage("Error", "Apellido no introducido");
                 valid = false;
             }
 
             if (valid && confirmPassword.isEmpty()) {
                 //mostar mensaje de error por no completar el campo contraseña
-                new AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage("completa campo confirmar contraseña")
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .show();
+                showErrorMessage("Error", "Introduce confirmar contraseña");
                 valid = false;
             }
 
             if (valid && !password.equals(confirmPassword)) {
                 //mostar mensaje de error por no completar el campo contraseña
-                new AlertDialog.Builder(this)
-                        .setTitle("Error")
-                        .setMessage("las contraseñas no coinciden")
-                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                        .show();
+                showErrorMessage("Error", "Las contraseñas no coinciden");
                 valid = false;
             }
 
-
-
             if(valid) {
                 //aqui se registra el usuario realiza el registro en firebase
-                User usuario = new User(name, lastName, email, password);
+                User usuario = new User(name, lastName, email, ppa.hashPassword(password));
                 ppa.addUser(usuario);
                 finish();
             }
-
-
-
         });
+    }
 
-
-
+    private void showErrorMessage(String title, String message){
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

@@ -4,11 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 public class Solitario {
-    String lugar;
-    int numPersonas;
-    String fecha;
-    List<User> usuarios;
-    String id;
+   private String lugar;
+   private int numPersonas;
+    private String fecha;
+    private List<User> usuarios;
+    private String id;
+
 
     public String getId() {
         return id;

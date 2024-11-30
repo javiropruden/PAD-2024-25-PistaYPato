@@ -13,11 +13,11 @@ import javax.mail.internet.MimeMessage;
 public class JavaMailAPI {
 
     private String correoRemitente;
-    private String contraseñaRemitente;
+    private String contrasenaRemitente;
 
-    public JavaMailAPI(String correoRemitente, String contraseñaRemitente) {
+    public JavaMailAPI(String correoRemitente, String contrasenaRemitente) {
         this.correoRemitente = correoRemitente;
-        this.contraseñaRemitente = contraseñaRemitente;
+        this.contrasenaRemitente = contrasenaRemitente;
     }
 
     public void enviarCorreo(String destinatario, String asunto, String mensaje) {
@@ -32,7 +32,7 @@ public class JavaMailAPI {
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(correoRemitente, contraseñaRemitente);
+                return new PasswordAuthentication(correoRemitente, contrasenaRemitente);
             }
         });
 
@@ -44,7 +44,9 @@ public class JavaMailAPI {
                     Message.RecipientType.TO,
                     InternetAddress.parse(destinatario)); // Destinatario
             message.setSubject(asunto); // Asunto del correo
-            message.setText(mensaje); // Mensaje
+
+            // Enviar el mensaje como HTML
+            message.setContent(mensaje, "text/html; charset=utf-8"); // Especificar el tipo de contenido como HTML
 
             // Enviar el correo
             Transport.send(message);

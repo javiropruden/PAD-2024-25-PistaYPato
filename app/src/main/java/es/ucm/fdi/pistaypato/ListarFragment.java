@@ -14,11 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -51,7 +51,7 @@ public class ListarFragment extends Fragment {
     private SolitarioAdapter adapter;
     private List<Solitario> solitarioList;
     private DatabaseReference databaseReference;
-
+    private ImageButton volver;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -108,6 +108,14 @@ public class ListarFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
+        this.volver = getActivity().findViewById(R.id.volver);
+        this.volver.setVisibility(View.VISIBLE);
+        this.volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFragment(new BuscarListarFragment());
+            }
+        });
 
         databaseReference = app.getSolitariosReference();
         this.anadir = view.findViewById(R.id.anadir);
@@ -116,63 +124,33 @@ public class ListarFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(selecionado != null){
-                    DatabaseReference sol = databaseReference.child(selecionado.getId());
-                    sol.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            List<User> perfiles = (List<User>) snapshot.getValue();
-
-                            if (perfiles == null) {
-                                perfiles = new ArrayList<>();
-                            }
-                            perfiles.add(app.getPropietario());
-
-                            // Guardar la lista actualizada
-                            List<User> finalPerfiles = perfiles;
-
-                            sol.child("usuarios").setValue(perfiles)
-                                    .addOnSuccessListener(aVoid ->{
-                                        String mensaje = "";
-                                        String asunto = "";
-
-                                        for(User u : finalPerfiles){
-                                            app.escribirEmail(u.getEmail(), asunto, mensaje);
-                                        }
-
-                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                        MensagesFragment panelMensaje;
-                                        panelMensaje = MensagesFragment.newInstance("TRUE", "ANADIR");
-                                        transaction.replace(R.id.middle_section, panelMensaje);
-                                        transaction.addToBackStack(null);
-                                        transaction.commit();
-                                        Log.d("Firebase", "Perfil agregado correctamente");
-                                    } )
-                                    .addOnFailureListener(e -> {
-                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                        MensagesFragment panelMensaje;
-                                        panelMensaje = MensagesFragment.newInstance("FALSE", "ANADIR");
-                                        transaction.replace(R.id.middle_section, panelMensaje);
-                                        transaction.addToBackStack(null);
-                                        transaction.commit();
-                                        Log.e("Firebase", "Error al agregar perfil", e);
-                                    });
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Log.e("Firebase", "Error al leer perfiles", error.toException());
-                        }
-                    });
 
 
+                    try{
+
+                        app.anadirSolitario(selecionado.getId(), selecionado.getLugar(), selecionado.getFecha());
+
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        MensagesFragment panelMensaje;
+                        panelMensaje = MensagesFragment.newInstance("TRUE", "ANADIR");
+                        transaction.replace(R.id.middle_section, panelMensaje);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
+                    }catch (Exception e){
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        MensagesFragment panelMensaje;
+                        panelMensaje = MensagesFragment.newInstance("FALSE", "ANADIR");
+                        transaction.replace(R.id.middle_section, panelMensaje);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
+                    }
 
                 }
 
             }
         });
-
-
-
 
         cargarDatos();
 
@@ -217,5 +195,11 @@ public class ListarFragment extends Fragment {
         });
     }
 
+    private void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.middle_section, fragment);
+        transaction.addToBackStack(null); // Permitir regresar al fragmento previo
+        transaction.commit();
+    }
 
 }

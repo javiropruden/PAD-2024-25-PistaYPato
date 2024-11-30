@@ -19,7 +19,8 @@
         android:layout_marginEnd="90dp"
         android:ems="10"
         android:inputType="text"
-        android:text="@string/nombre" />
+        android:textSize="12sp"
+    android:text="@string/nombre" />
 
     <!-- Campo de texto Día -->
     <EditText
@@ -34,6 +35,7 @@
         android:layout_marginEnd="90dp"
         android:ems="10"
         android:inputType="text"
+        android:textSize="12sp"
         android:text="@string/nombre" />
 
     <!-- RecyclerView para listar elementos -->

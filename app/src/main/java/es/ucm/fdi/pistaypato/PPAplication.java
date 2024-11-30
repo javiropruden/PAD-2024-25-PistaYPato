@@ -2,6 +2,10 @@ package es.ucm.fdi.pistaypato;
 
 import android.app.Application;
 import android.os.StrictMode;
+import android.util.Base64;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -12,7 +16,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PPAplication extends Application {
 
@@ -28,11 +36,13 @@ public class PPAplication extends Application {
     private String contrasenaEmailRemitente;
     private User propietario;
     private DatabaseReference solitariosReference;
+    private DatabaseReference instalacionesReference;
+    private SolitarioRepository SolitarioRepository;
+
 
     @Override
     public void onCreate() {
         super.onCreate();
-
 
         // Inicializa la lista
         badmintonFields = new ArrayList<>();
@@ -41,8 +51,29 @@ public class PPAplication extends Application {
         this.contrasenaEmailRemitente = "pgyeeplgqdejxmny";
         FirebaseApp.initializeApp(this);
         firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
-        usersReference = firebaseDatabase.getReference("users");
+        usersReference = firebaseDatabase.getReference("Users");
+
+
+        //si no existe la referencia de usuarios la crea
+        usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    usersReference.setValue("Users");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.err.println("Error checking users reference: " + databaseError.getMessage());
+            }
+        });
+
+        this.instalacionesReference = firebaseDatabase.getReference("Instalaciones");
+
+        // Inicializa la referencia de solitarios
         this.solitariosReference = firebaseDatabase.getReference("Solitarios");
+        SolitarioRepository = new SolitarioRepository(solitariosReference);
     }
 
     public DatabaseReference getSolitariosReference() {
@@ -50,8 +81,10 @@ public class PPAplication extends Application {
     }
 
     // Método para agregar un nuevo usuario a Firebase Realtime Database
+
     public void addUser( User newUser ) {
-        usersReference.child(newUser.getEmail()).setValue(newUser)
+        String sanitizedEmail = newUser.getEmail().replace(".", ",");
+        usersReference.child(sanitizedEmail).setValue(newUser)
                 .addOnSuccessListener(aVoid -> {
                     System.out.println("Usuario añadido correctamente");
                 })
@@ -61,7 +94,8 @@ public class PPAplication extends Application {
     }
 
     public void removeUser(String email){
-        usersReference.child(email).removeValue()
+        String sanitizedEmail = email.replace(".", ",");
+        usersReference.child(sanitizedEmail).removeValue()
                 .addOnSuccessListener(aVoid -> {
                     System.out.println("Usuario eliminado correctamente");
                 })
@@ -84,9 +118,18 @@ public class PPAplication extends Application {
     }
 
     //metodo para consultas la contraseña de un usuario es correcta o no
-    public boolean returnPassword(String email, String password){
-
-        return true;
+    public void checkPassword(String email, String password, final PasswordCallback callback) {
+        returnUser(email, new UserCallback() {
+            @Override
+            public void onCallback(User user) {
+                if (user != null && user.getPassword().equals(password)) {
+                    setPropietario(user);
+                    callback.onCallback(true);
+                }else{
+                    callback.onCallback(false);
+                }
+            }
+        });
     }
 
     public void escribirEmail(String destinatario, String asunto, String mensaje){
@@ -100,19 +143,119 @@ public class PPAplication extends Application {
         mailAPI.enviarCorreo(destinatario, asunto, mensaje);
     }
 
-    public User returnUser(String email) {
-        final User[] user = new User[1];
-        usersReference.child(email).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void returnUser(String email, final UserCallback callback) {
+        String sanitizedEmail = email.replace(".", ",");
+        usersReference.child(sanitizedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                user[0] = dataSnapshot.getValue(User.class);
+                User user = dataSnapshot.getValue(User.class);
+                callback.onCallback(user);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.err.println("Error al obtener usuario: " + databaseError.getMessage());
+                callback.onCallback(null);
             }
         });
-        return user[0];
+    }
+
+    public interface UserCallback {
+        void onCallback(User user);
+    }
+
+    public interface PasswordCallback {
+        void onCallback(boolean isValid);
+    }
+
+    public String hashPassword(String password) {
+        String hashedPassword = "";
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            hashedPassword = Base64.encodeToString(hash, Base64.DEFAULT);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hashedPassword;
+    }
+
+    public DatabaseReference getInstalacionesReference() {
+        return instalacionesReference;
+    }
+
+    public String crearSolitario(Solitario newSol){
+        String id = this.SolitarioRepository.crearSolitario(newSol);
+        if(id!= null && !id.isEmpty()){
+            String mensaje = "<p>Buenas, jugador:</p>" +
+                    "<p>Usted se añadió en el siguiente solitario:</p>" +
+                    "<ul>" +
+                    "<li><strong>Pista:</strong> " + newSol.getLugar() + "</li>" +
+                    "<li><strong>Día:</strong> " + newSol.getFecha() + "</li>" +
+                    "</ul>" +
+                    "<p><strong>Email de los otros jugadores:</strong><br>" +
+                    propietario.getEmail().replace(", ", "<br>") + "</p>" +
+                    "<p>Un saludo,<br> Pista y pato </p>";
+
+            String asunto = "Información sobre su partida de solitario creado";
+
+            this.escribirEmail(newSol.getUsuarios().get(0).getEmail(), asunto, mensaje);
+        }
+
+        return id;
+    }
+
+    public void anadirSolitario(String id, String lugar,String fecha){
+       boolean ok = true;
+
+        this.SolitarioRepository.anadirSolitario(id, getPropietario());
+
+        DatabaseReference sol = this.solitariosReference.child(id);
+
+        sol.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                List<String> emails = new ArrayList<>();
+                String emailes = "";
+                // Iterar sobre los elementos de la base de datos
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    User u = userSnapshot.getValue(User.class);  // Convertir el DataSnapshot en un objeto User
+                    if (u != null) {
+                         // Agregar el objeto User a la lista
+                        emails.add(u.getEmail());  // Agregar el correo electrónico a la lista de emails
+                        emailes = emailes + u.getEmail() + " , ";  // Concatenar los correos electrónicos en un string
+                    }
+                }
+                emails.add(propietario.getEmail());
+                emailes = emailes + propietario.getEmail() + " , ";
+
+                String mensaje = "<p>Buenas, jugador:</p>" +
+                        "<p>Usted se añadió en el siguiente solitario:</p>" +
+                        "<ul>" +
+                        "<li><strong>Pista:</strong> " + lugar + "</li>" +
+                        "<li><strong>Día:</strong> " + fecha + "</li>" +
+                        "</ul>" +
+                        "<p><strong>Email de los otros jugadores:</strong><br>" +
+                        emailes.replace(", ", "<br>") + "</p>" +
+                        "<p>Un saludo,<br> Pista y pato </p>";
+
+                String asunto = "Información sobre su partida de solitario";
+
+                for(String uno: emails) {
+                    Log.d("ANADIR", "Correo enviado a " + uno);
+                    escribirEmail(uno, asunto, mensaje);
+                }
+
+                escribirEmail(getPropietario().getEmail(), asunto, mensaje);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Error al leer perfiles", error.toException());
+            }
+        });
+
     }
 }

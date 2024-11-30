@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class ModificarPerfilFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -119,7 +120,7 @@ public class ModificarPerfilFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!password.getText().toString().isEmpty() &&
-                        password.getText().toString().equals(repeatPassword.getText().toString())){
+                        !password.getText().toString().equals(repeatPassword.getText().toString())){
                     showErrorMessage("Error", "Passwords don't match");
                 }
                 else{
@@ -134,9 +135,8 @@ public class ModificarPerfilFragment extends Fragment {
                     }
                     if(!password.getText().toString().isEmpty() && !repeatPassword.getText().toString().isEmpty() &&
                     password.getText().toString().equals(repeatPassword.getText().toString())){
-                        usuario.setPassword(password.getText().toString());
+                        usuario.setPassword(app.hashPassword(password.getText().toString()));
                     }
-
                     app.removeUser(emailOriginal);
                     app.addUser(usuario);
                     openFragment(new PerfilFragment());

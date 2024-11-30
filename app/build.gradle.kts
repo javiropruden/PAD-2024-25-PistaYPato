@@ -34,6 +34,7 @@ android {
         viewBinding = true
     }
 }
+
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -55,5 +56,19 @@ dependencies {
     //Para email
     implementation("com.sun.mail:android-mail:1.6.2")
     implementation("com.sun.mail:android-activation:1.6.2")
+    //para los test
+
+
+
+    // Dependencia para pruebas unitarias con JUnit
+    testImplementation("junit:junit:4.13.2")
+
+    // Dependencias para mockear Firebase con Mockito
+    testImplementation("org.mockito:mockito-core:4.8.0")
+    testImplementation("org.mockito:mockito-inline:4.8.0")
+
+    // Firebase para pruebas unitarias
+    testImplementation("com.google.firebase:firebase-database:20.2.0")
+
 }
 

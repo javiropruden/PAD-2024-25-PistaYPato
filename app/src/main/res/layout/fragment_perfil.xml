@@ -82,6 +82,7 @@
                     android:text="@string/profile_reservas_section" />
 
                 <TableLayout
+                    android:id="@+id/perfil_tabla_reservas"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:stretchColumns="*">
