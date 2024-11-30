@@ -120,7 +120,7 @@ public class ModificarPerfilFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(!password.getText().toString().isEmpty() &&
-                        password.getText().toString().equals(repeatPassword.getText().toString())){
+                        !password.getText().toString().equals(repeatPassword.getText().toString())){
                     showErrorMessage("Error", "Passwords don't match");
                 }
                 else{

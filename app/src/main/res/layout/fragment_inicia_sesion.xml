@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:padding="16dp"
+            android:padding="0dp"
             android:background="?attr/colorPrimary">
 
             <ImageView
@@ -33,9 +34,9 @@
 
         <!-- Contenedor central -->
         <LinearLayout
-            android:id="@+id/centerContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/center_section"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical"
@@ -46,15 +47,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="8dp"
+                android:padding="18dp"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/usernameLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="8dp"
                     android:text="@string/email_label"
+                    android:fontFamily="@font/tipo1"
                     android:textSize="16sp" />
 
                 <EditText
@@ -85,8 +86,8 @@
                     android:id="@+id/passwordLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingEnd="8dp"
                     android:text="@string/password_label"
+                    android:fontFamily="@font/tipo1"
                     android:textSize="16sp" />
 
                 <EditText
@@ -123,6 +124,7 @@
                     android:minHeight="48dp"
                     android:padding="16dp"
                     android:backgroundTint="?attr/colorSecondaryVariant"
+                    android:fontFamily="@font/tipo1"
                     android:text="@string/iniciar_sesion_button" />
 
                 <View
@@ -138,6 +140,7 @@
                     android:minHeight="48dp"
                     android:padding="16dp"
                     android:backgroundTint="?attr/colorSecondaryVariant"
+                    android:fontFamily="@font/tipo1"
                     android:text="@string/register_button" />
             </LinearLayout>
         </LinearLayout>

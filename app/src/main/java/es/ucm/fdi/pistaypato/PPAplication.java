@@ -94,7 +94,8 @@ public class PPAplication extends Application {
     }
 
     public void removeUser(String email){
-        usersReference.child(email).removeValue()
+        String sanitizedEmail = email.replace(".", ",");
+        usersReference.child(sanitizedEmail).removeValue()
                 .addOnSuccessListener(aVoid -> {
                     System.out.println("Usuario eliminado correctamente");
                 })
