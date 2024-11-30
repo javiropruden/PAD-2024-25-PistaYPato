@@ -204,7 +204,7 @@ public class PPAplication extends Application {
         return id;
     }
 
-    public boolean anadirSolitario(String id, String lugar,String fecha){
+    public void anadirSolitario(String id, String lugar,String fecha){
        boolean ok = true;
 
         this.SolitarioRepository.anadirSolitario(id, getPropietario());
@@ -226,6 +226,8 @@ public class PPAplication extends Application {
                         emailes = emailes + u.getEmail() + " , ";  // Concatenar los correos electrónicos en un string
                     }
                 }
+                emails.add(propietario.getEmail());
+                emailes = emailes + propietario.getEmail() + " , ";
 
                 String mensaje = "<p>Buenas, jugador:</p>" +
                         "<p>Usted se añadió en el siguiente solitario:</p>" +
@@ -253,9 +255,6 @@ public class PPAplication extends Application {
                 Log.e("Firebase", "Error al leer perfiles", error.toException());
             }
         });
-
-
-        return ok;
 
     }
 }
