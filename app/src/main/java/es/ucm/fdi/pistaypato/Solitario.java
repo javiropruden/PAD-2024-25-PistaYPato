@@ -10,6 +10,7 @@ public class Solitario {
     private List<User> usuarios;
     private String id;
 
+
     public String getId() {
         return id;
     }

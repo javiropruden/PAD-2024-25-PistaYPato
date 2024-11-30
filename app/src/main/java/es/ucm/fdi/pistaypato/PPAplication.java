@@ -3,6 +3,9 @@ package es.ucm.fdi.pistaypato;
 import android.app.Application;
 import android.os.StrictMode;
 import android.util.Base64;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PPAplication extends Application {
 
@@ -33,12 +37,12 @@ public class PPAplication extends Application {
     private User propietario;
     private DatabaseReference solitariosReference;
     private DatabaseReference instalacionesReference;
+    private SolitarioRepository SolitarioRepository;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-
 
         // Inicializa la lista
         badmintonFields = new ArrayList<>();
@@ -48,6 +52,7 @@ public class PPAplication extends Application {
         FirebaseApp.initializeApp(this);
         firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
         usersReference = firebaseDatabase.getReference("Users");
+
 
         //si no existe la referencia de usuarios la crea
         usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -68,6 +73,7 @@ public class PPAplication extends Application {
 
         // Inicializa la referencia de solitarios
         this.solitariosReference = firebaseDatabase.getReference("Solitarios");
+        SolitarioRepository = new SolitarioRepository(solitariosReference);
     }
 
     public DatabaseReference getSolitariosReference() {
@@ -177,4 +183,79 @@ public class PPAplication extends Application {
         return instalacionesReference;
     }
 
+    public String crearSolitario(Solitario newSol){
+        String id = this.SolitarioRepository.crearSolitario(newSol);
+        if(id!= null && !id.isEmpty()){
+            String mensaje = "<p>Buenas, jugador:</p>" +
+                    "<p>Usted se añadió en el siguiente solitario:</p>" +
+                    "<ul>" +
+                    "<li><strong>Pista:</strong> " + newSol.getLugar() + "</li>" +
+                    "<li><strong>Día:</strong> " + newSol.getFecha() + "</li>" +
+                    "</ul>" +
+                    "<p><strong>Email de los otros jugadores:</strong><br>" +
+                    propietario.getEmail().replace(", ", "<br>") + "</p>" +
+                    "<p>Un saludo,<br> Pista y pato </p>";
+
+            String asunto = "Información sobre su partida de solitario creado";
+
+            this.escribirEmail(newSol.getUsuarios().get(0).getEmail(), asunto, mensaje);
+        }
+
+        return id;
+    }
+
+    public boolean anadirSolitario(String id, String lugar,String fecha){
+       boolean ok = true;
+
+        this.SolitarioRepository.anadirSolitario(id, getPropietario());
+
+        DatabaseReference sol = this.solitariosReference.child(id);
+
+        sol.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                List<String> emails = new ArrayList<>();
+                String emailes = "";
+                // Iterar sobre los elementos de la base de datos
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    User u = userSnapshot.getValue(User.class);  // Convertir el DataSnapshot en un objeto User
+                    if (u != null) {
+                         // Agregar el objeto User a la lista
+                        emails.add(u.getEmail());  // Agregar el correo electrónico a la lista de emails
+                        emailes = emailes + u.getEmail() + " , ";  // Concatenar los correos electrónicos en un string
+                    }
+                }
+
+                String mensaje = "<p>Buenas, jugador:</p>" +
+                        "<p>Usted se añadió en el siguiente solitario:</p>" +
+                        "<ul>" +
+                        "<li><strong>Pista:</strong> " + lugar + "</li>" +
+                        "<li><strong>Día:</strong> " + fecha + "</li>" +
+                        "</ul>" +
+                        "<p><strong>Email de los otros jugadores:</strong><br>" +
+                        emailes.replace(", ", "<br>") + "</p>" +
+                        "<p>Un saludo,<br> Pista y pato </p>";
+
+                String asunto = "Información sobre su partida de solitario";
+
+                for(String uno: emails) {
+                    Log.d("ANADIR", "Correo enviado a " + uno);
+                    escribirEmail(uno, asunto, mensaje);
+                }
+
+                escribirEmail(getPropietario().getEmail(), asunto, mensaje);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Error al leer perfiles", error.toException());
+            }
+        });
+
+
+        return ok;
+
+    }
 }

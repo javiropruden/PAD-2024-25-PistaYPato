@@ -107,36 +107,32 @@ public class BuscarListarFragment extends Fragment {
                 }
                 else{
 
-                    DatabaseReference databaseReference = app.getSolitariosReference();
-                    String id = databaseReference.push().getKey();
                     List<User> usuarios = new ArrayList<>();
                     usuarios.add(app.getPropietario());
-                    Solitario s = new Solitario(id,selectedItem,usuarios, tiempo);
+                    Solitario s = new Solitario("",selectedItem ,usuarios, tiempo);
+                    String id = app.crearSolitario(s);
+                    s.setId(id);
 
-                    databaseReference.child(id).setValue(s)
-                            .addOnSuccessListener(aVoid -> {
+                    if(id != null && !id.isEmpty()){
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        MensagesFragment panelMensaje;
+                        panelMensaje = MensagesFragment.newInstance("TRUE", "CREAR");
+                        transaction.replace(R.id.middle_section, panelMensaje);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
 
-                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                MensagesFragment panelMensaje;
-                                panelMensaje = MensagesFragment.newInstance("TRUE", "CREAR");
-                                transaction.replace(R.id.middle_section, panelMensaje);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
+                    }
+                    else{
 
-                                Log.d("Firebase", "Solitario agregado correctamente");
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        MensagesFragment panelMensaje;
+                        panelMensaje = MensagesFragment.newInstance("FALSE", "CREAR");
+                        transaction.replace(R.id.middle_section, panelMensaje);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
 
-                            })
-                            .addOnFailureListener(e -> {
+                    }
 
-                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                                MensagesFragment panelMensaje;
-                                panelMensaje = MensagesFragment.newInstance("FALSE", "CREAR");
-                                transaction.replace(R.id.middle_section, panelMensaje);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-
-                                Log.e("Firebase", "Error al agregar el Solitario", e);
-                            });
                 }
             }
         });
