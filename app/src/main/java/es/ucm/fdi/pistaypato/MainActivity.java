@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.d("API Response", response);
+                            //Log.d("API Response", response);
                             JSONObject jsonResponse = new JSONObject(response);
                             app.jsonArray = jsonResponse.optJSONArray("@graph");
 

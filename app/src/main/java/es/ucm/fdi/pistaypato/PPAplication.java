@@ -27,6 +27,7 @@ public class PPAplication extends Application {
     // Almacena los campos de bádminton
     public ArrayList<String> badmintonFields;
     public JSONArray jsonArray;
+    public Instalacion in;
 
 
     // Referencias para Firebase
@@ -47,6 +48,7 @@ public class PPAplication extends Application {
         // Inicializa la lista
         badmintonFields = new ArrayList<>();
         jsonArray = new JSONArray();
+
         this.emailRemitente = "jiayun.zhan.0515@gmail.com";
         this.contrasenaEmailRemitente = "pgyeeplgqdejxmny";
         FirebaseApp.initializeApp(this);
@@ -257,5 +259,12 @@ public class PPAplication extends Application {
             }
         });
 
+    }
+    public Instalacion getInstalacion() {
+        return in;
+    }
+
+    public void setInstalacion(Instalacion instalacion) {
+        this.in = instalacion;
     }
 }
