@@ -120,7 +120,7 @@ public class ListarFragment extends Fragment {
                     sol.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            List<User> perfiles = (List<User>) snapshot.getValue();
+                            List<User> perfiles = (List<User>) snapshot.getValue() ;
 
                             if (perfiles == null) {
                                 perfiles = new ArrayList<>();
@@ -132,12 +132,37 @@ public class ListarFragment extends Fragment {
 
                             sol.child("usuarios").setValue(perfiles)
                                     .addOnSuccessListener(aVoid ->{
-                                        String mensaje = "";
-                                        String asunto = "";
 
-                                        for(User u : finalPerfiles){
-                                            app.escribirEmail(u.getEmail(), asunto, mensaje);
-                                        }
+                                        List<String> emails = new ArrayList<>();
+                                        String emailes = "";
+                                       for(DataSnapshot sna: snapshot.getChildren()){
+                                           User user = sna.getValue(User.class);
+                                           if (user != null) {
+                                               emails.add(user.getEmail());
+                                               emailes = emailes + user.getEmail() + " , ";
+                                           }
+
+                                       }
+                                       emailes = emailes + app.getPropietario().getEmail();
+                                       
+                                        String mensaje = "<p>Buenas, jugador:</p>" +
+                                                "<p>Usted se añadió en el siguiente solitario:</p>" +
+                                                "<ul>" +
+                                                "<li><strong>Pista:</strong> " + selecionado.getLugar() + "</li>" +
+                                                "<li><strong>Día:</strong> " + selecionado.getFecha() + "</li>" +
+                                                "</ul>" +
+                                                "<p><strong>Email de los otros jugadores:</strong><br>" +
+                                                emailes.replace(", ", "<br>") + "</p>" +
+                                                "<p>Un saludo,<br> Pista y pato </p>";
+
+                                        String asunto = "Información sobre su partida de solitario";
+
+                                       for(String uno: emails) {
+                                           Log.d("ANADIR", "Correo enviado a " + uno);
+                                           app.escribirEmail(uno, asunto, mensaje);
+                                       }
+                                        app.escribirEmail(app.getPropietario().getEmail(), asunto,mensaje);
+                                        Log.d("ANADIR", "Correo enviado a " + app.getPropietario().getEmail());
 
                                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                                         MensagesFragment panelMensaje;

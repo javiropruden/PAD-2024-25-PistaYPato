@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+
 public class ModificarPerfilFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";

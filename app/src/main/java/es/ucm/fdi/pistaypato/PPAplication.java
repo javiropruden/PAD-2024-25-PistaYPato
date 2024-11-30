@@ -127,7 +127,7 @@ public class PPAplication extends Application {
         JavaMailAPI mailAPI = new JavaMailAPI(this.emailRemitente, this.contrasenaEmailRemitente);
 
         // Enviar el correo
-        //SmailAPI.enviarCorreo(destinatario, asunto, mensaje);
+        mailAPI.enviarCorreo(destinatario, asunto, mensaje);
     }
 
     public void returnUser(String email, final UserCallback callback) {

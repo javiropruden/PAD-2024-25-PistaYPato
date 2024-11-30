@@ -70,13 +70,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String destinatario = "yun.zhan.0515@gmail.com";
-                String asunto = "Prueba desde JavaMail";
-                String mensaje = "¡Hola! Este correo fue enviado desde mi app Android usando JavaMail.";
-
-                app.escribirEmail(destinatario, asunto, mensaje);
-
-
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.middle_section, new buscarListarFragment());
                 transaction.addToBackStack(null);  // Permitir navegar hacia atrás al presionar el botón de "atrás"
