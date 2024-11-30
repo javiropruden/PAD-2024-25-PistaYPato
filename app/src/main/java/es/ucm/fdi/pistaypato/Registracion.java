@@ -67,6 +67,16 @@ public class Registracion extends AppCompatActivity {
                 valid = false;
             }
 
+            if (valid && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                //mostar mensaje de error por correo no valido
+                new AlertDialog.Builder(this)
+                        .setTitle("Error")
+                        .setMessage("correo no valido")
+                        .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                        .show();
+                valid = false;
+            }
+
             if (valid && lastName.isEmpty()) {
                 //mostar mensaje de error por no completar el campo contraseña
                 new AlertDialog.Builder(this)
