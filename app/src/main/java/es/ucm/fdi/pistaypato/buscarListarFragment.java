@@ -1,5 +1,6 @@
 package es.ucm.fdi.pistaypato;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -150,6 +152,8 @@ public class buscarListarFragment extends Fragment {
             }
         });
 
+        ponerfecha();
+
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,6 +198,13 @@ public class buscarListarFragment extends Fragment {
                 },
                 year, month, day
         );
+
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.show();
     }
 
@@ -205,5 +216,14 @@ public class buscarListarFragment extends Fragment {
         } else {
             Log.e("Badminton Fields", "No se han cargado los campos de bádminton.");
         }
+    }
+
+    private void ponerfecha() {
+        Calendar calendar = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaActual = dateFormat.format(calendar.getTime());
+
+        dia.setText(fechaActual);
+        tiempo = fechaActual;
     }
 }

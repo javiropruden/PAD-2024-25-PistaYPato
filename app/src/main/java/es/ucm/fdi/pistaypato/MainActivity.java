@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        inicial();
         // Botón de pistas (escribir algo en la base de datos al hacer clic)
         pistas.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,5 +189,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         queue.add(stringRequest);
+    }
+
+    public void inicial(){
+        // Mostrar un fragmento
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.middle_section, new BusquedaActivity());
+        transaction.addToBackStack(null); // Permitir navegar hacia atrás al presionar el botón de "atrás"
+        transaction.commit();
     }
 }

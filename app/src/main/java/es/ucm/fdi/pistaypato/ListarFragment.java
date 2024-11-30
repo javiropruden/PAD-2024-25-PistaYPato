@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,7 +52,7 @@ public class ListarFragment extends Fragment {
     private SolitarioAdapter adapter;
     private List<Solitario> solitarioList;
     private DatabaseReference databaseReference;
-
+    private ImageButton volver;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -108,6 +109,19 @@ public class ListarFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
 
+        this.volver = getActivity().findViewById(R.id.volver);
+        this.volver.setVisibility(View.VISIBLE);
+        this.volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFragment(new BusquedaActivity());
+                /*FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.middle_section, new BusquedaActivity());
+                transaction.addToBackStack(null);
+                transaction.commit();*/
+            }
+        });
 
         databaseReference = app.getSolitariosReference();
         this.anadir = view.findViewById(R.id.anadir);
@@ -144,7 +158,7 @@ public class ListarFragment extends Fragment {
 
                                        }
                                        emailes = emailes + app.getPropietario().getEmail();
-                                       
+
                                         String mensaje = "<p>Buenas, jugador:</p>" +
                                                 "<p>Usted se añadió en el siguiente solitario:</p>" +
                                                 "<ul>" +
@@ -196,9 +210,6 @@ public class ListarFragment extends Fragment {
             }
         });
 
-
-
-
         cargarDatos();
 
         return view;
@@ -242,5 +253,11 @@ public class ListarFragment extends Fragment {
         });
     }
 
+    private void openFragment(Fragment fragment) {
+        FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.middle_section, fragment);
+        transaction.addToBackStack(null); // Permitir regresar al fragmento previo
+        transaction.commit();
+    }
 
 }
