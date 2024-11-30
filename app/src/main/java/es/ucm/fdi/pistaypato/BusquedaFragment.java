@@ -282,6 +282,7 @@ public class BusquedaFragment extends Fragment {
         //progressBar.setVisibility(View.VISIBLE);
 
         db.addListenerForSingleValueEvent(new ValueEventListener() {
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 boolean encontrado = false;

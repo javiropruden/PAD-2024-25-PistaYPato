@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                                             app.badmintonFields.add(nombre); // Agrega el nombre del centro a la lista
                                         }
                                     }
+
                                 }
                             }
 

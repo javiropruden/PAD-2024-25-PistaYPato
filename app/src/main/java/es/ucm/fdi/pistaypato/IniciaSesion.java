@@ -19,11 +19,9 @@ public class IniciaSesion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.fragment_inicia_sesion);
-        Intent intent = new Intent(IniciaSesion.this, MainActivity.class);
-        startActivity(intent);
+        setContentView(R.layout.fragment_inicia_sesion);
 
-        /*iniciarSesion = findViewById(R.id.loginButton);
+        iniciarSesion = findViewById(R.id.loginButton);
         registrarse = findViewById(R.id.registerButton);
         contrasenia = findViewById(R.id.password);
         correo = findViewById(R.id.useremail);
@@ -69,7 +67,7 @@ public class IniciaSesion extends AppCompatActivity {
         registrarse.setOnClickListener(v -> {
             Intent intent = new Intent(IniciaSesion.this, Registracion.class);
             startActivity(intent);
-        });*/
+        });
     }
 
     private void showErrorMessage(String title, String message){

@@ -123,6 +123,8 @@ public class ReservaFragment extends Fragment {
                                         }
                                     });
                         }
+                        //meterle la reserva al usuario
+                        Reserva r = new Reserva(0, String.valueOf(reserva_pista), fecha, reserva_hora);
                         //enviar correo de confirmaci'on
                         /*String correoDestinatario = "@ucm.es"; // Correo del destinatario
                         String asunto = "Confirmación de Reserva";
