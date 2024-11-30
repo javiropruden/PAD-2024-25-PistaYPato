@@ -3,15 +3,23 @@ package es.ucm.fdi.pistaypato;
 import android.app.AlertDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.ImageButton;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class PerfilFragment extends Fragment {
 
@@ -30,6 +38,8 @@ public class PerfilFragment extends Fragment {
 
     private TextView nombre;
     private TextView email;
+
+    private TableLayout tablaReservas;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -79,6 +89,8 @@ public class PerfilFragment extends Fragment {
 
         this.editar = view.findViewById(R.id.perfil_edit_button);
         this.consultar = view.findViewById(R.id.perfil_consult_button);
+        this.tablaReservas = view.findViewById(R.id.perfil_tabla_reservas);
+        cargarReservas();
 
         this.volver = getActivity().findViewById(R.id.volver);
         this.volver.setVisibility(View.VISIBLE);
@@ -86,11 +98,6 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openFragment(new BusquedaFragment());
-                /*FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.middle_section, new BusquedaActivity());
-                transaction.addToBackStack(null);
-                transaction.commit();*/
             }
         });
         this.editar.setOnClickListener(new View.OnClickListener() {
@@ -115,5 +122,51 @@ public class PerfilFragment extends Fragment {
         transaction.addToBackStack(null); // Permitir regresar al fragmento previo
         transaction.commit();
     }
+
+    private void cargarReservas() {
+        app.getSolitariosReference().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    tablaReservas.removeAllViews(); // Limpia la tabla antes de rellenarla
+
+                    for (DataSnapshot solitarioSnapshot : dataSnapshot.getChildren()) {
+                        if (solitarioSnapshot.hasChild("usuarios")) {
+                            for (DataSnapshot usuarioSnapshot : solitarioSnapshot.child("usuarios").getChildren()) {
+                                User usuario = usuarioSnapshot.getValue(User.class);
+
+                                if (usuario != null && usuario.getEmail().equals(user.getEmail())) {
+                                    String lugar = solitarioSnapshot.child("lugar").getValue(String.class);
+                                    String fecha = solitarioSnapshot.child("fecha").getValue(String.class);
+
+                                    TableRow fila = new TableRow(getContext());
+                                    fila.setPadding(8, 8, 8, 8);
+
+                                    TextView lugarView = new TextView(getContext());
+                                    lugarView.setText(lugar != null ? lugar : "Desconocido");
+                                    lugarView.setPadding(8, 8, 8, 8);
+
+                                    TextView fechaView = new TextView(getContext());
+                                    fechaView.setText(fecha != null ? fecha : "Sin fecha");
+                                    fechaView.setPadding(8, 8, 8, 8);
+
+                                    fila.addView(lugarView);
+                                    fila.addView(fechaView);
+
+                                    tablaReservas.addView(fila);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("Firebase", "Error al cargar reservas: " + databaseError.getMessage());
+            }
+        });
+    }
+
 
 }
