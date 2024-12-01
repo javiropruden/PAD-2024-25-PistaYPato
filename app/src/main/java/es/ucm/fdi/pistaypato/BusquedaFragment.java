@@ -140,8 +140,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import androidx.core.graphics.Insets;
@@ -159,6 +161,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -174,16 +177,19 @@ public class BusquedaFragment extends Fragment {
     private String fecha;
     DatabaseReference db ;
 
+    private boolean flagDatosCargados = false;
+    private ProgressBar progressBar;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_busqueda, container, false);
 
         app = (PPAplication) requireActivity().getApplication();
+        db = app.getInstalacionesReference();
 
         dia = view.findViewById(R.id.dia);
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         spinner = view.findViewById(R.id.spinner);
         buscar = view.findViewById(R.id.buscar);
-        db = app.getInstalacionesReference();
 
         getActivity().findViewById(R.id.volver).setVisibility(View.GONE);
 
@@ -201,17 +207,14 @@ public class BusquedaFragment extends Fragment {
         buscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String selectedItem = spinner.getSelectedItem().toString();
                 if (selectedItem.isEmpty() || selectedItem.equals(getString(R.string.selecionar))) {
                     Toast.makeText(getContext(), "Por favor, selecciona una opción", Toast.LENGTH_SHORT).show();
                 } else {
-
-                    Spinner sp = view.findViewById(R.id.spinner);
-
+                    /*Log.e("db", db.toString());
                     db.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             boolean encontrado = false;
 
                             // Recorremos todas las instalaciones
@@ -219,26 +222,27 @@ public class BusquedaFragment extends Fragment {
                                 Instalacion instalacion = instalacionSnapshot.getValue(Instalacion.class);
 
                                 // Comprobamos si el nombre y la fecha coinciden
-                                if (instalacion != null && instalacion.getNombre().equals(sp.getSelectedItem().toString()) && instalacion.getFecha().equals(fecha)) {
+                                if (instalacion != null && instalacion.getNombre().equals(selectedItem) && instalacion.getFecha().equals(fecha)) {
                                     // Si encontramos una coincidencia, hacemos algo con la instalación
                                     Log.d("Firebase", "Instalación encontrada: " + instalacion.getNombre());
                                     encontrado = true;
+                                    app.setInstalacion(instalacion);
+                                    Log.e("inst econtrada", app.getInstalacion().getNombre());
                                     break; // Detenemos la búsqueda
                                 }
                             }
 
                             if (!encontrado) {
-
                                 // Crear una lista de pistas (puedes inicializarla con objetos si necesitas)
                                 List<Pista> pista = new ArrayList<>();
                                 pista.add(new Pista());
                                 pista.add(new Pista());
 
                                 //Crear uno nuevo
-                                Instalacion nuevaIns = new Instalacion(sp.getSelectedItem().toString(), pista, fecha);
+                                Instalacion nuevaIns = new Instalacion(spinner.getSelectedItem().toString(), pista, fecha);
+                                app.setInstalacion(nuevaIns);
 
                                 crearBBDDinstalacion(nuevaIns);
-
                                 Log.d("Firebase", "Instalación no encontrada");
                             }
                         }
@@ -249,16 +253,18 @@ public class BusquedaFragment extends Fragment {
                             Log.e("Firebase", "Error al leer datos: " + databaseError.getMessage());
                         }
                     });
-
-
-
+                    while(app.getInstalacion() == null ){
+                        Log.d("hola", "sigo aqui");
+                    }
                     FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                    ReservaFragment reservar = ReservaFragment.newInstance(fecha, sp.getSelectedItem().toString());
+                    ReservaFragment reservar = ReservaFragment.newInstance(fecha, spinner.getSelectedItem().toString());
                     transaction.replace(R.id.middle_section, reservar);
                     transaction.addToBackStack(null);
-                    transaction.commit();
+                    transaction.commit();*/
+                    cargarDatosFirebase(selectedItem);
+
                 }
             }
         });
@@ -270,6 +276,74 @@ public class BusquedaFragment extends Fragment {
         });
         return view;
     }
+
+    public void cargarDatosFirebase(String selectedItem) {
+        // Mostrar el ProgressBar mientras se cargan los datos
+        //progressBar.setVisibility(View.VISIBLE);
+
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean encontrado = false;
+
+                // Recorremos todas las instalaciones para buscar la que coincida
+                for (DataSnapshot instalacionSnapshot : dataSnapshot.getChildren()) {
+                    Instalacion currentInstalacion = instalacionSnapshot.getValue(Instalacion.class);
+
+                    // Comprobamos si la instalación coincide con los datos seleccionados
+                    if (currentInstalacion != null && currentInstalacion.getNombre().equals(selectedItem) && currentInstalacion.getFecha().equals(fecha)) {
+                        app.setInstalacion(currentInstalacion);
+                        encontrado = true;
+                        break;  // Salimos del bucle si encontramos la instalación
+                    }
+                }
+
+                // Si no encontramos la instalación, creamos una nueva
+                if (!encontrado) {
+                    List<Pista> pistas = new ArrayList<>();
+                    pistas.add(new Pista()); // Ejemplo de cómo agregar una pista
+                    pistas.add(new Pista()); // Ejemplo de cómo agregar otra pista
+                    Instalacion instalacion = new Instalacion(selectedItem, pistas, fecha);
+                    app.setInstalacion(instalacion);
+                    crearBBDDinstalacion(instalacion);  // Guardamos la nueva instalación en la base de datos
+                }
+
+                // Establecemos el flag a true para indicar que los datos están cargados
+                flagDatosCargados = true;
+
+                // Ocultamos el ProgressBar
+                //progressBar.setVisibility(View.GONE);
+
+                // Procedemos a cargar el fragmento solo si los datos están listos
+                cargarReservaFragment(app.getInstalacion());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // En caso de error, ocultamos el ProgressBar
+                //progressBar.setVisibility(View.GONE);
+                Log.e("Firebase", "Error al leer datos: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    private void cargarReservaFragment(Instalacion instalacion) {
+        // Esperamos hasta que el flag sea true (los datos han sido cargados)
+        if (flagDatosCargados && instalacion != null) {
+            FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+            ReservaFragment reservar = ReservaFragment.newInstance(fecha, spinner.getSelectedItem().toString());
+            transaction.replace(R.id.middle_section, reservar);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        } else {
+            Log.e("ReservaFragment", "Los datos no están disponibles o son nulos.");
+        }
+    }
+
+
 
     private void ponerfecha() {
         Calendar calendar = Calendar.getInstance();

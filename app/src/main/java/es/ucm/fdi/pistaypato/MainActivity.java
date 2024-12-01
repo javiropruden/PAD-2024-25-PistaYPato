@@ -89,6 +89,15 @@ public class MainActivity extends AppCompatActivity {
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /*
+                DatabaseReference prueba = app.getReservasReference();
+                String id = prueba.push().getKey();
+                Reserva r = new Reserva(id,1, app.getPropietario().getEmail(), "PISTA", "FECHA", 5,"ADIOS");
+                prueba.child(id).setValue(r);
+               
+                 */
+
                 showFragment(new PerfilFragment());
             }
         });
@@ -114,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.d("API Response", response);
+                            //Log.d("API Response", response);
                             JSONObject jsonResponse = new JSONObject(response);
                             app.jsonArray = jsonResponse.optJSONArray("@graph");
 
@@ -136,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                                             app.badmintonFields.add(nombre); // Agrega el nombre del centro a la lista
                                         }
                                     }
+
                                 }
                             }
 

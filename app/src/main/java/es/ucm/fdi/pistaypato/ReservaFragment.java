@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,20 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservaFragment extends Fragment {
     private View view;
 
     PPAplication app;
+    private Instalacion in;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -39,6 +47,9 @@ public class ReservaFragment extends Fragment {
     private TextView fech_a;
     private Button reserva;
 
+    private int reserva_pista;
+    private int reserva_hora;
+
 
     boolean celdaSeleccionada = false;
 
@@ -46,6 +57,10 @@ public class ReservaFragment extends Fragment {
     @SuppressLint("WrongViewCast")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_resultado, container, false);
+        app = (PPAplication) requireActivity().getApplication();
+
+        reserva_hora = -1;
+        reserva_pista = -1;
 
         ImageButton volver = getActivity().findViewById(R.id.volver);
         volver.setVisibility(View.VISIBLE);
@@ -61,6 +76,13 @@ public class ReservaFragment extends Fragment {
             }
         });
 
+        if (app.in == null) {
+            Log.e("ReservaFragment", "Instalación no cargada. No se puede continuar.");
+            // Aquí podrías mostrar un mensaje de error o hacer alguna acción adecuada
+            Toast.makeText(getContext(), "Error: Instalación no cargada correctamente", Toast.LENGTH_SHORT).show();
+            return view;
+        }
+
         cargarTabla();
         reserva = view.findViewById(R.id.reservar);
         reserva.setOnClickListener(new View.OnClickListener() {
@@ -68,16 +90,55 @@ public class ReservaFragment extends Fragment {
             public void onClick(View v) {
                 if (!celdaSeleccionada) {
                     Toast.makeText(getContext(), "Por favor, selecciona una celda para realizar la reserva", Toast.LENGTH_SHORT).show();
-
                     celdaSeleccionada = false;
                 } else {
                     // Aquí puedes agregar la lógica para cambiar la base de datos
+                    Instalacion instalacion = app.getInstalacion();
+
+                    if (instalacion != null){
+                        Log.e("", String.valueOf(reserva_hora));
+                        Log.e("", String.valueOf(reserva_pista));
+                        if (reserva_hora != -1 && reserva_pista != -1) {
+                            List<Pista> pistas = instalacion.getPistas();
+
+                            Pista pistaSeleccionada = pistas.get(reserva_pista);
+
+                            ArrayList<Boolean> reservado = pistaSeleccionada.getReservado();
+
+                            reservado.set(reserva_hora, true);  // Cambiar el valor de la hora seleccionada (true = reservado)
+
+                            pistaSeleccionada.setReservado(reservado);
+                            instalacion.setPistas(pistas);
+
+                            DatabaseReference dbRef = app.getInstalacionesReference();
+                            String ruta = instalacion.getId();
+                            Log.e("Ruta Firebase", ruta);
+                            dbRef.child(ruta)
+                                    .setValue(instalacion)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Log.e("Firebase", "Instalación actualizada correctamente.");
+                                        } else {
+                                            Log.e("Firebase", "Error al actualizar la instalación: " + task.getException().getMessage());
+                                        }
+                                    });
+                        }
+                        //meterle la reserva al usuario
+                        Reserva r = new Reserva(0, String.valueOf(reserva_pista), fecha, reserva_hora);
+                        //enviar correo de confirmaci'on
+                        /*String correoDestinatario = "@ucm.es"; // Correo del destinatario
+                        String asunto = "Confirmación de Reserva";
+
+                        JavaMailAPI mailAPI = new JavaMailAPI("heycomoteba@gmail.com", "HEYCOMOTEVA");
+                        mailAPI.enviarCorreo(correoDestinatario, asunto, instalacion.getNombre(), String.valueOf(reserva_hora), String.valueOf(reserva_pista));
+*/
+                    }else{
+                        Log.e("Error","La instalacion no existe");
+                    }
                     Toast.makeText(getContext(), R.string.reservado, Toast.LENGTH_SHORT).show();
                 }
-                //Y AQUI HABRÍA QUE CAMBIAR LA BASE DE DATOS
             }
         });
-        app = (PPAplication) requireActivity().getApplication();
         try {
             ponerdatos();
         } catch (JSONException e) {
@@ -96,29 +157,12 @@ public class ReservaFragment extends Fragment {
         headerRow.addView(emptyCell);
         // Horarios para las filas
         String[] horarios = {
-                "07:00 - 08:00", "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00",
+                "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00",
                 "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00"
         };
-        //EJEMPLO DE RESERVAS Q HAY Q CARGAR DE LA BASE DE DATOS
-        boolean[][] celdasReservadas = {
-                {false, true},
-                {true, false},
-                {false, false},
-                {true, true},
-                {false, true},
-                {true, false},
-                {false, false},
-                {true, true},
-                {false, true},
-                {true, false},
-                {false, false},
-                {true, true},
-                {false, true}
-        };
-        String[] pistas = {"A", "B"}; // pistas de ejemplo esto depende de la base de datos
-        for (String p : pistas) {
+        for (int i= 0; i < app.in.getPistas().size(); i++){
             TextView pistaText = new TextView(getContext());
-            pistaText.setText(p);
+            pistaText.setText(String.valueOf(i+1));
             pistaText.setPadding(16, 16, 16, 16);
             pistaText.setTextColor(Color.BLACK);
             pistaText.setGravity(Gravity.CENTER);
@@ -126,17 +170,17 @@ public class ReservaFragment extends Fragment {
             headerRow.addView(pistaText);
         }
         tableLayout.addView(headerRow);
-        for (int i = 0; i < horarios.length; i++) {
+        for (int j = 0; j < horarios.length; j++) {
             TableRow tableRow = new TableRow(getContext());
-            TextView horarioText = new TextView(getContext());
-            horarioText.setText(horarios[i]);
-            horarioText.setPadding(16, 16, 16, 16);
-            horarioText.setTextColor(Color.BLACK);
-            horarioText.setGravity(Gravity.CENTER);
-            tableRow.addView(horarioText);
-            for (int j = 0; j < pistas.length; j++) {
-                TextView estadoText = getTextView(celdasReservadas, i, j);
-                tableRow.addView(estadoText);
+            TextView horario = new TextView(getContext());
+            horario.setText(horarios[j]);
+            horario.setPadding(16, 16, 16, 16);
+            horario.setTextColor(Color.BLACK);
+            horario.setGravity(Gravity.CENTER);
+            tableRow.addView(horario);
+            for (int i= 0; i < app.in.getPistas().size(); i++) {
+                TextView estado = color(app.in.getPistas(),i,j);
+                tableRow.addView(estado);
             }
             tableLayout.addView(tableRow);
         }
@@ -145,9 +189,10 @@ public class ReservaFragment extends Fragment {
         scrollView.addView(tableLayout);
     }
 
-    private @NonNull TextView getTextView(boolean[][] celdasReservadas, int i, int j) {
+    private TextView color(List<Pista> pistas, int pista, int h) {
         TextView estado = new TextView(getContext());
-        if (celdasReservadas[i][j]) {
+        ArrayList<Boolean> actual = pistas.get(pista).getReservado();
+        if (actual.get(h)) {
             estado.setBackgroundColor(Color.rgb(150, 0, 0)); // Reservada
         } else {
             estado.setBackgroundColor(Color.rgb(28, 151, 96)); // Libre
@@ -159,9 +204,15 @@ public class ReservaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (((ColorDrawable) estado.getBackground()).getColor() == Color.rgb(150, 0, 0)) {
-                    Toast.makeText(getContext(), R.string.ya_reservado, Toast.LENGTH_SHORT).show();
+                    if(actual.get(h)) {
+                        Toast.makeText(getContext(), R.string.ya_reservado, Toast.LENGTH_SHORT).show();
+                    }else{
+                        estado.setBackgroundColor(Color.rgb(28, 151, 96));
+                    }
                 } else {
                     estado.setBackgroundColor(Color.rgb(150, 0, 0));
+                    reserva_hora = h;
+                    reserva_pista = pista;
                     celdaSeleccionada = true;
                 }
             }

@@ -27,6 +27,7 @@ public class PPAplication extends Application {
     // Almacena los campos de bádminton
     public ArrayList<String> badmintonFields;
     public JSONArray jsonArray;
+    public Instalacion in;
 
 
     // Referencias para Firebase
@@ -37,6 +38,7 @@ public class PPAplication extends Application {
     private User propietario;
     private DatabaseReference solitariosReference;
     private DatabaseReference instalacionesReference;
+    private DatabaseReference reservasReference;
     private SolitarioRepository SolitarioRepository;
 
 
@@ -47,6 +49,7 @@ public class PPAplication extends Application {
         // Inicializa la lista
         badmintonFields = new ArrayList<>();
         jsonArray = new JSONArray();
+
         this.emailRemitente = "jiayun.zhan.0515@gmail.com";
         this.contrasenaEmailRemitente = "pgyeeplgqdejxmny";
         FirebaseApp.initializeApp(this);
@@ -70,6 +73,7 @@ public class PPAplication extends Application {
         });
 
         this.instalacionesReference = firebaseDatabase.getReference("Instalaciones");
+        this.reservasReference = firebaseDatabase.getReference("Reservas");
 
         // Inicializa la referencia de solitarios
         this.solitariosReference = firebaseDatabase.getReference("Solitarios");
@@ -78,6 +82,10 @@ public class PPAplication extends Application {
 
     public DatabaseReference getSolitariosReference() {
         return solitariosReference;
+    }
+
+    public DatabaseReference getReservasReference() {
+        return reservasReference;
     }
 
     // Método para agregar un nuevo usuario a Firebase Realtime Database
@@ -257,5 +265,13 @@ public class PPAplication extends Application {
             }
         });
 
+    }
+
+    public Instalacion getInstalacion() {
+        return in;
+    }
+
+    public void setInstalacion(Instalacion instalacion) {
+        this.in = instalacion;
     }
 }

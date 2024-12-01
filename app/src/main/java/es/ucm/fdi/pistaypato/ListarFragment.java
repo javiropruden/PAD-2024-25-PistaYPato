@@ -99,6 +99,7 @@ public class ListarFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         solitarioList = new ArrayList<>();
+
         adapter = new SolitarioAdapter(solitarioList, new SolitarioAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Solitario solitario) {
@@ -125,9 +126,7 @@ public class ListarFragment extends Fragment {
             public void onClick(View v) {
                 if(selecionado != null){
 
-
                     try{
-
                         app.anadirSolitario(selecionado.getId(), selecionado.getLugar(), selecionado.getFecha());
 
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();

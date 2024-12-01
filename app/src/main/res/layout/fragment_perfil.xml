@@ -10,31 +10,27 @@
     <FrameLayout
         android:id="@+id/perfil_frame_section"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
+        android:layout_height="match_parent"
         android:background="?attr/colorPrimary">
 
-        <!-- Parte central - Información de perfil y reservas -->
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:padding="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:orientation="vertical">
 
                 <!-- Información del perfil -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="16dp">
 
                     <ImageView
                         android:layout_width="80dp"
@@ -76,79 +72,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
                     android:paddingBottom="8dp"
                     android:fontFamily="@font/tipo1"
                     android:text="@string/profile_reservas_section" />
 
-                <TableLayout
-                    android:id="@+id/perfil_tabla_reservas"
+                <!-- RecyclerView con altura fija dentro del ScrollView -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/perfil_recycler_reservas"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="*">
+                    android:layout_height="300dp"
+                    android:overScrollMode="always"
+                    android:nestedScrollingEnabled="false"
+                    android:clipToPadding="false"
+                    android:padding="8dp" />
 
-                    <!-- Ejemplo de fila de horarios -->
-                    <TableRow>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="#E0E0E0"
-                            android:padding="8dp"
-                            android:fontFamily="@font/tipo1"
-                            android:text="@string/profile_hora_dia" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:fontFamily="@font/tipo1"
-                            android:text="@string/profile_lunes" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:fontFamily="@font/tipo1"
-                            android:text="@string/profile_martes" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:fontFamily="@font/tipo1"
-                            android:text="@string/profile_miercoles" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:fontFamily="@font/tipo1"
-                            android:text="@string/profile_jueves" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:fontFamily="@font/tipo1"
-                            android:text="@string/profile_viernes" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:fontFamily="@font/tipo1"
-                            android:text="@string/profile_sabado" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="8dp"
-                            android:fontFamily="@font/tipo1"
-                            android:text="@string/profile_domingo" />
-                    </TableRow>
-                </TableLayout>
-
+                <!-- Botón debajo del RecyclerView -->
                 <Button
                     android:id="@+id/perfil_consult_button"
                     android:layout_width="wrap_content"

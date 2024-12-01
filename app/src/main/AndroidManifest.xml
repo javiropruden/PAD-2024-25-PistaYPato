@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Pistaypato"
         tools:targetApi="31">
         <activity
+            android:name=".ReservaAdapter"
+            android:exported="false" />
+        <activity
             android:name=".Registracion"
             android:exported="true" />
         <activity
@@ -23,6 +26,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
