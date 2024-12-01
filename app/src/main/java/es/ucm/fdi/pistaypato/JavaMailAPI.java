@@ -82,8 +82,6 @@ public class JavaMailAPI {
                 return new PasswordAuthentication(correoRemitente, contrasenaRemitente);
             }
         });
-
-        // Crear el contenido del mensaje en formato HTML
         String mensaje = "<html><body>"
                 + "<h3>Reserva Confirmada</h3>"
                 + "<p><strong>Sitio:</strong> " + sitio + "</p>"

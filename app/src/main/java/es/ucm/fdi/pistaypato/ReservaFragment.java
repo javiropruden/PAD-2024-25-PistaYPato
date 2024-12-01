@@ -40,7 +40,8 @@ public class ReservaFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private String fecha;
-    private String pista;
+    private String pista_nombre;
+    private String ubicacion_s;
 
     private TextView nombre;
     private TextView ubicacion;
@@ -124,14 +125,10 @@ public class ReservaFragment extends Fragment {
                                     });
                         }
                         //meterle la reserva al usuario
-                        Reserva r = new Reserva(0, String.valueOf(reserva_pista), fecha, reserva_hora);
-                        //enviar correo de confirmaci'on
-                        /*String correoDestinatario = "@ucm.es"; // Correo del destinatario
-                        String asunto = "Confirmación de Reserva";
+                        
+                        guardarReserva();
+                        mandar_email(instalacion);
 
-                        JavaMailAPI mailAPI = new JavaMailAPI("heycomoteba@gmail.com", "HEYCOMOTEVA");
-                        mailAPI.enviarCorreo(correoDestinatario, asunto, instalacion.getNombre(), String.valueOf(reserva_hora), String.valueOf(reserva_pista));
-*/
                     }else{
                         Log.e("Error","La instalacion no existe");
                     }
@@ -146,6 +143,35 @@ public class ReservaFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void mandar_email(Instalacion i) {
+        //enviar correo de confirmaci'on
+        String correoDestinatario = app.getPropietario().getEmail(); // Correo del destinatario
+        String asunto = "Confirmación de Reserva";
+        app.escribirEmail_reserva(correoDestinatario, i.getNombre(), String.valueOf(reserva_hora), String.valueOf(reserva_pista));
+
+    }
+
+    private void guardarReserva() {
+        //no mira si ya hay otra en la bbdd por que no hay posibilidad
+        DatabaseReference reservasRef = app.getReservasReference();
+
+        String idReserva = reservasRef.push().getKey();
+        if (idReserva != null) {
+            Reserva nuevaReserva = new Reserva(idReserva, reserva_pista, app.getPropietario().getEmail(), pista_nombre, fecha, reserva_hora,  ubicacion_s);
+
+            // Guardar la reserva en la base de datos
+            reservasRef.child(idReserva).setValue(nuevaReserva)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Log.d("Firebase", "Reserva guardada exitosamente");
+                            // Aquí puedes agregar cualquier lógica adicional después de guardar, como notificar al usuario
+                        } else {
+                            Log.e("Firebase", "Error al guardar la reserva", task.getException());
+                        }
+                    });
+        }
     }
 
     private void cargarTabla() {
@@ -224,26 +250,26 @@ public class ReservaFragment extends Fragment {
         nombre = view.findViewById(R.id.nombre);
         ubicacion = view.findViewById(R.id.direccion);
         fech_a = view.findViewById(R.id.fecha);
-        String ubi = "";
+        ubicacion_s = "";
 
-        nombre.setText(pista);
+        nombre.setText(pista_nombre);
         fech_a.setText(fecha);
 
         for (int i = 0; i < app.jsonArray.length(); i++) {
             JSONObject field = app.jsonArray.getJSONObject(i);
 
             String nombre = field.optString("title");
-            if (nombre.equals(pista)) {
+            if (nombre.equals(pista_nombre)) {
                 JSONObject address = field.optJSONObject("address");
                 assert address != null;
                 String locality = address.optString("locality", "");
                 String postal_code = address.optString("postal-code", "");
                 String street = address.optString("street-address", "");
-                ubi = street + ", " + locality + ", " + postal_code;
+                ubicacion_s = street + ", " + locality + ", " + postal_code;
             }
         }
 
-        ubicacion.setText(ubi);
+        ubicacion.setText( ubicacion_s);
 
     }
 
@@ -252,7 +278,7 @@ public class ReservaFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             fecha = getArguments().getString(ARG_PARAM1);
-            pista = getArguments().getString(ARG_PARAM2);
+            pista_nombre = getArguments().getString(ARG_PARAM2);
         }
     }
 

@@ -151,6 +151,14 @@ public class PPAplication extends Application {
         mailAPI.enviarCorreo(destinatario, asunto, mensaje);
     }
 
+    public void escribirEmail_reserva(String destinatario, String instalacion, String hora, String pista){
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        JavaMailAPI mailAPI = new JavaMailAPI(this.emailRemitente, this.contrasenaEmailRemitente);
+        mailAPI.enviarCorreo(destinatario, "Confirmacion de reserva", instalacion, hora, pista);
+    }
+
     public void returnUser(String email, final UserCallback callback) {
         String sanitizedEmail = email.replace(".", ",");
         usersReference.child(sanitizedEmail).addListenerForSingleValueEvent(new ValueEventListener() {
