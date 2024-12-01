@@ -94,6 +94,7 @@
                     android:layout_marginTop="16dp"
                     android:backgroundTint="?attr/colorSecondaryVariant"
                     android:fontFamily="@font/tipo1"
+                    android:layout_gravity="center"
                     android:text="@string/profile_consult_button" />
             </LinearLayout>
         </ScrollView>

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.widget.Toast;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -133,14 +134,12 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
                 if(selecionado != null){
-                    //openFragment(new CancelarFragment(selecionado));
+                    openFragment(new CancelarFragment(selecionado));
                 }
                 else{
-
+                    Toast.makeText(view.getContext(), "No se ha seleccionado ninguna reserva", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
