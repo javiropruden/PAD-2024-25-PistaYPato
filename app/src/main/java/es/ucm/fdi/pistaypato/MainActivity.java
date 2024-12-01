@@ -89,6 +89,15 @@ public class MainActivity extends AppCompatActivity {
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /*
+                DatabaseReference prueba = app.getReservasReference();
+                String id = prueba.push().getKey();
+                Reserva r = new Reserva(id,1, app.getPropietario().getEmail(), "PISTA", "FECHA", 5,"ADIOS");
+                prueba.child(id).setValue(r);
+               
+                 */
+
                 showFragment(new PerfilFragment());
             }
         });

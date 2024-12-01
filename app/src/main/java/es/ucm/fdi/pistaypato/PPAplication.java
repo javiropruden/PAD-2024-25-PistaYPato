@@ -38,6 +38,7 @@ public class PPAplication extends Application {
     private User propietario;
     private DatabaseReference solitariosReference;
     private DatabaseReference instalacionesReference;
+    private DatabaseReference reservasReference;
     private SolitarioRepository SolitarioRepository;
 
 
@@ -72,6 +73,7 @@ public class PPAplication extends Application {
         });
 
         this.instalacionesReference = firebaseDatabase.getReference("Instalaciones");
+        this.reservasReference = firebaseDatabase.getReference("Reservas");
 
         // Inicializa la referencia de solitarios
         this.solitariosReference = firebaseDatabase.getReference("Solitarios");
@@ -80,6 +82,10 @@ public class PPAplication extends Application {
 
     public DatabaseReference getSolitariosReference() {
         return solitariosReference;
+    }
+
+    public DatabaseReference getReservasReference() {
+        return reservasReference;
     }
 
     // Método para agregar un nuevo usuario a Firebase Realtime Database
@@ -260,6 +266,7 @@ public class PPAplication extends Application {
         });
 
     }
+
     public Instalacion getInstalacion() {
         return in;
     }
