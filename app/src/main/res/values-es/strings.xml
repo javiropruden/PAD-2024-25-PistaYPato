@@ -68,5 +68,6 @@
     <string name="previous">Anterior</string>
 
     <string name="calendario">calendario</string>
+    <string name="hora_pasada">Esta reserva ya ha pasado. No se puede realizar. </string>
 
 </resources>

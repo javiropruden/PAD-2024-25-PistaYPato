@@ -27,7 +27,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class ReservaFragment extends Fragment {
@@ -53,6 +56,14 @@ public class ReservaFragment extends Fragment {
 
 
     boolean celdaSeleccionada = false;
+
+    Calendar calendar = Calendar.getInstance();
+    // Horarios para las filas
+    String[] horarios = {
+            "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00",
+            "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00"
+    };
+
 
 
     @SuppressLint("WrongViewCast")
@@ -97,8 +108,6 @@ public class ReservaFragment extends Fragment {
                     Instalacion instalacion = app.getInstalacion();
 
                     if (instalacion != null){
-                        Log.e("", String.valueOf(reserva_hora));
-                        Log.e("", String.valueOf(reserva_pista));
                         if (reserva_hora != -1 && reserva_pista != -1) {
                             List<Pista> pistas = instalacion.getPistas();
 
@@ -181,11 +190,7 @@ public class ReservaFragment extends Fragment {
         TextView emptyCell = new TextView(getContext());
         emptyCell.setPadding(16, 16, 16, 16);
         headerRow.addView(emptyCell);
-        // Horarios para las filas
-        String[] horarios = {
-                "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00",
-                "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00"
-        };
+
         for (int i= 0; i < app.in.getPistas().size(); i++){
             TextView pistaText = new TextView(getContext());
             pistaText.setText(String.valueOf(i+1));
@@ -221,7 +226,16 @@ public class ReservaFragment extends Fragment {
         if (actual.get(h)) {
             estado.setBackgroundColor(Color.rgb(150, 0, 0)); // Reservada
         } else {
-            estado.setBackgroundColor(Color.rgb(28, 151, 96)); // Libre
+            int hora = calendar.get(Calendar.HOUR_OF_DAY);
+            String[] parts = horarios[h].split(" - ");
+            String horaInicio = parts[0];  // "08:00"
+            int horaIni = Integer.parseInt(horaInicio.split(":")[0]);
+            String horaFin = parts[1];
+            if(hora < horaIni || eshoy()) {
+                estado.setBackgroundColor(Color.rgb(28, 151, 96)); // Libre
+            }else{
+                estado.setBackgroundColor(Color.rgb(201, 145, 0)); // fuera de tiempo
+            }
         }
         estado.setPadding(32, 32, 32, 32);
         estado.setGravity(Gravity.CENTER);
@@ -235,7 +249,10 @@ public class ReservaFragment extends Fragment {
                     }else{
                         estado.setBackgroundColor(Color.rgb(28, 151, 96));
                     }
-                } else {
+                } else if(((ColorDrawable) estado.getBackground()).getColor() == Color.rgb(201, 145, 0)){
+                    Toast.makeText(getContext(), R.string.hora_pasada, Toast.LENGTH_SHORT).show();
+                }
+                else {
                     estado.setBackgroundColor(Color.rgb(150, 0, 0));
                     reserva_hora = h;
                     reserva_pista = pista;
@@ -244,6 +261,31 @@ public class ReservaFragment extends Fragment {
             }
         });
         return estado;
+    }
+
+    private boolean eshoy() {
+        Calendar hoy = Calendar.getInstance();
+
+        //Formato de fecha en "dd/MM/yyyy"
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        String fechaHoy = sdf.format(hoy.getTime());
+        Calendar fechaSeleccionada = Calendar.getInstance();
+        try {
+            Date date = sdf.parse(fecha);  // Convertir la fecha seleccionada a Date
+            fechaSeleccionada.setTime(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 6. Comparar el día, mes y año de las dos fechas
+        if (hoy.get(Calendar.DAY_OF_MONTH) == fechaSeleccionada.get(Calendar.DAY_OF_MONTH) &&
+                hoy.get(Calendar.MONTH) == fechaSeleccionada.get(Calendar.MONTH) &&
+                hoy.get(Calendar.YEAR) == fechaSeleccionada.get(Calendar.YEAR)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     private void ponerdatos() throws JSONException {
