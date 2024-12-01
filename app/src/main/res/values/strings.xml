@@ -67,5 +67,6 @@
 
 
     <string name="calendario">calendary</string>
+    <string name="hora_pasada">This reservation has already been made. Cannot be done.</string>>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>
