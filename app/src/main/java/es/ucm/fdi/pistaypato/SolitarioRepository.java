@@ -42,8 +42,6 @@ public class SolitarioRepository {
     private DatabaseReference solitariosReference;
     List<String> emails;
 
-
-
     public SolitarioRepository(){
         firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
         this.solitariosReference = firebaseDatabase.getReference("Solitarios");
@@ -71,8 +69,6 @@ public class SolitarioRepository {
     }
 
     public boolean anadirSolitario(String id, User propiedario){
-
-
         DatabaseReference sol = this.solitariosReference.child(id);
 
         sol.child("usuarios").addListenerForSingleValueEvent(new ValueEventListener() {

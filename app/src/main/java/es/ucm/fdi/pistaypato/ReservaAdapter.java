@@ -34,7 +34,7 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ReservaV
     @Override
     public ReservaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.reserva, parent, false); // Asegúrate de tener un layout adecuado para cada item
+                .inflate(R.layout.reserva, parent, false);
         return new ReservaViewHolder(itemView);
     }
 
@@ -63,7 +63,6 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ReservaV
 
     @Override
     public int getItemCount() {
-
         Log.d("Jiayun ", "jia " + reservaList.size());
         return reservaList.size();
     }

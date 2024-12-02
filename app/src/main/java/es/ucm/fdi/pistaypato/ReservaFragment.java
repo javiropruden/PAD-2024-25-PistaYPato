@@ -64,8 +64,6 @@ public class ReservaFragment extends Fragment {
             "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00"
     };
 
-
-
     @SuppressLint("WrongViewCast")
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.view = inflater.inflate(R.layout.fragment_resultado, container, false);
@@ -90,7 +88,6 @@ public class ReservaFragment extends Fragment {
 
         if (app.in == null) {
             Log.e("ReservaFragment", "Instalación no cargada. No se puede continuar.");
-            // Aquí podrías mostrar un mensaje de error o hacer alguna acción adecuada
             Toast.makeText(getContext(), "Error: Instalación no cargada correctamente", Toast.LENGTH_SHORT).show();
             return view;
         }
@@ -104,7 +101,6 @@ public class ReservaFragment extends Fragment {
                     Toast.makeText(getContext(), "Por favor, selecciona una celda para realizar la reserva", Toast.LENGTH_SHORT).show();
                     celdaSeleccionada = false;
                 } else {
-                    // Aquí puedes agregar la lógica para cambiar la base de datos
                     Instalacion instalacion = app.getInstalacion();
 
                     if (instalacion != null){
@@ -133,7 +129,6 @@ public class ReservaFragment extends Fragment {
                                         }
                                     });
                         }
-                        //meterle la reserva al usuario
                         
                         guardarReserva();
                         mandar_email(instalacion);
@@ -175,7 +170,6 @@ public class ReservaFragment extends Fragment {
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             Log.d("Firebase", "Reserva guardada exitosamente");
-                            // Aquí puedes agregar cualquier lógica adicional después de guardar, como notificar al usuario
                         } else {
                             Log.e("Firebase", "Error al guardar la reserva", task.getException());
                         }

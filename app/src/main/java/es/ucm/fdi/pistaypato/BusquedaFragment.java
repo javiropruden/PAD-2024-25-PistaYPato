@@ -80,60 +80,7 @@ public class BusquedaFragment extends Fragment {
                 if (selectedItem.isEmpty() || selectedItem.equals(getString(R.string.selecionar))) {
                     Toast.makeText(getContext(), "Por favor, selecciona una opción", Toast.LENGTH_SHORT).show();
                 } else {
-                    /*Log.e("db", db.toString());
-                    db.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            boolean encontrado = false;
-
-                            // Recorremos todas las instalaciones
-                            for (DataSnapshot instalacionSnapshot : dataSnapshot.getChildren()) {
-                                Instalacion instalacion = instalacionSnapshot.getValue(Instalacion.class);
-
-                                // Comprobamos si el nombre y la fecha coinciden
-                                if (instalacion != null && instalacion.getNombre().equals(selectedItem) && instalacion.getFecha().equals(fecha)) {
-                                    // Si encontramos una coincidencia, hacemos algo con la instalación
-                                    Log.d("Firebase", "Instalación encontrada: " + instalacion.getNombre());
-                                    encontrado = true;
-                                    app.setInstalacion(instalacion);
-                                    Log.e("inst econtrada", app.getInstalacion().getNombre());
-                                    break; // Detenemos la búsqueda
-                                }
-                            }
-
-                            if (!encontrado) {
-                                // Crear una lista de pistas (puedes inicializarla con objetos si necesitas)
-                                List<Pista> pista = new ArrayList<>();
-                                pista.add(new Pista());
-                                pista.add(new Pista());
-
-                                //Crear uno nuevo
-                                Instalacion nuevaIns = new Instalacion(spinner.getSelectedItem().toString(), pista, fecha);
-                                app.setInstalacion(nuevaIns);
-
-                                crearBBDDinstalacion(nuevaIns);
-                                Log.d("Firebase", "Instalación no encontrada");
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            // Manejar el error
-                            Log.e("Firebase", "Error al leer datos: " + databaseError.getMessage());
-                        }
-                    });
-                    while(app.getInstalacion() == null ){
-                        Log.d("hola", "sigo aqui");
-                    }
-                    FrameLayout frameLayout = getActivity().findViewById(R.id.middle_section);
-                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-
-                    ReservaFragment reservar = ReservaFragment.newInstance(fecha, spinner.getSelectedItem().toString());
-                    transaction.replace(R.id.middle_section, reservar);
-                    transaction.addToBackStack(null);
-                    transaction.commit();*/
                     cargarDatosFirebase(selectedItem);
-
                 }
             }
         });

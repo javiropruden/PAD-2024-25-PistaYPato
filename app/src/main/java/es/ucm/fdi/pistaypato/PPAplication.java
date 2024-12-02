@@ -89,7 +89,6 @@ public class PPAplication extends Application {
     }
 
     // Método para agregar un nuevo usuario a Firebase Realtime Database
-
     public void addUser( User newUser ) {
         String sanitizedEmail = newUser.getEmail().replace(".", ",");
         usersReference.child(sanitizedEmail).setValue(newUser)
@@ -101,6 +100,7 @@ public class PPAplication extends Application {
                 });
     }
 
+    // Método para eliminar un usuario de Firebase Realtime Database
     public void removeUser(String email){
         String sanitizedEmail = email.replace(".", ",");
         usersReference.child(sanitizedEmail).removeValue()

@@ -25,15 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ListarFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -52,15 +45,7 @@ public class ListarFragment extends Fragment {
     private List<Solitario> solitarioList;
     private DatabaseReference databaseReference;
     private ImageButton volver;
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param dia Parameter 1.
-     * @param lugar Parameter 2.
-     * @return A new instance of fragment ListarFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ListarFragment newInstance(String dia, String lugar) {
         ListarFragment fragment = new ListarFragment();
         Bundle args = new Bundle();
