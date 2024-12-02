@@ -6,51 +6,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class CancelarFragment extends Fragment {
 
-    // Fragment initialization parameters
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // Parameters
-    private String mParam1;
-    private String mParam2;
-
-    private EditText nombreEquipo;
-    private EditText direccion;
-    private EditText fecha;
-    private EditText pista;
-    private EditText hora;
+    private TextView nombreEquipo;
+    private TextView direccion;
+    private TextView fecha;
+    private TextView pista;
+    private TextView hora;
     private Button cancelarButton;
     private ImageButton volver;
 
-    public CancelarFragment() {
-    }
+    private Reserva reserva; // Objeto Reserva recibido desde PerfilFragment
 
-    public static CancelarFragment newInstance(String param1, String param2) {
-        CancelarFragment fragment = new CancelarFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    // Constructor personalizado para recibir la reserva directamente
+    public CancelarFragment(Reserva reserva) {
+        this.reserva = reserva;
     }
 
     @Nullable
@@ -58,7 +42,7 @@ public class CancelarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cancelar, container, false);
 
-        // Referenciar elementos del layout
+        // Inicializar vistas
         nombreEquipo = view.findViewById(R.id.cancelar_nombre_equipo);
         direccion = view.findViewById(R.id.cancelar_direccion);
         fecha = view.findViewById(R.id.cancelar_fecha);
@@ -66,46 +50,109 @@ public class CancelarFragment extends Fragment {
         hora = view.findViewById(R.id.cancelar_hora);
         cancelarButton = view.findViewById(R.id.cancelar_btn_cancelar_reserva);
 
-        this.volver = getActivity().findViewById(R.id.volver);
-        this.volver.setVisibility(View.VISIBLE);
-        this.volver.setOnClickListener(v -> openFragment(new PerfilFragment()));
+        volver = getActivity().findViewById(R.id.volver);
+        volver.setVisibility(View.VISIBLE);
 
-        // Acción del botón "Cancelar Reserva"
-        cancelarButton.setOnClickListener(v -> {
-            cancelarReserva();
-            openFragment(new PerfilFragment()); //Para volver a perfil
-        });
+        // Mostrar los datos de la reserva
+        if (reserva != null) {
+            mostrarDatosReserva(reserva);
+        }
+
+        // Configurar el botón "Cancelar Reserva"
+        cancelarButton.setOnClickListener(v -> cancelarReserva());
 
         return view;
     }
 
-    private void cancelarReserva() {
-        String equipo = nombreEquipo.getText().toString();
-        String direccionReserva = direccion.getText().toString();
-        String fechaReserva = fecha.getText().toString();
-        String pistaReserva = pista.getText().toString();
-        String horaReserva = hora.getText().toString();
-
-        // Validar campos llenos antes de continuar
-        if (equipo.isEmpty() || direccionReserva.isEmpty() || fechaReserva.isEmpty() || pistaReserva.isEmpty() || horaReserva.isEmpty()) {
-            Log.e("CancelarReserva", "Todos los campos deben estar llenos");
-            return;
-        }
-
-        Log.d("CancelarReserva", "Reserva cancelada para el equipo: " + equipo + " en la dirección: " + direccionReserva +
-                " en la fecha: " + fechaReserva + " en la pista: " + pistaReserva + " a las: " + horaReserva);
-
-        //Logica para cancelar hacer
-
-        limpiarCampos();
+    private void mostrarDatosReserva(Reserva reserva) {
+        nombreEquipo.setText(reserva.getIdUsuario());
+        direccion.setText(reserva.getUbicacion());
+        fecha.setText(reserva.getFecha());
+        pista.setText(reserva.getPista());
+        hora.setText(String.valueOf(reserva.getHora()));
     }
 
-    private void limpiarCampos() {
-        nombreEquipo.setText("");
-        direccion.setText("");
-        fecha.setText("");
-        pista.setText("");
-        hora.setText("");
+    private void cancelarReserva() {
+        Log.d("CancelarFragment", "Preparando para cancelar");
+        if (reserva != null) {
+            Log.d("CancelarFragment", "Reserva no es nula: " + reserva.getId());
+        } else {
+            Log.e("CancelarFragment", "Reserva es nula");
+        }
+
+        if (reserva != null && reserva.getId() != null) {
+            PPAplication app = (PPAplication) requireActivity().getApplication();
+            DatabaseReference reservasRef = app.getReservasReference();
+            DatabaseReference instalacionesRef = app.getInstalacionesReference();
+
+            // Eliminar la reserva del nodo "Reservas"
+            reservasRef.child(reserva.getId()).removeValue()
+                    .addOnSuccessListener(aVoid -> {
+                        Log.d("CancelarFragment", "Reserva cancelada con éxito");
+
+                        // Buscar la instalación por nombre y fecha, y liberar el horario
+                        buscarInstalacionPorNombreYFecha(instalacionesRef);
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("CancelarFragment", "Error al cancelar la reserva", e);
+                    });
+        } else {
+            openFragment(new PerfilFragment());
+            Log.e("CancelarFragment", "Reserva o ID de la reserva no disponible");
+        }
+    }
+
+    private void buscarInstalacionPorNombreYFecha(DatabaseReference instalacionesRef) {
+        instalacionesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot instalacionSnapshot : dataSnapshot.getChildren()) {
+                    String nombreInstalacion = instalacionSnapshot.child("nombre").getValue(String.class);
+                    String fechaInstalacion = instalacionSnapshot.child("fecha").getValue(String.class);
+
+                    if (nombreInstalacion != null && fechaInstalacion != null &&
+                            nombreInstalacion.equals(reserva.getPista()) &&
+                            fechaInstalacion.equals(reserva.getFecha())) {
+                        Log.d("CancelarFragment", "Instalación encontrada: " + nombreInstalacion + " con fecha: " + fechaInstalacion);
+
+                        // Obtener el ID de la instalación
+                        String instalacionId = instalacionSnapshot.getKey();
+
+                        if (instalacionId != null) {
+                            liberarHorario(instalacionesRef, instalacionId, reserva.getNumero(), reserva.getHora());
+                        }
+                        return; // Salir del bucle una vez encontrada la instalación
+                    }
+                }
+
+                Log.e("CancelarFragment", "No se encontró una instalación con el nombre y fecha: " +
+                        reserva.getPista() + ", " + reserva.getFecha());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("CancelarFragment", "Error al buscar la instalación", databaseError.toException());
+            }
+        });
+    }
+
+    private void liberarHorario(DatabaseReference instalacionesRef, String instalacionId, int pistaNumero, int horario) {
+        Log.d("CancelarFragment", "Liberando pista en Instalaciones/" + instalacionId + "/pistas/" + pistaNumero + "/reservado/" + horario);
+
+        // Actualizar el valor del horario a `false`
+        instalacionesRef.child(instalacionId)
+                .child("pistas")
+                .child(String.valueOf(pistaNumero))
+                .child("reservado")
+                .child(String.valueOf(horario))
+                .setValue(false)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("CancelarFragment", "Horario liberado correctamente");
+                    openFragment(new PerfilFragment());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CancelarFragment", "Error al liberar el horario", e);
+                });
     }
 
     private void openFragment(Fragment fragment) {
