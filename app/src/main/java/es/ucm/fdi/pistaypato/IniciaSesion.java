@@ -2,6 +2,7 @@ package es.ucm.fdi.pistaypato;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,8 @@ public class IniciaSesion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_inicia_sesion);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         iniciarSesion = findViewById(R.id.loginButton);
         registrarse = findViewById(R.id.registerButton);
