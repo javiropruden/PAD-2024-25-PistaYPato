@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Parte superior - Icono de la app u otros iconos -->
     <LinearLayout
         android:id="@+id/top_section"
         android:layout_width="match_parent"
@@ -23,8 +22,6 @@
             android:layout_marginTop="7dp"
             android:contentDescription="App Icon"
             android:src="@drawable/ic_logo" />
-
-        <!-- Puedes añadir más iconos aquí si es necesario -->
 
     </LinearLayout>
 
@@ -46,8 +43,6 @@
             android:layout_marginRight="330dp"
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/volver" />
-
-        <!-- Puedes añadir más iconos aquí si es necesario -->
 
     </LinearLayout>
 

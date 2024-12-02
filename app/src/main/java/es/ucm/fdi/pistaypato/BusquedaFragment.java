@@ -120,11 +120,11 @@ public class BusquedaFragment extends Fragment {
                 // Si no encontramos la instalación, creamos una nueva
                 if (!encontrado) {
                     List<Pista> pistas = new ArrayList<>();
-                    pistas.add(new Pista()); // Ejemplo de cómo agregar una pista
-                    pistas.add(new Pista()); // Ejemplo de cómo agregar otra pista
+                    pistas.add(new Pista());
+                    pistas.add(new Pista());
                     Instalacion instalacion = new Instalacion(selectedItem, pistas, fecha);
                     app.setInstalacion(instalacion);
-                    crearBBDDinstalacion(instalacion);  // Guardamos la nueva instalación en la base de datos
+                    crearBBDDinstalacion(instalacion);
                 }
 
                 // Establecemos el flag a true para indicar que los datos están cargados

@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PPAplication extends Application {
-
-    // Almacena los campos de bádminton
     public ArrayList<String> badmintonFields;
     public JSONArray jsonArray;
     public Instalacion in;
@@ -46,7 +44,6 @@ public class PPAplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Inicializa la lista
         badmintonFields = new ArrayList<>();
         jsonArray = new JSONArray();
 
@@ -56,8 +53,6 @@ public class PPAplication extends Application {
         firebaseDatabase = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
         usersReference = firebaseDatabase.getReference("Users");
 
-
-        //si no existe la referencia de usuarios la crea
         usersReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -75,7 +70,6 @@ public class PPAplication extends Application {
         this.instalacionesReference = firebaseDatabase.getReference("Instalaciones");
         this.reservasReference = firebaseDatabase.getReference("Reservas");
 
-        // Inicializa la referencia de solitarios
         this.solitariosReference = firebaseDatabase.getReference("Solitarios");
         SolitarioRepository = new SolitarioRepository(solitariosReference);
     }
@@ -88,7 +82,6 @@ public class PPAplication extends Application {
         return reservasReference;
     }
 
-    // Método para agregar un nuevo usuario a Firebase Realtime Database
     public void addUser( User newUser ) {
         String sanitizedEmail = newUser.getEmail().replace(".", ",");
         usersReference.child(sanitizedEmail).setValue(newUser)
@@ -100,7 +93,6 @@ public class PPAplication extends Application {
                 });
     }
 
-    // Método para eliminar un usuario de Firebase Realtime Database
     public void removeUser(String email){
         String sanitizedEmail = email.replace(".", ",");
         usersReference.child(sanitizedEmail).removeValue()
@@ -120,7 +112,6 @@ public class PPAplication extends Application {
         this.propietario = propietario;
     }
 
-    // Método para obtener la lista de campos de bádminton
     public ArrayList<String> getFields() {
         return badmintonFields;
     }

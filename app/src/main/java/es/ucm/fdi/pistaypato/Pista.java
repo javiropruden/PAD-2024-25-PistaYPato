@@ -8,7 +8,7 @@ public class Pista {
     public Pista() {
         this.reservado = new ArrayList<>();
         for (int i = 0; i < 12; i++) {
-            reservado.add(false); // Inicializar con valores predeterminados
+            reservado.add(false);
         }
     }
 

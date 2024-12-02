@@ -37,9 +37,8 @@ public class MainActivity extends AppCompatActivity {
     Button perfil;
 
     Registracion usuario;
-    User user; //PARA PASARLE LOS DATOS DEL USER A PERFIL
+    User user;
 
-    // Declarar referencia de Firebase
     private DatabaseReference databaseReference;
 
     @Override
@@ -58,10 +57,8 @@ public class MainActivity extends AppCompatActivity {
         ImageButton pistas = findViewById(R.id.navigation_home);
         ImageButton perfil = findViewById(R.id.navigation_profile);
 
-        // Inicializar Firebase Realtime Database
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pistaypato-default-rtdb.europe-west1.firebasedatabase.app/");
 
-        // Botón para listar (escribir algo en la base de datos al hacer clic)
         listar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,12 +72,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         inicial();
-        // Botón de pistas (escribir algo en la base de datos al hacer clic)
         pistas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                // Mostrar un fragmento
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.middle_section, new BusquedaFragment());
                 transaction.addToBackStack(null); // Permitir navegar hacia atrás al presionar el botón de "atrás"
@@ -88,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Botón de perfil (escribir algo en la base de datos al hacer clic)
         perfil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

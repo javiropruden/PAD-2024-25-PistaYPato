@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,7 +57,6 @@ public class ReservaFragment extends Fragment {
     boolean celdaSeleccionada = false;
 
     Calendar calendar = Calendar.getInstance();
-    // Horarios para las filas
     String[] horarios = {
             "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00",
             "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00"
@@ -233,7 +231,6 @@ public class ReservaFragment extends Fragment {
         }
         estado.setPadding(32, 32, 32, 32);
         estado.setGravity(Gravity.CENTER);
-        // Hacer clickeable cada celda O NO SI ESTA RESERVADO
         estado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
