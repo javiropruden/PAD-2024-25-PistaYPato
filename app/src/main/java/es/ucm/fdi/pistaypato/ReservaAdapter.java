@@ -19,6 +19,11 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ReservaV
     private OnItemClickListener listener;
     private int selectedPosition = -1; // Mantener el índice del ítem seleccionado
 
+    String[] horarios = {
+            "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00", "12:00 - 13:00", "13:00 - 14:00", "14:00 - 15:00",
+            "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00", "18:00 - 19:00", "19:00 - 20:00"
+    };
+
     // Constructor
     public ReservaAdapter(List<Reserva> list, OnItemClickListener listener) {
         this.reservaList = list;
@@ -39,7 +44,7 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.ReservaV
 
         holder.lugarText.setText("Pista: " + reserva.getPista());
         holder.diaText.setText("Fecha: " + reserva.getFecha());
-        holder.horaText.setText("Hora: " + reserva.getHora());
+        holder.horaText.setText("Hora: " + horarios[reserva.getHora()]);
 
         // Cambiar el fondo si es el ítem seleccionado
         if (position == selectedPosition) {

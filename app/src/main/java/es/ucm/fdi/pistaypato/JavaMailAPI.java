@@ -67,7 +67,7 @@ public class JavaMailAPI {
      * @param hora         Hora de la reserva
      * @param pista        Pista reservada
      */
-    public void enviarCorreo(String destinatario, String asunto, String sitio, String hora, String pista) {
+    public void enviarCorreo(String destinatario, String asunto, String sitio, String hora, String pista, String fecha) {
         // Configuración del servidor SMTP
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com"); // Servidor SMTP
@@ -86,8 +86,10 @@ public class JavaMailAPI {
                 + "<h3>Reserva Confirmada</h3>"
                 + "<p><strong>Sitio:</strong> " + sitio + "</p>"
                 + "<p><strong>Hora:</strong> " + hora + "</p>"
+                + "<p><strong>Fecha:</strong> " + fecha + "</p>"
                 + "<p><strong>Pista:</strong> " + pista + "</p>"
                 + "<p>Gracias por realizar tu reserva.</p>"
+                + "<p>Pista y Pato.</p>"
                 + "</body></html>";
 
         try {

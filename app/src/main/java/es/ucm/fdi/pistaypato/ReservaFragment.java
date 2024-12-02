@@ -158,7 +158,7 @@ public class ReservaFragment extends Fragment {
         //enviar correo de confirmaci'on
         String correoDestinatario = app.getPropietario().getEmail(); // Correo del destinatario
         String asunto = "Confirmación de Reserva";
-        app.escribirEmail_reserva(correoDestinatario, i.getNombre(), horarios[reserva_hora], String.valueOf(reserva_pista));
+        app.escribirEmail_reserva(correoDestinatario, i.getNombre(), horarios[reserva_hora], String.valueOf(reserva_pista+1), fecha);
 
     }
 
