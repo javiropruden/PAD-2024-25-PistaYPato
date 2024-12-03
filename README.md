@@ -17,13 +17,4 @@
 - **API de la Comunidad de Madrid**: Para obtener información pública sobre las instalaciones deportivas disponibles.
 - **API de Envío de Correos**: Para enviar correos electrónicos y mantener a los usuarios informados sobre sus reservas.
 
-## Instalación
-
-Para probar la aplicación en tu dispositivo Android, sigue estos pasos:
-
-### 1. Clonar el Repositorio
-
-```bash
-git clone https://github.com/usuario/PAD-2024-25-PistaYPato.git
-cd PAD-2024-25-PistaYPato
 
