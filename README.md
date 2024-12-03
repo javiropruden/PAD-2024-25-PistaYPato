@@ -18,12 +18,4 @@
 - **API de Envío de Correos**: Para enviar correos electrónicos y mantener a los usuarios informados sobre sus reservas.
 
 # Licencia
-
-Este proyecto está licenciado bajo la Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional (CC BY-SA 4.0). Puedes usar, modificar y distribuir este proyecto, siempre y cuando:
-
-- Se te dé crédito de la manera especificada por el autor o el licenciante.
-- Las modificaciones que realices se distribuyan bajo la misma licencia.
-
-**NO está permitido** vender, distribuir con fines comerciales ni utilizar este proyecto en un contexto comercial de ninguna forma.
-
-Para más detalles, consulta la licencia completa: [Creative Commons BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+Este trabajo está bajo la licencia [Creative Commons BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
